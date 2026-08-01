@@ -122,11 +122,11 @@ def channel_row(sch, index, quad_ref, half, origin):
     # -- unity-gain buffer ----------------------------------------------
     buf = opamp(sch, quad_ref, buf_unit, *at(55.88, 5.08))
     sch.wire(at(40.64, Y_MAIN), buf.pin(buf_in))
+    # Feedback is a wire, not a part. RMC asked for the 1k out and the output
+    # tied straight back to -IN; on the board those two are adjacent pins, so
+    # the drawing shows what the copper does.
     sch.wire(buf.pin(buf_fb), at(44.45, 7.62), at(44.45, Y_BUFFB))
-
-    fb = place_passive(sch, f"R{n}03", at(55.88, Y_BUFFB), angle=90)
-    sch.wire(at(44.45, Y_BUFFB), fb.pin(1))
-    sch.wire(fb.pin(2), at(68.58, Y_BUFFB))
+    sch.wire(at(44.45, Y_BUFFB), at(68.58, Y_BUFFB))
     # Buffer output column feeds both all-pass legs.
     sch.wire(buf.pin(buf_out), at(68.58, 5.08))
     sch.wire(at(68.58, Y_MAIN), at(68.58, Y_APP))

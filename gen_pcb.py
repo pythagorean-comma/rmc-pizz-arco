@@ -79,26 +79,46 @@ BOARD_MARGIN = 3.0
 # horizontal shunt would put its ground pad in the middle of the lane its own
 # signal pad is feeding.
 #
-# The split into two sub-rows is what keeps the block narrow: R04/R06/C04 form
-# the series chain BUFOUT -> APN -> APOUT -> OUT, while R05/C02/C03 hang off it.
+# The split into two sub-rows is what keeps the block narrow. The row carries
+# the all-pass feedback pair and the summing capacitor, the sub-row carries
+# what hangs off them. Order on the row is set by RMC's addendum rather than by
+# the signal's own order -- see C02 below.
 ROW_PLACEMENT = {
     "J":   (5.0, 0, "conn"),      # 1=shield, 2=white (on the lane), 3=red
     "R02": (5.0, 1, "shunt"),     # 3M3 bias to ground
     "C01": (10.5, 1, "shunt"),    # 100p RF filter
     "R01": (15.0, 0, "series"),   # 1k stopper
-    # R03 sits east of R01 rather than under it. Both of the buffer's own
-    # feedback nets have to cross the row line to reach it, and every gap in
-    # the row line west of R01.2 is spoken for -- by the connector pads, by
-    # IN_W and by the lane that carries C01 up to BUFIN. East of R01.2 the row
-    # is clear all the way to R04, so R03's own two pads become the crossings.
-    "R03": (19.5, 1, "series"),   # 1k buffer feedback, left of the package
-    "R04": (33.0, 0, "series"),   # 47k into the all-pass inverting input
-    "R05": (33.0, 1, "series"),   # 47k lag into the switched node
-    "R06": (38.5, 0, "series"),   # 47k all-pass feedback
-    "C02": (38.5, 1, "series"),   # 100p across it
-    "C04": (44.0, 0, "series"),   # 1n8 summing into the red element
-    "C03": (44.0, 1, "shunt"),    # 100p lag to ground
+    # The all-pass feedback pair comes first, nearest the package, with the
+    # capacitor ahead of the resistor. RMC, 2026-08-01: "the OPA191 op amp has
+    # a 5V/uS slew rate, so with a fast IC, the feedback capacitor (100pF in
+    # the inverter feedback loop) needs to be located closest to -IN. Since
+    # the cap is in parallel with a 47K resistor, you can place both of them
+    # adjacent to the IC with the capacitor most proximate to the -IN pin."
+    #
+    # Rev C had them at dx 38.5 with C02 on the sub-row, which put the
+    # capacitor 11.8mm from the pin and the resistor 9.3mm -- the pair in the
+    # wrong order and both too far. C02 at dx 31.8 puts its near pad 3.1mm
+    # from -IN, and its west pad edge 0.80mm from the package's own pads,
+    # which also clears RMC's 0.030" component spacing.
+    #
+    # 5.0mm between centres throughout, not the old 5.5: a 1206's pads span
+    # +/-2.05mm, so 4.87 is the floor for 0.030" and 5.0 is the round number
+    # above it. That is what pays for the extra slot on the row.
+    "C02": (31.8, 0, "series"),   # 100p all-pass feedback, closest to -IN
+    "R06": (36.8, 0, "series"),   # 47k across it
+    "C04": (41.8, 0, "series"),   # 1n8 summing into the red element
+    "R04": (31.8, 1, "series"),   # 47k into the all-pass inverting input
+    "R05": (36.8, 1, "series"),   # 47k lag into the switched node
+    "C03": (41.8, 1, "shunt"),    # 100p lag to ground
 }
+
+# Row parts laid the other way round, so a named pad faces the way the routing
+# needs. R04 carries BUFOUT and APN; turning it puts its APN pad directly
+# beneath C02's, which makes the two a straight vertical run across the band
+# and keeps its BUFOUT pad next to R05's, so one via off the B.Cu run feeds
+# both. Left alone it lands APN in the middle of the sub-row with BUFOUT
+# either side of it, and the sub-row interleaves.
+ROW_MIRRORED = {"R04"}
 
 SUB_ROW = 5.5        # between rank 0 and rank 1, measured away from the quad
 REFERENCE_OFFSET = 2.2   # sub-row designators, measured back towards the row
@@ -112,9 +132,8 @@ QUAD_X = 25.5
 #
 # Pin 4 (V+) and pin 11 (V-) sit at (-2.475, 0) and (+2.475, 0) on the
 # SOIC-14, so the obvious placement is one each side. It does not fit. East of
-# the package the centreline is a three-lane bundle at 1.27mm pitch -- the odd
-# channel's switched node, V-, the even channel's -- running unbroken from the
-# pads to the buses, and there is no room beside it for anything. West of it
+# the package the centreline is a bundle of switched nodes at 1.27mm pitch
+# running from the pads to the buses, and there is no room beside it. West of it
 # only the BUFIN lanes flank the centreline, and they stop at the pad column,
 # leaving x=10..18 clear on every block. That is the only space in a block big
 # enough for a 1206, and it is measured, not assumed.
@@ -125,7 +144,8 @@ QUAD_X = 25.5
 # only has to exist -- both its pads are plane nets -- and it is there because
 # _GROUND_RULE requires the bypassing to be symmetric, not because V- needs
 # it.
-BYPASS_PLUS_DX = 15.0    # x=18.0: as close to pin 4 as the BUFFB vias allow
+BYPASS_PLUS_DX = 15.0    # x=18.0: measured, and still the limit after rev D
+                         # freed the BUFFB vias that used to be the blocker
 BYPASS_MINUS_DX = 12.0   # x=15.0
 BYPASS_ROTATION = 90     # standing on end, so the centreline run passes between the pads
 BYPASS_REFERENCE_DX = 2.6   # designator, measured outboard from each capacitor
@@ -430,7 +450,7 @@ def place_blocks(board):
                     # block pitch wider than the passives need.
                     rotation = 90
                 else:
-                    rotation = 0
+                    rotation = 180 if suffix in ROW_MIRRORED else 0
                 footprint = board.place(row_ref(suffix, channel), x, y, rotation)
                 if rank:
                     # Reference designators on a sub-row go towards the row,
@@ -746,84 +766,89 @@ def route_channel(board, channel):
     hop(out, dive, land)
     board.track(out, [land, p("C04", 2)])
 
-    # -- buffer feedback and output -----------------------------------------
-    # The buffer's three pins sit in one column, so anything leaving pin 1 or
-    # pin 2 leftward crosses whatever arrives at pin 3 from the left. BUFIN is
-    # the 3M3 node and must have the short direct approach, so it keeps that
-    # strip to itself and the other two dive inboard -- between the pad
-    # columns, the same clear ground the power stubs use -- and travel west
-    # under the package on B.Cu at the height of their own pin. They surface
-    # on the row line at R03's own two pads, which is why R03 sits east of
-    # R01: those two pads are the only crossings left on this side.
-    fbnet = f"BUFFB{n}"
-    fb_pin = q(buf_fb)
-    fb_dive = (round(fb_pin[0] + 2.6, 4), fb_pin[1])
-    fb_cross = (p("R03", 1)[0], row)
-    board.track(fbnet, [fb_pin, fb_dive])
-    board.via(fbnet, *fb_dive)
-    board.track(fbnet, [fb_dive, (fb_cross[0], fb_dive[1]), fb_cross],
-                layer=pcbnew.B_Cu)
-    board.via(fbnet, *fb_cross)
-    board.track(fbnet, [fb_cross, p("R03", 1)])
-
-    # BUFOUT leaves the same way but goes both ways from its via: west to the
-    # feedback resistor and east to the all-pass input pair, staying under
-    # the row the whole way so it never enters the band.
+    # -- buffer feedback: the whole of it ------------------------------------
+    # RMC: "connect OUT to -IN with the shortest possible trace at least .010"
+    # wide". Their own pinout makes that one segment. The buffer's output and
+    # its inverting input are adjacent pins in the same column, 1.27mm apart,
+    # so the feedback never leaves the package footprint and adds essentially
+    # no capacitance at the inverting node -- which is the point of taking the
+    # 1k out. At 0.30mm the trace is 0.0118", comfortably over their floor.
+    #
+    # Rev C had a 1k here and paid for it twice: the resistor sat west of the
+    # package and both feedback nets had to dive inboard, cross under the
+    # package on B.Cu and surface on the row line at its pads.
     outnet = f"BUFOUT{n}"
+    board.track(outnet, [q(buf_fb), q(buf_out)])
+
+    # BUFOUT then leaves eastward only, under the package on B.Cu at its own
+    # pin's height, and surfaces in C02's pad gap to cross the band on F.Cu.
+    #
+    # It has to surface to get across: OUT already owns a B.Cu lane through
+    # the band, so a B.Cu descent would cross it. And it has to do so here,
+    # west of where APOUT surfaces, because APOUT owns an F.Cu lane through
+    # the band east of that point. The 1.8mm gap between a 1206's own two pads
+    # is the only place wide enough to land a via in, and C02's is the one in
+    # the right place.
     out_pin = q(buf_out)
     out_dive = (round(out_pin[0] + 1.5, 4), out_pin[1])
-    out_west = (p("R03", 2)[0], row)
-    out_east = (between(p("R04", 1), p("R04", 2)), row)
+    out_cross = between(p("C02", 1), p("C02", 2))
     board.track(outnet, [out_pin, out_dive])
     board.via(outnet, *out_dive)
-    for corner in (out_west, out_east):
-        board.track(outnet, [out_dive, (corner[0], out_dive[1]), corner],
-                    layer=pcbnew.B_Cu)
-        board.via(outnet, *corner)
-    board.track(outnet, [out_west, (out_west[0], sub)])
-    board.track(outnet, [out_east, p("R04", 1)])
-    board.track(outnet, [out_east, (out_east[0], sub), p("R05", 1)])
+    board.track(outnet, [out_dive, (out_cross, out_dive[1])], layer=pcbnew.B_Cu)
+    board.via(outnet, out_cross, out_dive[1])
+    board.track(outnet, [(out_cross, out_dive[1]), (out_cross, sub),
+                         p("R04", 1)])
+    board.track(outnet, [p("R04", 1), p("R05", 1)])
+
+    # -- all-pass inverting input: the one the layout is now built around ----
+    # C02 sits first on the row so its APN pad is 3.1mm from this pin, and the
+    # price is that APN and APOUT interleave along the row -- APN, APOUT, APN,
+    # APOUT. Neither has to fight for it, because neither travels along the
+    # row at all.
+    #
+    # APN runs east on its own pin's lane instead, between the package and the
+    # row, and drops onto each pad it needs. That lane clears a capacitor
+    # standing on the row by 1.0mm, so it can pass straight over C02 on its
+    # way to R06. Three drops off one lane, no row run, no interleave.
+    apn = f"APN{n}"
+    an_pin = q(ap_n)
+    an_lane = an_pin[1]
+    board.track(apn, [an_pin, (p("R06", 1)[0], an_lane)])
+    for target in (p("C02", 1), p("R06", 1)):
+        board.track(apn, [(target[0], an_lane), target])
+    # and straight down through the band to R04, which is turned round so its
+    # APN pad sits directly beneath C02's.
+    board.track(apn, [p("C02", 1), p("R04", 2)])
 
     # -- all-pass output: across the block on B.Cu, under the band -----------
-    # Taken first because it is what lets the other two right-hand nets stay
-    # on F.Cu: it crosses the row line at once, in the gap between the quad
-    # and R04, and surfaces again only at its own crossing further east.
+    # Cannot use the same trick: its pin lane is 0.79mm from the row line and
+    # would close to 0.15mm of a capacitor standing on it. So it dives at once,
+    # travels under the band, and surfaces in the band to feed its three pads
+    # from below. R06.2 and C04.1 are adjacent, so they join along the row and
+    # only two stubs are needed.
     apout = f"APOUT{n}"
     ao_pin = q(ap_out)
-    ao_turn = between(ao_pin, p("R04", 1))
-    ao_cross = between(p("R06", 2), p("C04", 1))
+    ao_turn = between(ao_pin, p("C02", 1))
+    ao_cross = p("C02", 2)[0]
     ao_dive = (ao_turn, lane(APOUT_LANE))
     ao_land = (ao_cross, lane(APOUT_LANE))
     board.track(apout, [ao_pin, (ao_turn, ao_pin[1]), ao_dive])
     hop(apout, ao_dive, ao_land)
-    board.track(apout, [ao_land, (ao_cross, row)])
+    for target in (p("C02", 2), p("R06", 2)):
+        board.track(apout, [ao_land, (target[0], ao_land[1]), target])
     board.track(apout, [p("R06", 2), p("C04", 1)])
-    board.track(apout, [ao_land, (ao_cross, sub), p("C02", 2)])
-
-    # -- all-pass inverting input -------------------------------------------
-    # Runs east at its own pin height and drops through R06's 1206 gap, which
-    # puts it on the row run between R04.2 and R06.1 and directly under C02.1.
-    apn = f"APN{n}"
-    an_pin = q(ap_n)
-    an_cross = between(p("R06", 1), p("R06", 2))
-    board.track(apn, [an_pin, (an_cross, an_pin[1]), (an_cross, row)])
-    board.track(apn, [(an_cross, row), p("R06", 1)])
-    board.track(apn, [p("R04", 2), p("R06", 1)])
-    board.track(apn, [(an_cross, row), (an_cross, sub), p("C02", 1)])
 
     # -- switched node ------------------------------------------------------
     # The deepest of the three right-hand pins, so it crosses the row line
-    # furthest east -- through C04's own pad gap, past both the others. From
-    # there it works back west along the sub-row, jumping under C02 on B.Cu
-    # because C02 and R06 are stacked and block the sub-row between them.
+    # furthest east -- through C04's own pad gap, past both the others. R05.2
+    # and C03.1 are adjacent on the sub-row now, so the jump under C02 that
+    # rev C needed is gone with it.
     swn = f"SWN{n}"
     sw_pin = q(ap_p)
     sw_cross = between(p("C04", 1), p("C04", 2))
-    sw_jump = between(p("R05", 2), p("C02", 1))
     board.track(swn, [sw_pin, (sw_cross, sw_pin[1]), (sw_cross, sub)])
     board.track(swn, [(sw_cross, sub), p("C03", 1)])
-    hop(swn, (sw_cross, sub), (sw_jump, sub))
-    board.track(swn, [(sw_jump, sub), p("R05", 2)])
+    board.track(swn, [p("C03", 1), p("R05", 2)])
 
 
 # The corridor between the blocks and the right-hand column. Twelve nets
@@ -1129,7 +1154,7 @@ def silkscreen(board, rectangle):
             f"silkscreen line is wider than the board: {body!r}")
         board.text(body, middle, y, size=size)
 
-    legend("RMC pizz/arco  6 channel  rev C", top + 1.8, 1.4)
+    legend("RMC pizz/arco  6 channel  rev D", top + 1.8, 1.4)
     # Below the tail connectors, not above them: above is the OUT fan-in, six
     # approach rows deep, and the header pads themselves.
     legend("J7  1-6=STRINGS  7=+4.5V  8=-4.5V  9=SHELL/GND", bottom - 2.9, 1.1)

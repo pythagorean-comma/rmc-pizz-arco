@@ -6,7 +6,7 @@
 "J1-J6","PZT","Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical","6","~"
 "J7","DIN-8","Connector_PinHeader_2.54mm:PinHeader_1x09_P2.54mm_Vertical","1","~"
 "J8","PIZZ/ARCO","Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical","1","~"
-"R101,R103,R201,R203,R301,R303,R401,R403,R501,R503,R601,R603","1k","Resistor_SMD:R_1206_3216Metric","12","~"
+"R101,R201,R301,R401,R501,R601","1k","Resistor_SMD:R_1206_3216Metric","6","~"
 "R102,R202,R302,R402,R502,R602","3M3","Resistor_SMD:R_1206_3216Metric","6","~"
 "R104-R106,R204-R206,R304-R306,R404-R406,R504-R506,R604-R606","47k 1%","Resistor_SMD:R_1206_3216Metric","18","~"
 "R701","1M","Resistor_SMD:R_1206_3216Metric","1","~"

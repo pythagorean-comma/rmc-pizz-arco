@@ -83,7 +83,7 @@ The BOM will need reformatting into the assembler's own template, and needs
 manufacturer part numbers filling in for the passives; only the actives
 (OPA4191, CD4066B) carry an MPN at the moment.
 
-**86 placements: 78 SMD and 8 through-hole connectors.** The connectors are
+**80 placements: 72 SMD and 8 through-hole connectors.** The connectors are
 2.54 mm pin headers (six 1x03, one 1x09, one 1x02) and are a hand-solder
 line item on top of the SMT run, which PCBWay and similar quote routinely.
 They were chosen over SMD headers on measured land area and on mechanical
@@ -105,7 +105,8 @@ nominal value alone gets all four of them wrong.
 | **C901, C902, C911, C912, C921, C922, C931, C932, C941, C942** (ten 4.7 µF) | **Multilayer ceramic, X7R or better. Not electrolytic.** | RMC, explicitly: "Use MLC caps, not electrolytics." The value alone does not say this and a 1206 land will accept either. |
 
 The 1 M, 20 k, 3M3 and 1 k parts have no special requirement; standard ±5% is
-fine. The 4.7 µF may be ±10% or ±20%, but must be ceramic per the table above.
+fine. **There are six 1 k now, not twelve** — the buffer feedback resistor was
+deleted on RMC's instruction and the feedback is a trace. The 4.7 µF may be ±10% or ±20%, but must be ceramic per the table above.
 
 ### Polarity: the one thing that destroys the board
 

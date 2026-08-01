@@ -70,12 +70,13 @@ Run `python3 kicad.py` to see what it found.
 
 ## Status
 
-Placed, routed and **DRC-clean** at 77.2 × 82.4 mm: 53 nets, 245 pin
-connections, 86 placements, 0 violations, 0 unconnected items. Nothing has been
+Placed, routed and **DRC-clean** at 77.2 × 82.4 mm: 47 nets, 233 pin
+connections, 80 placements, 0 violations, 0 unconnected items. Nothing has been
 fabricated.
 
-This is **rev C**, which is RMC's rev.3: it answers their layout review of
-2026-08-01, which moved the V− plane onto In2, replaced the four bypass
-capacitors with ten, and widened every design rule. Two questions are still
+This is **rev D**, which is RMC's rev.3: it answers their layout review of
+2026-08-01 and its addendum — the V− plane moved onto In2, the four bypass
+capacitors became ten, every design rule widened, the all-pass feedback pair
+moved up against the op-amp, and the buffer's 1 kΩ deleted. Two questions are still
 awaiting reply and one of them blocks ordering; both are listed in
 [`DESIGN.md`](DESIGN.md).

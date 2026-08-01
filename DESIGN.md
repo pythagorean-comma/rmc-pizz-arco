@@ -82,14 +82,16 @@ and routes the board from it, and `verify.py` reads KiCad's netlist back and
 compares it net by net. See [`README.md`](README.md) for the toolchain and its
 requirements.
 
-Placed, routed and DRC-clean at 77.2 × 82.4 mm: 53 nets, 245 pin connections,
-86 placements, 0 violations, 0 unconnected items. Nothing has been fabricated.
+Placed, routed and DRC-clean at 77.2 × 82.4 mm: 47 nets, 233 pin connections,
+80 placements, 0 violations, 0 unconnected items. Nothing has been fabricated.
 
-**This is rev C**, which is what RMC call rev.3 — they asked for gerbers of it
+**This is rev D**, which is what RMC call rev.3 — they asked for gerbers of it
 and the two numbering schemes should not be allowed to drift, so the silkscreen
 says rev C and the covering note says it is their rev.3. It answers RMC's review
-of 2026-08-01: the V− plane swap, the ten-capacitor bypassing, and the whole
-design-rule sweep all come from that reply. One question of ours is still
+of 2026-08-01 and the addendum that followed it: the V− plane swap, the
+ten-capacitor bypassing, the design-rule sweep, the all-pass feedback pair moved
+up against the op-amp, and the buffer's 1 kΩ deleted. All of it comes from those
+two messages. One question of ours is still
 unanswered after three rounds, and it is the one that destroys the board — see
 [Open with RMC](#open-with-rmc).
 
@@ -101,12 +103,19 @@ unanswered after three rounds, and it is the one that destroys the board — see
 
 - **PZT 1 (red)** goes straight to `OUT`, unbuffered. It never passes through an
   op-amp.
-- **PZT 2 (white)** is loaded by R02 3M3 to ground, filtered by R03 1k/C01 100p
+- **PZT 2 (white)** is loaded by R02 3M3 to ground, filtered by R01 1k/C01 100p
   (corner ≈1.6 MHz), buffered at unity gain, passed through a first-order
   all-pass, and summed into `OUT` through a single **1.8 nF**.
 
-R01, a 1 kΩ stopper, sits in front of the buffer input. It is doing two jobs;
-see [Headroom](#headroom).
+R01, that same 1 kΩ, is the stopper in front of the buffer input. It is doing two
+jobs; see [Headroom](#headroom).
+
+**The buffer's feedback is a wire.** It had a 1 kΩ in it (R03) until RMC's
+addendum of 2026-08-01: *"please remove the 1k resistor in the feedback loop of
+the unity gain non-inverting buffer and connect OUT to −IN with the shortest
+possible trace at least .010" wide."* Their own pinout makes that a 1.27 mm stub
+between adjacent pins — see [The feedback that became a
+wire](#the-feedback-that-became-a-wire).
 
 **The summing capacitor matches the element, deliberately.** RMC give the
 element's own capacitance as **1700 pF**, and the red element works into C04
@@ -328,7 +337,7 @@ Everything else (the 1 M, 20 k, 3M3, 1 k and 4.7 µF) is standard tolerance.
 
 ## The board as built
 
-- **77.2 × 82.4 mm, 4 layers.** 86 placements: 78 SMD (1206 passives, SOIC-14
+- **77.2 × 82.4 mm, 4 layers.** 80 placements: 72 SMD (1206 passives, SOIC-14
   and SO-14) and 8 through-hole 2.54 mm pin headers.
 - **Stackup:** F.Cu signals · In1.Cu solid AGND plane · In2.Cu **solid V− plane**
   · B.Cu signals. The high-impedance piezo traces run over unbroken ground, and
@@ -558,6 +567,65 @@ not flattering to the stackup. Rev C answers it by giving the plane to the rail
 that needed it; if RMC still want two layers after seeing that, the evidence
 would be theirs and worth more than ours.
 
+### The feedback that became a wire
+
+RMC's addendum, 2026-08-01: *"please remove the 1k resistor in the feedback loop
+of the unity gain non-inverting buffer and connect OUT to −IN with the shortest
+possible trace at least .010" wide."*
+
+R03 was RMC's own part, in RMC's own drawing, and they took it out. The reason is
+the one they give for the capacitor above: at a 10 MHz gain-bandwidth, stray
+capacitance at the inverting node works against whatever impedance is in the
+feedback path, and 1 kΩ with a few picofarads of trace is a pole inside the loop.
+A wire has no such problem.
+
+**Their pinout made it nearly free.** `QUAD_UNITS` puts each buffer's output and
+its inverting input on *adjacent pins in the same column* — 1 and 2 on the odd
+channel, 7 and 6 on the even. So the whole feedback is a single **1.27 mm segment
+at 0.30 mm (0.0118")**, no vias, never leaving the package footprint. Measured
+from the built board, not asserted.
+
+It paid for itself twice over in the layout. Rev C's R03 sat west of the package,
+which meant *both* buffer nets had to dive inboard between the pad columns, run
+west under the package on B.Cu and surface on the row line at R03's own two pads —
+and R03's position was itself dictated by which gaps in the row line were still
+free. All of that is gone, along with six resistors and six nets.
+
+### The all-pass feedback pair, moved up against the op-amp
+
+RMC's addendum again: *"the OPA191 op amp has a 5V/µS slew rate, so with a fast
+IC, the feedback capacitor (100pF in the inverter feedback loop) needs to be
+located closest to −IN. Since the cap is in parallel with a 47K resistor, you can
+place both of them adjacent to the IC with the capacitor most proximate to the
+−IN pin."*
+
+Rev C had the pair at dx 38.5 with C02 on the sub-row — which put them in the
+wrong order as well as too far away:
+
+| | rev C | rev D |
+| --- | --- | --- |
+| C02 (100 pF) to −IN | 11.8 mm | **3.1 mm** |
+| R06 (47 k) to −IN | 9.3 mm | 7.6 mm |
+
+C02 is now the first part on the row, its west pad edge **0.80 mm (31.5 mil)**
+from the package's own pads. It cannot go closer: the strip between the row line
+and pin 14 is **0.79 mm**, and a 1206 at pin-13 height closes to 0.37 mm of the
+pin-12 lane, 0.03 mm short of clearance. Getting nearer than 3 mm means a smaller
+package for that one part, which is RMC's call and not ours.
+
+**What made it fit was moving APN off the row.** With C02 first, APN and APOUT
+interleave along the row — APN, APOUT, APN, APOUT — and rev C's arrangement
+existed precisely to avoid that. Neither net travels along the row now. APN runs
+east on its own pin's lane, between the package and the row, and drops onto each
+pad it needs; that lane clears a capacitor standing on the row by 1.0 mm, so it
+passes straight over C02 on its way to R06. APOUT cannot do the same — its pin
+lane is 0.79 mm from the row line and would close to 0.15 mm — so it dives to
+B.Cu at once and feeds its pads from the band, which is what it already did.
+
+The part pitch also went from 5.5 mm to **5.0 mm**, which is what paid for the
+extra slot on the row. A 1206's pads span ±2.05 mm, so 4.87 mm is the floor for
+RMC's 0.030" spacing and 5.0 is the round number above it.
+
 ### The plane swap
 
 **In2 carries V−, not V+.** This is rev C's largest change and it came from one
@@ -751,7 +819,7 @@ Needs KiCad 10.x; see [`README.md`](README.md).
 **Where it stands:** ERC clean. The 10 remaining warnings are all one benign
 case, a CD4066 bidirectional pin meeting a power flag, which is what those pins
 are. The generated schematic is read back through KiCad and compared against
-`design.py` net by net: **53 nets, 245 pin connections, exact match.** The board
+`design.py` net by net: **47 nets, 233 pin connections, exact match.** The board
 is fully routed with **0 DRC violations and 0 unconnected items**; routing is
 entirely in `gen_pcb.py` and no autorouter is involved.
 
@@ -840,6 +908,19 @@ UUID in the committed board, once.
 - **Measure the geometry against the generated board, not the committed one.**
   Two scans in the rev C work were run against a stale copy and gave answers
   that looked right and were not.
+- **Interleaving only matters to a net that travels along the row.** Rev C's
+  block order existed to keep APN and APOUT from crossing, which is what put the
+  all-pass capacitor 11.8 mm from the pin it belonged to. Give each of them a
+  route that is not the row — a pin-height lane on one side, B.Cu on the other —
+  and the interleave stops being a constraint at all.
+- **A pin's own lane is usable board.** The strip between a SOIC's pin row and
+  the first component row is too narrow for a part, but a track at the height of
+  the pin it comes from clears a 1206 standing on that row by 1.0 mm, and can
+  serve several pads by dropping onto each. That one observation is what let the
+  feedback pair move up against the package.
+- **Deleting a part can be the cheapest layout change available.** Taking out
+  the buffer's 1 kΩ removed six resistors, six nets, twelve vias and two B.Cu
+  runs per channel, and made the feedback a 1.27 mm stub between adjacent pins.
 
 ---
 

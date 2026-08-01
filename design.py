@@ -280,8 +280,7 @@ def channel(design, index, quad_ref, half):
     out = f"OUT{n}"          # summing node: red element straight to the DIN
     white = f"IN_W{n}"       # white element, before the input network
     buf_in = f"BUFIN{n}"
-    buf_fb = f"BUFFB{n}"
-    buf_out = f"BUFOUT{n}"
+    buf_out = f"BUFOUT{n}"   # and the buffer's -IN: the feedback is this net
     ap_n = f"APN{n}"         # all-pass inverting input
     ap_p = f"SWN{n}"         # all-pass non-inverting input -- the switched node
     ap_out = f"APOUT{n}"
@@ -294,8 +293,14 @@ def channel(design, index, quad_ref, half):
 
     _, (buf_out_pin, buf_fb_pin, buf_in_pin) = QUAD_UNITS[half]["buf"]
     _, (ap_out_pin, ap_n_pin, ap_p_pin) = QUAD_UNITS[half]["ap"]
-    design.connect(buf_out, (quad_ref, buf_out_pin))
-    design.connect(buf_fb, (quad_ref, buf_fb_pin))
+    # The buffer's feedback is the net, not a component. RMC, 2026-08-01:
+    # "please remove the 1k resistor in the feedback loop of the unity gain
+    # non-inverting buffer and connect OUT to -IN with the shortest possible
+    # trace at least .010" wide." Their own pinout makes that nearly free --
+    # output and -IN are adjacent pins in the same column, 1.27mm apart -- so
+    # the feedback never leaves the package footprint and adds almost no
+    # capacitance at the inverting node, which is the point of the change.
+    design.connect(buf_out, (quad_ref, buf_out_pin), (quad_ref, buf_fb_pin))
     design.connect(buf_in, (quad_ref, buf_in_pin))
     design.connect(ap_out, (quad_ref, ap_out_pin))
     design.connect(ap_n, (quad_ref, ap_n_pin))
@@ -304,7 +309,6 @@ def channel(design, index, quad_ref, half):
     _resistor(design, f"R{n}01", "1k", white, buf_in, "RF stopper")
     _resistor(design, f"R{n}02", "3M3", white, "AGND", "Piezo bias/load")
     _capacitor(design, f"C{n}01", "100p", buf_in, "AGND", "RF filter")
-    _resistor(design, f"R{n}03", "1k", buf_fb, buf_out, "Buffer feedback")
     _resistor(design, f"R{n}04", "47k 1%", buf_out, ap_n, "All-pass input")
     _resistor(design, f"R{n}05", "47k 1%", buf_out, ap_p, "All-pass lag")
     _resistor(design, f"R{n}06", "47k 1%", ap_n, ap_out, "All-pass feedback")
