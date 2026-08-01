@@ -294,6 +294,11 @@ def switch_bank(design):
     channel gets its own cell and one control line drives the lot.
 
     Two packages, three cells each, so each sits beside the trio it serves.
+
+    Vdd and Vss come straight off the rails, so the supply is the part's supply.
+    RMC put a ceiling on it: not above +/-9 V, 18 V total. At +/-4.5 V we sit at
+    half that, but it binds on any future change -- +/-9 V is the top, not a
+    waypoint on the way to more headroom.
     """
     for position, ref in enumerate(("U4", "U5")):
         design.add(Part(ref, "CD4066B", "Analog_Switch:CD4066BM", SWITCH_FP, units=5,

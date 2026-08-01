@@ -20,10 +20,14 @@ and the battery-life question in one go — see "What the third reply changed".
 
 ---
 
-## Round three — to send
+## Round three — sent 2026-07-30, answered in part
 
 **No attachments.** Still no new drawing; the schematic on file is the
 superseded ±9 V charge-pump design.
+
+**Question 2 was answered** on 2026-08-01 — the headroom answer, in `STATE.md`.
+**Question 3 drew no objection**, so pin 7 = +4.5 V stands as the convention.
+**Question 1 was never answered**, and carries forward into `RMC-QUESTIONS-3.md`.
 
 **Subject: Pizz/arco board — two things, and one number we still need**
 

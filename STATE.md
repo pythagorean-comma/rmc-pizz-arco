@@ -474,6 +474,7 @@ for it.
 | | **A — RMC's proposal** | **B — `supply-charge-pump`** |
 | --- | --- | --- |
 | Supply | ±4.5 V from PD2 over DIN 7/8 | Fishman pack + charge pump, ±9 V |
+| CD4066 headroom to RMC's ceiling | 9 V of 18 V — **half** | 18 V of 18 V — **none** |
 | Swing | ~±4.35 V | ~±8.85 V (**+6.2 dB**, beyond RMC's own 12 V) |
 | PD2 modification | **RMC do it at assembly** | none — pins 7/8 untouched |
 | Drain on PD2 battery | ~2 mA of under 6 mA | none |
@@ -995,6 +996,35 @@ asked.
 > It is possible to have a USB socket installed in the Poly-Drive II enclosure
 > to avoid having to remove the lid to access the battery. This way the preamp
 > can be phantom-powered if desired, keeping the battery fully charged.
+
+---
+
+## RMC's addendum, 2026-08-01 — verbatim
+
+Sent unprompted, after the headroom answer.
+
+> I just need to add a caveat here :
+>
+> Power to the CD4066 quad switch should not exceed ±9VDC (18 volts total).
+
+**No effect on this board.** The CD4066s take Vdd and Vss straight from the
+rails, and the rails are ±4.5 V — **9 V total against an 18 V ceiling, half the
+limit**. Nothing else on the part approaches it: the control line swings between
+those same two rails through R702/R701, and the largest signal is about ±4.35 V,
+inside them. The range was already on file — see "The rails are ±4.5 V" above,
+which records 3–18 V as never in doubt — so this confirms the file rather than
+changing it.
+
+**It is a ceiling on the fallback, though, and that is new.**
+`supply-charge-pump` runs ±9 V, which is **exactly 18 V total: at RMC's stated
+limit with no margin at all**. See the Path A/B comparison below. Anything above
+±9 V is now closed off, so if headroom ever reopens the supply question, ±9 V is
+the top and not a waypoint.
+
+Worth noting *why* it arrived unprompted: the schematic RMC hold on file is the
+superseded ±9 V charge-pump design, which is the one this caveat would bite.
+They may be reading the old drawing. The round-four message says the board is
+±4.5 V for that reason.
 
 ---
 

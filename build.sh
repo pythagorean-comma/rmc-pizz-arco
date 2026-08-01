@@ -62,10 +62,60 @@ echo "== documentation outputs =="
     -o fab/rmc-pizz-arco-bom.csv "$PROJECT.kicad_sch" >/dev/null
 "$KICAD_CLI" pcb export pos --format csv --units mm \
     -o fab/rmc-pizz-arco-pos.csv "$PROJECT.kicad_pcb" >/dev/null
-# A layered plot with reference designators -- the layout asset a reviewer can
-# actually comment on. The 3D render is decorative; this one shows the copper.
-"$KICAD_CLI" pcb export pdf --layers F.Cu,In1.Cu,In2.Cu,B.Cu,F.SilkS,Edge.Cuts \
+# The layout asset a reviewer can actually comment on. One page per copper
+# layer, each carrying the board outline and the reference designators, so every
+# page is a drawing you can read on its own. Splitting the designators onto a
+# page of their own was tried and is worse: it leaves every other page unable to
+# tell you what you are looking at.
+#
+# Three settings here are all load-bearing, and each fixes something that made
+# earlier versions unreadable.
+#
+# --bg-color: without it KiCad paints no page background at all, so the PDF is
+# transparent and renders on whatever the viewer puts behind it -- white in one
+# reader, black in another, which turned dark plots invisible.
+#
+# --theme: left alone the colours come from whatever theme the local PCB editor
+# is set to, so the same board plots differently on another machine. "KiCad
+# Classic" is built in, so it is identical everywhere, and it is the one that
+# plots silkscreen dark enough to read on white -- 4.5:1, against 1.2:1 for the
+# default theme, which is why the designators used to vanish.
+#
+# Not --black-and-white. It looks like the safe choice and is the worst one:
+# designators become the same ink as the pads under them, and the two plane
+# layers turn into solid black sheets carrying nothing.
+#
+# Each copper layer comes out a different colour, and that means nothing here.
+# A theme colours the layers apart because the PCB editor draws them stacked;
+# with one layer per page the page already says which layer it is. The cost is
+# that the same silkscreen colour meets a different background on every page,
+# which is why the V+ plane reads worst. Levelling it needs a theme file of our
+# own -- --theme takes a name resolved against built-ins and the user's KiCad
+# colors directory, never a path -- so it means either shipping a theme and
+# redirecting KICAD_CONFIG_HOME, or writing into the user's KiCad config.
+# Considered and declined: not worth either for a document that is already
+# legible.
+#
+# No border or title block: autoscale sizes the board to the whole sheet, so the
+# title block lands across the bottom-right corner -- over the silkscreen line
+# warning there is no reverse protection, the last text here worth obscuring.
+#
+# The designators are 1 mm on an 81 mm board, so they are small at fit-to-page.
+# It is vector and stays sharp; this is a document to zoom into.
+"$KICAD_CLI" pcb export pdf --mode-multipage \
+    --theme "KiCad Classic" --bg-color "#FFFFFF" \
+    --layers F.Cu,In1.Cu,In2.Cu,B.Cu \
+    --common-layers Edge.Cuts,F.SilkS --scale 0 \
     -o fab/rmc-pizz-arco-layout.pdf "$PROJECT.kicad_pcb" >/dev/null
+# Decorative, and the one artefact that reads at a glance to someone who has not
+# opened a CAD tool. Deliberately not --quality high: the raytracer samples
+# stochastically, so it returns a different file byte for byte on every run even
+# from an identical board, and this is a 1.4 MB binary in a tracked directory.
+# `basic` is reproducible to the byte, a fifth the size, and loses only the soft
+# shadows -- which nothing here is asking the render to show.
+"$KICAD_CLI" pcb render --side top --quality basic --background opaque \
+    --width 2400 --height 2400 \
+    -o fab/rmc-pizz-arco-top.png "$PROJECT.kicad_pcb" >/dev/null
 
 # The set a fab actually gets: copper, mask, silk, outline, drill -- and
 # nothing else. A blanket export also writes Fab, Courtyard and User layers,
