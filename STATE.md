@@ -798,6 +798,27 @@ reading the code.
 
 - `./build.sh` regenerates schematic *and* board from `design.py`. Anything
   changed in the KiCad GUI is destroyed on the next run.
+- **The build is reproducible in content but not byte-for-byte, and the
+  difference matters.** Symbol UUIDs are deterministic — `kisch._uuid` derives
+  them from a name hash, which is what the praise elsewhere in this document
+  refers to. **Footprint UUIDs are not.** `FootprintLoad` assigns a fresh
+  random UUID to every item and KiCad writes footprints in UUID order, so every
+  build reshuffles the whole `.kicad_pcb` and, through the aperture numbering,
+  every gerber — with no source change at all. Measured: two consecutive builds
+  share **zero of 1822 UUIDs** while the content is identical, same 80
+  footprints at the same positions, same 401 segments, same 148 vias.
+
+  The consequence to internalise: **`git status` is not evidence about
+  `fab/`.** It reports dirty after every build whether or not anything changed,
+  so it cannot tell you whether the fabrication outputs are current. What can:
+  compare the outputs' mtimes against the sources, or read the board size
+  straight out of `fab/pcbway/rmc-pizz-arco-Edge_Cuts.gm1`, which should
+  measure 78.8 × 81.3 mm. Do not commit a build that changed nothing — discard
+  it with `git checkout --` and keep the diff honest.
+
+  Fixable if it becomes irritating: derive footprint UUIDs from the reference
+  the way `kisch._uuid` already derives symbol ones. The cost is one rewrite of
+  every UUID in the committed board, once.
 - `gen_pcb.py` must run under KiCad's own bundled interpreter (`pcbnew` lives
   there); everything else is pure standard library and runs under any
   `python3`. `build.sh` handles this, but standalone runs need it by hand:
