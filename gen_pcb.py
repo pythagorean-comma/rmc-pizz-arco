@@ -967,20 +967,6 @@ def board_extent(board):
             round(max(xs) + BOARD_MARGIN, 1), round(max(ys) + BOARD_MARGIN, 1))
 
 
-def export_dsn(board, path):
-    """Write the Specctra design alongside the board.
-
-    The board is fully routed here, so nothing needs an autorouter -- this is
-    kept because it is the one export that carries placement, netlist and
-    existing copper together, which makes it the file to hand to any external
-    tool that wants to re-route a region by hand.
-    """
-    path.parent.mkdir(parents=True, exist_ok=True)
-    if not pcbnew.ExportSpecctraDSN(board.board, str(path)):
-        raise SystemExit(f"Specctra DSN export failed: {path}")
-    return path
-
-
 def main():
     board = Board()
     place_blocks(board)
@@ -1004,14 +990,12 @@ def main():
     destination = here / circuit.PROJECT / f"{circuit.PROJECT}.kicad_pcb"
     pcbnew.ZONE_FILLER(board.board).Fill(board.board.Zones())
     pcbnew.SaveBoard(str(destination), board.board)
-    export_dsn(board, here / "build" / f"{circuit.PROJECT}.dsn")
 
     print(f"wrote {destination}")
     print(f"  {len(board.footprints)} footprints, {stubs} plane stubs, "
           f"{len(list(board.board.GetTracks()))} track/via items")
     print(f"  board {rectangle[2]:.1f} x {rectangle[3]:.1f} mm "
           f"= {rectangle[2] * rectangle[3]:.0f} mm2")
-    print("  DSN written alongside it for external tools")
 
 
 if __name__ == "__main__":

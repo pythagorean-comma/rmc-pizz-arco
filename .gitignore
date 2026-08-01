@@ -13,8 +13,8 @@ __pycache__/
 # selected layer and similar per-user state. It is not part of the design.
 rmc-pizz-arco/*.kicad_prl
 
-# freerouting, if it is ever fetched -- see route.py. Tens of megabytes, and
-# a download rather than a source file.
-tools/*.jar
+# JetBrains project settings. Per-user editor state, not part of the design.
+.idea/
 
 .DS_Store
+*.iml
