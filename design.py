@@ -195,6 +195,7 @@ class Design:
         for net, entries in self.nets.items():
             assert len(entries) >= 2, f"net {net} has only {entries}"
         self.check_ground_rule()
+        self.check_bypass_symmetry()
 
     def check_ground_rule(self):
         """Enforce _GROUND_RULE: nothing resistive between a rail and AGND.
@@ -213,6 +214,37 @@ class Design:
             if "AGND" in nets and nets & {"V+", "V-"}:
                 raise AssertionError(
                     f"{ref} puts DC between {sorted(nets)} -- see _GROUND_RULE")
+
+    def check_bypass_symmetry(self):
+        """The two rails must be bypassed to AGND by equal capacitance.
+
+        The other half of _GROUND_RULE, and the half nothing checked. A
+        capacitor between a rail and AGND is legitimate -- check_ground_rule
+        only inspects resistors -- but an *odd* one is not: the rails' return
+        currents meet in the DIN shell, which is the same single conductor
+        carrying six string returns, so bypassing one rail harder than the
+        other puts the difference into the audio ground.
+
+        Compares values as written rather than parsed. Two capacitors that are
+        both meant to be the bypass part should say the identical thing, and a
+        mismatch in the string is itself the fault worth reporting.
+        """
+        owner = self.pin_owner()
+        counts = {"V+": [], "V-": []}
+        for ref, part in sorted(self.parts.items()):
+            if part.lib_id != "Device:C":
+                continue
+            nets = {owner.get((ref, str(pin))) for pin in (1, 2)}
+            if "AGND" not in nets:
+                continue
+            for rail in counts:
+                if rail in nets:
+                    counts[rail].append((ref, part.value))
+        plus, minus = counts["V+"], counts["V-"]
+        if sorted(v for _, v in plus) != sorted(v for _, v in minus):
+            raise AssertionError(
+                f"bypassing is not symmetrical: V+ has {plus}, V- has {minus} "
+                f"-- see _GROUND_RULE")
 
 
 def _resistor(design, ref, value, net_a, net_b, description=""):
@@ -356,17 +388,63 @@ def output(design):
     design.connect("AGND", ("J7", 9))
 
 
-def bypass(design):
-    """RMC: "a pair of 4.7uF/25V caps at each end of the power rails".
+# MLC, not electrolytic -- RMC said so explicitly, and the BOM used to say only
+# "4u7/25V", which an assembler substituting on footprint and value alone could
+# read either way. X7R rather than C0G because no capacitor here is in a signal
+# path; the C0G requirement covers 10nF and below.
+BYPASS_VALUE = "4u7/25V X7R"
 
-    Four capacitors, replacing the eighteen local ones the old board carried.
-    Taken on RMC's authority as the circuit's designer; the In1/In2 plane pair
-    supplies the local V+ to AGND decoupling the deleted caps used to.
+# What each bypass pair belongs to -> (V+ cap, V- cap, where it goes).
+#
+# Every entry is a pair: one V+ to AGND and one V- to AGND, never a single
+# capacitor. _GROUND_RULE forbids asymmetric bypassing, because the two rails'
+# drains meet in the DIN shell alongside six string returns and any imbalance
+# between them flows in that one wire.
+#
+# Keyed by the part being bypassed, because gen_pcb.py places each pair from
+# the position of that part. The reference designators are spelled out once,
+# here, and the board reads them back rather than reconstructing them.
+BYPASS = {
+    "J7": ("C901", "C902", "J7, where the rails arrive"),
+    "U1": ("C911", "C912", "U1"),
+    "U2": ("C921", "C922", "U2"),
+    "U3": ("C931", "C932", "U3"),
+    "U4U5": ("C941", "C942", "between U4 and U5"),
+}
+
+
+def bypass(design):
+    """A pair at every package, after RMC's review of 2026-08-01.
+
+    The previous revision had four capacitors in a column on the right-hand
+    edge, on RMC's own "a pair of 4.7uF/25V caps at each end of the power
+    rails". Read literally that is what it says; laid out, it put no op-amp
+    closer than 45mm to a V- capacitor and U2 51mm from one. RMC's answer:
+    "moving the power bypass caps as close as possible to the op amps ...
+    Maybe add a pair of bypass caps between the two CD4066 IC's."
+
+    Why it matters, since the arithmetic is not obvious. At 2mA the DC case is
+    trivial -- 50mm of 0.25mm track is about 0.1 ohm. But the same track is
+    ~25nH, and 25nH against 4.7uF resonates at about 460kHz with a Q of 5-10
+    against an MLCC's ESR. That put a several-ohm impedance peak on the V-
+    rail, half a megahertz inside the OPA4191's 10MHz gain-bandwidth, on the
+    rail the op-amp's own circuitry references -- which is RMC's other point:
+    "most op amps used for audio applications are V- referenced". Never
+    audible, and not the kind of fault that shows up on the first board.
+
+    At the pin the loop is ~2nH instead, and there is nothing left to excite.
+
+    Ten capacitors, against the four RMC's wording implies. The difference is
+    that "distribute them evenly between the 3 IC's" does not divide four, and
+    a pair per package is the nearest thing that keeps every location
+    symmetric. The pair at J7 is the one that is not local decoupling: it
+    terminates the supply cable's inductance where the cable lands.
     """
-    for position, (plus, minus) in enumerate((("C901", "C902"), ("C903", "C904"))):
-        end = "DIN end" if position == 0 else "far end"
-        _capacitor(design, plus, "4u7/25V", "V+", "AGND", f"Rail bypass, {end}")
-        _capacitor(design, minus, "4u7/25V", "V-", "AGND", f"Rail bypass, {end}")
+    for plus, minus, where in BYPASS.values():
+        _capacitor(design, plus, BYPASS_VALUE, "V+", "AGND",
+                   f"Rail bypass, {where}")
+        _capacitor(design, minus, BYPASS_VALUE, "V-", "AGND",
+                   f"Rail bypass, {where}")
 
 
 def flags(design):

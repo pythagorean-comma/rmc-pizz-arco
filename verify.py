@@ -6,11 +6,13 @@ KiCad's own netlist and checks that the connectivity it found is exactly the
 connectivity design.py asked for, net by net.
 """
 
+import json
 import pathlib
 import subprocess
 import sys
 
 import design as circuit
+import gen_project
 import kicad
 import sexp
 
@@ -153,6 +155,65 @@ def check_supply_annotations(schematic, board):
     return problems
 
 
+def check_project_rules(project):
+    """The .kicad_pro on disk must still carry the rules gen_project.py wrote.
+
+    DRC enforces whatever is in this file, and this file is the one artefact in
+    the project that something other than the build writes: opening the project
+    in the KiCad GUI rewrites it in KiCad's own expanded form, dropping
+    `netclass_patterns` and resetting the constraint floors to KiCad's
+    defaults. That happened, and the rewritten file reached a commit -- so the
+    committed board's rails had no Power net class and the committed
+    constraints were looser than the layout was drawn to.
+
+    A build regenerates the file first, so the DRC in a build was always
+    correct. This catches the other case: a project file that has been edited
+    out from under the geometry, before anyone trusts a DRC run made against
+    it.
+
+    Only the load-bearing fields are compared. The GUI also adds viewports,
+    layer presets and 3D settings, and none of those change what DRC does.
+    """
+    intent = gen_project.project_document("")["board"]["design_settings"]
+    intent_nets = gen_project.project_document("")["net_settings"]
+    try:
+        actual = json.loads(project.read_text())
+    except (OSError, ValueError) as error:
+        return [f"cannot read {project.name}: {error}"]
+
+    problems = []
+    settings = actual.get("board", {}).get("design_settings", {})
+    for name, wanted in sorted(intent["rules"].items()):
+        found = settings.get("rules", {}).get(name)
+        if found != wanted:
+            problems.append(f"{project.name}: rule {name} is {found}, "
+                            f"gen_project.py says {wanted}")
+
+    nets = actual.get("net_settings", {})
+    classes = {c["name"]: c for c in nets.get("classes", [])}
+    for wanted in intent_nets["classes"]:
+        found = classes.get(wanted["name"])
+        if found is None:
+            problems.append(f"{project.name}: net class {wanted['name']!r} is "
+                            f"missing -- DRC would fall back to Default")
+            continue
+        for key in ("track_width", "clearance", "via_diameter", "via_drill"):
+            if found.get(key) != wanted[key]:
+                problems.append(
+                    f"{project.name}: {wanted['name']}.{key} is "
+                    f"{found.get(key)}, gen_project.py says {wanted[key]}")
+
+    wanted_patterns = {(p["netclass"], p["pattern"])
+                       for p in intent_nets["netclass_patterns"]}
+    found_patterns = {(p.get("netclass"), p.get("pattern"))
+                      for p in nets.get("netclass_patterns") or []}
+    for netclass, pattern in sorted(wanted_patterns - found_patterns):
+        problems.append(f"{project.name}: {pattern!r} is not assigned to "
+                        f"{netclass!r} -- that rail is being checked as Default")
+
+    return problems
+
+
 def check_board_linkage(schematic, board):
     """Every footprint must point at its schematic symbol and name its library.
 
@@ -221,12 +282,18 @@ def main():
         return 0
     problems, count = check_board_linkage(schematic, board)
     problems += check_supply_annotations(schematic, board)
+    problems += check_project_rules(
+        here / circuit.PROJECT / f"{circuit.PROJECT}.kicad_pro")
     if problems:
         print(f"{len(problems)} board linkage problem(s):")
         for problem in problems[:20]:
             print(f"  - {problem}")
         return 1
     print(f"board linked to schematic: {count} footprints")
+    print(f"design rules intact: {gen_project.TRACK_WIDTH}mm signal, "
+          f"{gen_project.POWER_TRACK_WIDTH}mm power, "
+          f"{gen_project.VIA_DIAMETER}/{gen_project.VIA_DRILL}mm vias, "
+          f"{gen_project.CLEARANCE}mm clearance")
     return 0
 
 

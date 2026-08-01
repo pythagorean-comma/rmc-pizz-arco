@@ -82,10 +82,16 @@ and routes the board from it, and `verify.py` reads KiCad's netlist back and
 compares it net by net. See [`README.md`](README.md) for the toolchain and its
 requirements.
 
-Placed, routed and DRC-clean at 78.8 × 81.3 mm: 53 nets, 233 pin connections,
-80 placements, 0 violations, 0 unconnected items. Nothing has been fabricated.
-The design is with RMC for review; three questions are awaiting reply, listed
-under [Open with RMC](#open-with-rmc).
+Placed, routed and DRC-clean at 77.2 × 82.4 mm: 53 nets, 245 pin connections,
+86 placements, 0 violations, 0 unconnected items. Nothing has been fabricated.
+
+**This is rev C**, which is what RMC call rev.3 — they asked for gerbers of it
+and the two numbering schemes should not be allowed to drift, so the silkscreen
+says rev C and the covering note says it is their rev.3. It answers RMC's review
+of 2026-08-01: the V− plane swap, the ten-capacitor bypassing, and the whole
+design-rule sweep all come from that reply. One question of ours is still
+unanswered after three rounds, and it is the one that destroys the board — see
+[Open with RMC](#open-with-rmc).
 
 ---
 
@@ -144,12 +150,10 @@ things were added:
   The control network is RMC's: **R701 1 MΩ to Vss, R702 20 kΩ in series to Vdd
   through the toggle, C701 10 nF to ground.**
 
-- **Decoupling.** Four 4.7 µF/25 V capacitors: a V+→AGND and a V−→AGND pair at
-  each end of the rails (C901–C904), exactly as RMC specified. This replaced
-  eighteen local capacitors an earlier revision carried; the In1/In2 plane pair
-  already supplies the local V+-to-AGND decoupling those were doing. This is the
-  one item taken on RMC's authority rather than our own analysis, and it is
-  question 1 under [Open with RMC](#open-with-rmc).
+- **Decoupling.** Ten 4.7 µF/25 V **multilayer ceramic** capacitors, in five
+  symmetric pairs: one V+→AGND and one V−→AGND at each of U1, U2 and U3, one pair
+  between the two CD4066s, and one at the supply entry. See
+  [Bypassing](#bypassing).
 
 ### What is not on the board
 
@@ -236,7 +240,7 @@ only:
 | R02 3M3 ×6, piezo bias | op-amp bias current, ~20 pA |
 | C01, C02, C03 100p ×18; C701 10 n debounce | none (capacitive) |
 | CD4066 cell, grounded side ×6 | audio only, and only when ON |
-| C901–C904, 4 × 4.7 µF rail bypass | leakage only |
+| C901–C942, 10 × 4.7 µF rail bypass, five symmetric pairs | leakage only |
 
 Everything else runs rail-to-rail with no ground reference. The OPA4191s draw
 V+ to V− through the die, and **the CD4066 has no ground pin at all**: pin 7 is
@@ -324,16 +328,22 @@ Everything else (the 1 M, 20 k, 3M3, 1 k and 4.7 µF) is standard tolerance.
 
 ## The board as built
 
-- **78.8 × 81.3 mm, 4 layers.** 80 placements: 72 SMD (1206 passives, SOIC-14
+- **77.2 × 82.4 mm, 4 layers.** 86 placements: 78 SMD (1206 passives, SOIC-14
   and SO-14) and 8 through-hole 2.54 mm pin headers.
-- **Stackup:** F.Cu signals · In1.Cu solid AGND plane · In2.Cu solid V+ plane ·
-  B.Cu signals. Four layers rather than two is what keeps this tractable: every
-  supply and ground pad reaches its rail through a single via, and the
-  high-impedance piezo traces run over unbroken ground.
-- **V− is not a plane.** At about 2 mA it never needed one, and a B.Cu pour was
-  this project's worst failure mode: fragmenting it produced unconnected items
-  in parts of the board nowhere near the cause. It is routed like any other net,
-  and B.Cu is a second signal layer.
+- **Stackup:** F.Cu signals · In1.Cu solid AGND plane · In2.Cu **solid V− plane**
+  · B.Cu signals. The high-impedance piezo traces run over unbroken ground, and
+  every ground and V− pad reaches its rail through one via.
+- **In2 carried V+ until rev C.** RMC: *"most op amps used for audio applications
+  are V− referenced because many designs operate from a single supply."* The rail
+  the op-amp's own circuitry references had a 0.25 mm track and 45 mm to the
+  nearest capacitor; the other one had a plane. See
+  [The plane swap](#the-plane-swap).
+- **V+ is routed**, as a U on B.Cu: down the west margin past the three quads,
+  east along the bottom below the tail connectors, back up the east margin to the
+  switches. All three legs were measured clear end to end before being written.
+- **Neither rail is poured on B.Cu.** A B.Cu pour was this project's worst
+  failure mode: fragmenting it produced unconnected items in parts of the board
+  nowhere near the cause. B.Cu is a second signal layer and stays one.
 - **Three blocks** down the left, each one OPA4191 quad serving two channels,
   with the two channels mirrored above and below it. Each has its own 3-pin
   pickup header. Then a corridor for the six outputs and six switched nodes, the
@@ -501,15 +511,156 @@ Ours rather than RMC's, each stated so that disagreeing with one is cheap:
   1700 pF; one capacitor does it with one part and no interleaving problem.
   Specified ±2% where RMC accepted ±5%, because ±5% permits a 10% spread between
   two channels.
-- **Four bypass capacitors, not eighteen.** Taken on RMC's authority as the
-  circuit's designer; see [Open with RMC](#open-with-rmc), where the V− half of
-  it is still a question.
+- **Ten bypass capacitors, not four and not eighteen.** See
+  [Bypassing](#bypassing).
 - **No reverse-protection diode**, traded against 0.6 dB of headroom the design
   has not got. Recorded as a deliberate trade, mitigated procedurally.
 - **1206 passives and turnkey assembly.** An earlier revision was deliberately
   specified in 0805 and SOIC-8 so it could be built by hand. Dropping that
   constraint is what allowed the 1206 passives the routing now depends on. Do
   not read the part sizes as evidence that hand assembly was intended.
+
+### Four layers, and why
+
+RMC asked directly: *"I'm not sure why you want 4 layers in this application. A
+.030" or .060" thick double-layer board should work since the circuit will be
+externally shielded and we're not exceeding 20 KHz … Are you having problems
+routing Power & Ground on the top & bottom layers?"*
+
+**No.** Power and ground would route on two layers. The board is about 14% land
+utilisation, deliberately loose, and RMC are right that at 20 kHz with ±4.5 V
+rails and 0.010" clearance there is no meaningful same-layer crosstalk. The
+inner layers are not there for routing relief. The reasons, in descending order
+of honesty:
+
+1. **Every ground and V− pad reaches its rail through one via rather than a
+   track.** This is what makes RMC's own *"beef up your Vcc, Vdd & Vss traces"*
+   nearly free on two of the three: they are planes already.
+2. **An unbroken reference under the buffer inputs.** SOIC-14 was chosen over
+   TSSOP-14 specifically so an AGND guard ring fits around each buffer's
+   + input, and a guard ring wants something to reference. RMC are right that
+   the piezo source is not high-impedance at high frequency — the element is
+   1700 pF, so 4.7 kΩ at 20 kHz — but at 100 Hz the element and the 3M3 bias in
+   parallel are about 730 kΩ, and hum and handling noise live down there.
+3. **The routing is solved on four layers and re-solving it on two is weeks of
+   work.** That is a schedule argument, not an engineering one, and is labelled
+   as such rather than dressed up as the first two.
+
+The cost is roughly $20–30 more on a five-off prototype order, plus a standing
+hazard: order forms default to 2 layers, and a 2-layer build of these gerbers
+silently drops both planes.
+
+**And the concession that belongs next to it**: four layers is what *caused* the
+V− problem RMC found. Both inner layers went to AGND and V+, leaving V− as an
+ordinary net — and a 2-layer board with a solid bottom pour might well have given
+V− better copper than rev B did. Their two points connect, and the connection is
+not flattering to the stackup. Rev C answers it by giving the plane to the rail
+that needed it; if RMC still want two layers after seeing that, the evidence
+would be theirs and worth more than ours.
+
+### The plane swap
+
+**In2 carries V−, not V+.** This is rev C's largest change and it came from one
+sentence of RMC's: *"most op amps used for audio applications are V− referenced
+because many designs operate from a single supply. The OPA191 data sheet doesn't
+provide a detailed schematic, only a block diagram, but Texas Instruments should
+be able to provide the necessary guidelines."*
+
+Rev B had it backwards. V+ got a whole inner layer; V− got an ordinary 0.25 mm
+track running to a capacitor 45 mm away, 51 mm for U2. The arithmetic that
+matters is not DC — 50 mm of 0.25 mm copper is about 0.1 Ω and the board draws
+2 mA — but inductance. That track is roughly **25 nH**, and 25 nH against 4.7 µF
+resonates at about **460 kHz** with a Q of 5–10 against an MLCC's ESR. That put a
+several-ohm impedance peak on the V− rail, half a megahertz inside the OPA4191's
+10 MHz gain-bandwidth, on the rail the op-amp's own circuitry references.
+
+Never audible, and not the kind of fault that shows up on the first board.
+
+Swapping the two planes costs the V+ routing and buys three things: every op-amp
+and switch supply-return pin, J7 pin 8, R701 and five capacitors are connected by
+one via each; the V− spine and its three dives under the buses disappear; and the
+three-lane bundle east of every quad loses its middle lane.
+
+**What it does not buy is a free lunch — V+ is now the routed rail**, and it
+carries the local capacitors instead. That is the right way round: V+ is the rail
+whose PSRR is better, and it is the one that now has a capacitor 8.2 mm away
+rather than a plane.
+
+### Bypassing
+
+RMC, on seeing rev B's four capacitors in a column on the far edge: *"I suggest
+moving the power bypass caps as close as possible to the op amps (there's 4 of
+them, so distribute them evenly between the 3 IC's) and beef up your Vcc, Vdd &
+Vss traces. Maybe add a pair of bypass caps between the two CD4066 IC's. Use MLC
+caps, not electrolytics."*
+
+Ten capacitors, in five symmetric pairs:
+
+| Refs | Where | |
+| --- | --- | --- |
+| C911/C912, C921/C922, C931/C932 | U1, U2, U3 | 8.2 mm from pin 4 |
+| C941/C942 | between U4 and U5 | RMC's explicit request |
+| C901/C902 | supply entry | bulk on the incoming rail |
+
+Ten rather than the four RMC's wording implies, because *"distribute them evenly
+between the 3 IC's"* does not divide four, and a pair per package is the nearest
+thing that keeps every location symmetric. **Symmetry is not cosmetic**: the two
+rails' return currents meet in the DIN shell, which is the same single conductor
+carrying six string returns, so `_GROUND_RULE` forbids bypassing one rail harder
+than the other. `design.check_bypass_symmetry()` enforces it.
+
+**Both capacitors of each op-amp pair sit west of the quad**, which looks wrong
+until you measure what is east of it. Pin 4 (V+) and pin 11 (V−) are at
+(−2.475, 0) and (+2.475, 0) on the SOIC-14, so one each side is the obvious
+placement — and it does not fit. East of the package the centreline is a
+three-lane bundle at 1.27 mm pitch running unbroken from the pads to the buses.
+West of it only the BUFIN lanes flank the centreline and they stop at the pad
+column, leaving x = 10–18 clear on every block. **That is the only 1206-sized
+space in a block.** Which is survivable precisely because of the plane swap: V−
+no longer needs a local capacitor, so only the V+ one has to be close.
+
+**No 100 nF in parallel.** A 1206 X7R 4.7 µF goes inductive above roughly
+2–3 MHz and a parallel 100 nF would extend that to ~15 MHz, but once the
+capacitor is at the pin the few millimetres of trace dominate the loop anyway. It
+also doubles the count, back towards the eighteen RMC told us to delete. Offered
+to them; not proposed.
+
+### Design rules, and the ±0.003" budget
+
+Every rule number went up in rev C. RMC: *"anticipate cumulative drilling & layer
+registration errors/offsets totalling about ±.003", compensate for those in the
+layout … and the chance of failure upon fabrication and over the long-term will
+be greatly minimized. This way you can expect a good board from just about any
+p.c.b. contractor."*
+
+| | Rev B | Rev C |
+| --- | --- | --- |
+| Signal track | 0.25 mm | **0.30 mm** |
+| Power track | 0.50 mm | **0.80 mm** |
+| Via pad / drill | 0.60 / 0.30 mm | **0.80 / 0.40 mm** |
+| Annular ring | 0.15 mm | **0.20 mm** |
+| Clearance | 0.20 mm | **0.25 mm** |
+
+0.003" is 0.076 mm. A 0.20 mm ring absorbs the full error and leaves 0.124 mm,
+against an IPC-2221 Class 2 minimum of 0.05 mm; the old ring left 0.074 mm —
+passing, but on the fabricator's good behaviour rather than our own arithmetic.
+The numbers live in [`rules.py`](rules.py), which both generators import, so
+copper cannot be laid to one set and checked against another.
+
+**Power and ground vias are doubled where there is room**, per RMC's *"double
+vias and larger holes are low-cost insurance against plating problems"* — the ten
+bypass capacitors and the V+ taps. Not under the SOIC-14 and SO-14 packages,
+whose pad columns are 3.0 mm apart, and not on the two switch supply taps, where
+a pair closes to 0.195 mm of the pin-13 row. That is RMC's own *"where it is
+practical to do so"*.
+
+One shortfall, declared rather than buried: RMC said 0.010" clearance and 0.25 mm
+is 0.0098". Four microns under, kept because the layout is on a metric grid.
+
+**A rail tap that was never a decision.** `route_supply()`'s `tap()` helper took
+no width argument, so every rail tap on rev B came out at 0.25 mm while the spine
+it fed was 0.5 mm. Not a trade-off — just a default nobody passed. It is most of
+*"beef up your Vss traces"* in one line.
 
 ### RMC advice deliberately not taken
 
@@ -535,27 +686,31 @@ turnkey line. Recorded so they are not re-litigated:
 
 ## Open with RMC
 
-The finished design has gone to RMC for review. Three questions are awaiting
-reply. Nothing has been ordered, so all three can still change the board.
+Nothing has been ordered, so everything here can still change the board.
 
-**1. V− decoupling: the one where our own reasoning ran out.** RMC's *"a pair of
-4.7 µF/25 V caps at each end of the power rails"* was taken literally: four
-capacitors for the whole board, replacing eighteen local ones. In1 is a solid
-ground plane and In2 a solid V+ plane, so V+ decoupling is distributed across the
-whole board. But **V− is not a plane**, and that leaves the V− decoupling for
-twelve op-amp halves resting on C902 and C904. Both sit on the right-hand edge
-while the three op-amps run down a column on the far left: **no op-amp is closer
-than 45 mm to a V− capacitor**, and U2 is 51 mm from the nearest, along a routed
-track rather than a plane. Adding five local 100 n is a cheap change now and an
-impossible one after fabrication.
+### Answered in the review of 2026-08-01
 
-**2. Polarity confirmation.** We print pin 7 = +4.5 V and build the loom to
-match, on their own *"arbitrary… knee-jerk"* pin 7 = +. Round three stated it and
-invited objection; none came, but silence is not agreement when the failure mode
-destroys every op-amp on the board and there is no diode to catch it. This wants
-an explicit yes.
+**V− decoupling** was question 1, and it is closed. RMC answered it twice over:
+directly, by telling us to move the capacitors to the ICs and add a pair between
+the CD4066s, and structurally, by pointing out that an audio op-amp is V−
+referenced — which is what identified the plane assignment itself as the fault.
+See [The plane swap](#the-plane-swap) and [Bypassing](#bypassing).
 
-**3. The USB socket.** RMC offered to fit a USB socket in the Poly-Drive II
+### Still open
+
+**1. Polarity confirmation — the one that blocks ordering.** We print pin 7 =
++4.5 V and build the loom to match, on RMC's own *"arbitrary… knee-jerk"* pin
+7 = +. It was stated and put to them in round three, restated in round four, and
+has not been answered either time. Silence is not agreement when the failure mode
+puts 9 V backwards across every op-amp on the board and there is deliberately no
+diode to catch it — a series Schottky per rail would cost about 0.6 dB out of a
+9 V total supply, which this design has not got.
+
+> **Do not order until this is confirmed in writing.** The silkscreen carries the
+> convention and the build procedure calls for a continuity check from the DIN
+> plug to J7 before first power-up, but procedure is not confirmation.
+
+**2. The USB socket.** RMC offered to fit a USB socket in the Poly-Drive II
 enclosure so the preamp can be phantom-powered and the battery kept topped up.
 Charging is fine; running permanently from USB may not be. The battery's negative
 terminal *is* the −4.5 V rail, because the splitter's midpoint is signal ground.
@@ -564,7 +719,17 @@ earthed source while the PD2's output reaches earth through a mixer, the −4.5 
 rail is tied to earth through the audio ground. That is a short across the lower
 half of the splitter. It only bites in the permanently-powered case; occasional
 charging can always be done unplugged. It affects their enclosure, not this
-board, and they may already isolate the charging circuit.
+board, and they may already isolate the charging circuit. Also unanswered, but
+not blocking.
+
+### Offered and awaiting a view
+
+- **The 4-layer stackup.** RMC asked *"I'm not sure why you want 4 layers in this
+  application … Are you having problems routing Power & Ground on the top &
+  bottom layers?"* The honest answer is no — power and ground would route on two
+  layers. See [Four layers, and why](#four-layers-and-why).
+- **A 100 nF in parallel with each 4.7 µF**, if they want the HF end extended.
+  See [Bypassing](#bypassing).
 
 ---
 
@@ -586,9 +751,19 @@ Needs KiCad 10.x; see [`README.md`](README.md).
 **Where it stands:** ERC clean. The 10 remaining warnings are all one benign
 case, a CD4066 bidirectional pin meeting a power flag, which is what those pins
 are. The generated schematic is read back through KiCad and compared against
-`design.py` net by net: **53 nets, 233 pin connections, exact match.** The board
+`design.py` net by net: **53 nets, 245 pin connections, exact match.** The board
 is fully routed with **0 DRC violations and 0 unconnected items**; routing is
 entirely in `gen_pcb.py` and no autorouter is involved.
+
+**`build.sh` runs `gen_project.py` twice, and that is not redundant.**
+`pcbnew.SaveBoard()` writes the `.kicad_pro` as well as the board, through
+KiCad's settings manager, and what it writes is KiCad's defaults — no `Power`
+net class, no netclass patterns, `min_via_annular_width` back to 0.10 and
+clearance back to 0.20. **Every DRC run in this project's history before rev C
+was therefore checked against looser rules than the layout was drawn to**, and
+nothing said so. Regenerating the project file after the board fixes it, and
+`verify.check_project_rules()` reads it back afterwards and fails the build if
+some later step learns to clobber it too.
 
 **Three checks the build cannot make:**
 
@@ -611,7 +786,7 @@ builds share **zero of 1822 UUIDs** while the content is identical.
 > **`git status` is not evidence about `fab/`.** It reports dirty after every
 > build whether or not anything changed. What can tell you: compare the outputs'
 > mtimes against the sources, or read the board size straight out of
-> `fab/pcbway/rmc-pizz-arco-Edge_Cuts.gm1`, which should measure 78.8 × 81.3 mm.
+> `fab/pcbway/rmc-pizz-arco-Edge_Cuts.gm1`, which should measure 77.2 × 82.4 mm.
 > Do not commit a build that changed nothing; discard it with `git checkout --`
 > and keep the diff honest.
 
@@ -645,6 +820,26 @@ UUID in the committed board, once.
   way.
 - **SMD connector pads are F.Cu only**, so a B.Cu run to a connector needs a via
   to get there. Through-hole headers hide this.
+- **A courtyard is half as big again as the part.** A 1206's land is
+  3.2 × 1.6 mm but its courtyard is **4.69 × 2.39 mm**, so two of them need
+  5.2 mm between centres. Two placements were sized off the land and both
+  failed `courtyards_overlap`.
+- **Free space for a capacitor is not free space for its via.** `free_offset()`
+  checks courtyards, and every obstacle that matters to a bypass capacitor's
+  stub via is a *track*: the rail run passing between its own two pads, the OUT
+  bus, the V+ spine. Left to choose, it put one via 0.125 mm from the very run
+  the capacitor was there to bypass. Bypass stubs are now explicit.
+- **Through-hole pads block every layer.** A corridor scan that only looks at
+  tracks and vias will happily route a B.Cu spine through a pin header's pads.
+  The west V+ spine was placed that way once and had to move to the margin.
+- **Widening the rules moves the fan-in, not just the tracks.** Each OUT
+  approach row ends in a via, so its pitch is set by via-to-track: 0.4 of via
+  radius, 0.25 of clearance, 0.15 of the neighbour. Going to 0.8 mm vias pushed
+  the six rows past what fitted below the last sub-row, and J7 and J8 had to
+  move 1.1 mm down the board.
+- **Measure the geometry against the generated board, not the committed one.**
+  Two scans in the rev C work were run against a stale copy and gave answers
+  that looked right and were not.
 
 ---
 

@@ -2,7 +2,7 @@
 "C101-C103,C201-C203,C301-C303,C401-C403,C501-C503,C601-C603","100p","Capacitor_SMD:C_1206_3216Metric","18","~"
 "C104,C204,C304,C404,C504,C604","1n8 C0G","Capacitor_SMD:C_1206_3216Metric","6","~"
 "C701","10n","Capacitor_SMD:C_1206_3216Metric","1","~"
-"C901-C904","4u7/25V","Capacitor_SMD:C_1206_3216Metric","4","~"
+"C901,C902,C911,C912,C921,C922,C931,C932,C941,C942","4u7/25V X7R","Capacitor_SMD:C_1206_3216Metric","10","~"
 "J1-J6","PZT","Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical","6","~"
 "J7","DIN-8","Connector_PinHeader_2.54mm:PinHeader_1x09_P2.54mm_Vertical","1","~"
 "J8","PIZZ/ARCO","Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical","1","~"

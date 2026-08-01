@@ -1,15 +1,21 @@
 """Build the PCB for the design in design.py.
 
 Four layers: signals on F.Cu and B.Cu, a solid AGND plane on In1.Cu and a
-V+ plane on In2.Cu. That choice is what keeps the routing simple and the
-board quiet -- every supply and ground connection becomes a via rather than
-a track, and the high-impedance piezo traces run directly over an unbroken
-ground plane.
+solid V- plane on In2.Cu. The high-impedance piezo traces on the front run
+directly over unbroken ground, and every ground and V- connection is a via
+rather than a track.
 
-V- is NOT a plane. At about 2mA it never needed one, and a B.Cu pour was this
-project's worst failure mode: fragmenting it produced unconnected items in
-parts of the board nowhere near the cause. It is routed like any other net,
-in route_supply(), and B.Cu is a second signal layer.
+In2 carried V+ until rev C. RMC, reviewing rev B: "most op amps used for
+audio applications are V- referenced because many designs operate from a
+single supply." The rail the op-amp's own circuitry references had the
+0.25mm track and 45mm to the nearest capacitor, and the other one had a
+plane. Swapping them is the substance of this revision.
+
+V+ is routed instead, in route_supply(), as a U on B.Cu: down the west
+margin past the three quads, along the bottom, back up the east margin to
+the switches. Neither rail is poured on B.Cu -- a B.Cu pour was this
+project's worst failure mode, fragmenting into unconnected items in parts of
+the board nowhere near the cause -- so B.Cu stays a second signal layer.
 
 The board is three blocks, each one OPA4191 serving two channels. The quad's
 pinout does most of the work: every pin of buffers A and B is on the left of
@@ -26,7 +32,7 @@ Reading order, roughly outwards: route_planes() drops every plane pad onto
 its plane; route_critical() lays BUFIN before anything can take its space;
 route_channel() does one channel and is called six times; route_board()
 carries OUT and the switched nodes out to the tail connector and the
-switches; route_supply() does V- and the control net.
+switches; route_supply() does V+ and the control net.
 """
 
 import pathlib
@@ -37,17 +43,22 @@ import pcbnew
 sys.path.insert(0, str(pathlib.Path(__file__).parent))
 import design as circuit  # noqa: E402
 import kicad  # noqa: E402
+import rules  # noqa: E402
 # The schematic writer's UUID helper, so the board derives exactly the same
 # symbol identifiers the schematic wrote rather than re-implementing the hash.
 from kisch import _uuid as symbol_uuid  # noqa: E402
 
 FOOTPRINT_DIR = kicad.FOOTPRINT_DIR
 
-TRACK = 0.25
-POWER_TRACK = 0.5
-VIA_DIAMETER = 0.6
-VIA_DRILL = 0.3
-CLEARANCE = 0.2
+# From rules.py, which gen_project.py writes into the .kicad_pro for DRC to
+# enforce. Declared in one place so copper cannot be laid to one set of numbers
+# and checked against another.
+TRACK = rules.TRACK
+POWER_TRACK = rules.POWER_TRACK
+VIA_DIAMETER = rules.VIA_DIAMETER
+VIA_DRILL = rules.VIA_DRILL
+CLEARANCE = rules.CLEARANCE
+VIA_PAIR_PITCH = rules.VIA_PAIR_PITCH
 
 BLOCK_PITCH = 23.0           # between quads
 BLOCK_ORIGIN = (3.0, 14.0)   # centreline of block 1, in board coords
@@ -95,6 +106,30 @@ REFERENCE_OFFSET = 2.2   # sub-row designators, measured back towards the row
 # Quad position relative to the block centreline.
 QUAD_X = 25.5
 
+# Bypass pair position, as an offset from the block origin along the
+# centreline. Both capacitors go WEST of the quad, which is counter-intuitive
+# until you look at what is east of it.
+#
+# Pin 4 (V+) and pin 11 (V-) sit at (-2.475, 0) and (+2.475, 0) on the
+# SOIC-14, so the obvious placement is one each side. It does not fit. East of
+# the package the centreline is a three-lane bundle at 1.27mm pitch -- the odd
+# channel's switched node, V-, the even channel's -- running unbroken from the
+# pads to the buses, and there is no room beside it for anything. West of it
+# only the BUFIN lanes flank the centreline, and they stop at the pad column,
+# leaving x=10..18 clear on every block. That is the only space in a block big
+# enough for a 1206, and it is measured, not assumed.
+#
+# Which is survivable because V- no longer needs a local capacitor at all: it
+# is a plane. The V+ capacitor is the one that has to be close now, so it
+# takes the eastern of the two positions, 8mm from pin 4. The V- capacitor
+# only has to exist -- both its pads are plane nets -- and it is there because
+# _GROUND_RULE requires the bypassing to be symmetric, not because V- needs
+# it.
+BYPASS_PLUS_DX = 15.0    # x=18.0: as close to pin 4 as the BUFFB vias allow
+BYPASS_MINUS_DX = 12.0   # x=15.0
+BYPASS_ROTATION = 90     # standing on end, so the centreline run passes between the pads
+BYPASS_REFERENCE_DX = 2.6   # designator, measured outboard from each capacitor
+
 # Board-level placement: ref -> (x, y, rotation).
 BOARD_PLACEMENT = {
     # Switch packages, each beside the three channels it serves.
@@ -107,23 +142,47 @@ BOARD_PLACEMENT = {
     "R702": (RIGHT_X - 2.0, 30.0, 0),
     "R701": (RIGHT_X - 2.0, 34.0, 0),
     "C701": (RIGHT_X - 2.0, 44.0, 0),
-    # Rail bypass, a pair at each end of the rails. The gap to the switch
-    # packages is 9.5mm rather than the 7.5 the parts need, because the strip
-    # between the two carries the V- spine and the control riser -- the only
-    # north-south route on the board that is east of every switched node.
-    "C901": (RIGHT_X + 9.5, 8.0, 0),
-    "C902": (RIGHT_X + 9.5, 12.0, 0),
-    "C903": (RIGHT_X + 9.5, 62.0, 0),
-    "C904": (RIGHT_X + 9.5, 66.0, 0),
+    # Switch bypass, RMC's "a pair of bypass caps between the two CD4066 IC's".
+    # Midway between U4 and U5 in y, but outboard of the three risers in x
+    # rather than among them. The column between the packages and the spine
+    # carries the control spine, the control network, the toggle run and both
+    # risers, and measuring it says there is no 1206-sized hole anywhere in
+    # it -- not one with room for a stub via, not one even for the bare part.
+    #
+    # x=73 is where rev B's four bypass capacitors sat. Putting these two back
+    # there also restores the east margin: with that column empty the board
+    # had shrunk to 70.7mm wide, which left the control riser 0.15mm from the
+    # edge against the 0.5mm rule.
+    "C941": (73.0, 31.0, BYPASS_ROTATION),
+    "C942": (73.0, 39.0, BYPASS_ROTATION),
+    # Supply-entry bulk, on the east leg of the V+ spine rather than at J7
+    # itself. J7 lies flat from x=26.0 to x=46.32 with J8 immediately east of
+    # it, and the rows below carry the two control nets out to J8, so there is
+    # no room at the connector for a 1206 pair. This strip is clear: east of
+    # the OUT bus, which ends at x=58.4, and west of the control riser.
+    #
+    # It is about 14mm of 0.8mm B.Cu from J7 pin 7, so call it what it is --
+    # bulk on the incoming rail, not decoupling at the connector.
+    # Supply entry, on the header row east of J8 where the row is empty. C901
+    # drops onto the bottom leg of the V+ spine; C902 needs no routing at all,
+    # since both its pads are plane nets now.
+    #
+    # Two measured constraints set these positions. A 1206's courtyard is
+    # 4.69 x 2.39mm, half as big again as the part, so the pair has to be at
+    # least 5.2mm apart. And C902 has to keep its ground pad's stub via clear
+    # of the V+ spine at x=68, which puts its eastern pad no further east
+    # than about 66.5.
+    "C901": (59.0, 76.5, 0),
+    "C902": (64.5, 76.5, 0),
     # Tail connectors laid flat along the bottom edge: standing up, the 1x09
     # is 23.95mm tall and needs a column of its own.
-    "J7":  (26.0, 76.5, 90),
-    "J8":  (50.0, 76.5, 90),
+    "J7":  (26.0, 77.6, 90),
+    "J8":  (50.0, 77.6, 90),
 }
 
 # Where the tail headers' reference designators go, since lying flat puts the
 # default position on top of their own pads.
-TAIL_REFERENCE = {"J7": (22.6, 76.5), "J8": (56.2, 76.5)}
+TAIL_REFERENCE = {"J7": (22.6, 77.6), "J8": (56.2, 77.6)}
 
 
 def to_mm(value):
@@ -220,20 +279,52 @@ class Board:
         item.SetNet(self.net(net))
         self.board.Add(item)
 
-    def stub_via(self, ref, number, offset):
+    def power_via(self, net, x, y, along=(1.0, 0.0)):
+        """Two vias where one would do, side by side across `along`.
+
+        RMC: "go with double vias for connecting Power & Ground traces on
+        different layers ... double vias and larger holes are low-cost
+        insurance against plating problems." A barrel that plates thin is not
+        an open circuit you find at test; it is one that opens later, and the
+        second barrel is a few pence against having to find that.
+
+        Placed across the direction of travel rather than along it, so the
+        pair straddles the track it belongs to instead of queueing up behind
+        it, and separated by a full pad plus a clearance -- two vias touching
+        are one via with a worse hole.
+        """
+        length = (along[0] ** 2 + along[1] ** 2) ** 0.5
+        across = (-along[1] / length, along[0] / length)
+        for sign in (-0.5, 0.5):
+            self.via(net, round(x + across[0] * sign * VIA_PAIR_PITCH, 4),
+                     round(y + across[1] * sign * VIA_PAIR_PITCH, 4))
+        self.track(net, [(round(x - across[0] * 0.5 * VIA_PAIR_PITCH, 4),
+                          round(y - across[1] * 0.5 * VIA_PAIR_PITCH, 4)),
+                         (round(x + across[0] * 0.5 * VIA_PAIR_PITCH, 4),
+                          round(y + across[1] * 0.5 * VIA_PAIR_PITCH, 4))],
+                   width=POWER_TRACK)
+
+    def stub_via(self, ref, number, offset, double=False):
         """Short track from a pad to a via beside it -- how AGND, V+ and V-
         pads reach their planes.
 
         The net comes from design.py rather than the caller, so a via can
         never be dropped onto the wrong rail. Vias sit beside the pad, never
         in it, which keeps the board buildable with plain fab processes.
+
+        `double` puts two vias there instead of one. It is not the default
+        because most of these stubs are among the passives, where the pair
+        would not fit; see route_planes() for which ones get it.
         """
         net = circuit.DESIGN.pin_owner()[(ref, str(number))]
         pad = self.pad(ref, number)
         target = (round(pad[0] + offset[0], 4), round(pad[1] + offset[1], 4))
         self.track(net, [pad, target], width=POWER_TRACK if net in
                    ("V+", "V-", "AGND") else TRACK)
-        self.via(net, *target)
+        if double:
+            self.power_via(net, *target, along=offset)
+        else:
+            self.via(net, *target)
         return target
 
     def zone(self, net, layer, rectangle, priority=0):
@@ -307,7 +398,26 @@ def place_blocks(board):
     """
     for index in range(1, circuit.CHANNELS // 2 + 1):
         centre = block_centre(index)
-        board.place(f"U{index}", BLOCK_ORIGIN[0] + QUAD_X, centre, 0)
+        quad_x = BLOCK_ORIGIN[0] + QUAD_X
+        board.place(f"U{index}", quad_x, centre, 0)
+        # The bypass pair, both west of the quad on the centreline -- see
+        # BYPASS_PLUS_DX for why not one each side. Refs come from
+        # design.BYPASS rather than being spelled out again here, so the
+        # circuit names the pairs and the board only places them.
+        plus, minus, _ = circuit.BYPASS[f"U{index}"]
+        for ref, dx, away in ((plus, BYPASS_PLUS_DX, 1.0),
+                              (minus, BYPASS_MINUS_DX, -1.0)):
+            x = BLOCK_ORIGIN[0] + dx
+            footprint = board.place(ref, x, centre, BYPASS_ROTATION)
+            # Designators outboard, horizontal, and away from each other.
+            # Standing on end, these two inherit the part's rotation and land
+            # on their own neighbours: the V+ one over R01's designator, the
+            # V- one over the channel legend. Neither is a DRC error and both
+            # make the block unreadable, which for a board going out for
+            # review is worse.
+            footprint.Reference().SetPosition(
+                point(round(x + away * BYPASS_REFERENCE_DX, 4), centre))
+            footprint.Reference().SetTextAngleDegrees(0)
         for channel in (index * 2 - 1, index * 2):
             s = -1 if channel % 2 else 1
             row = row_y(channel)
@@ -394,7 +504,23 @@ def free_offset(board, ref, number, candidates):
     raise SystemExit(f"no clear stub direction for {ref}.{number}")
 
 
-PLANE_NETS = {"AGND": pcbnew.In1_Cu, "V+": pcbnew.In2_Cu}
+# In2 carries V-, not V+. RMC, reviewing rev B: "most op amps used for audio
+# applications are V- referenced because many designs operate from a single
+# supply." The rail the op-amp's own circuitry references is the one that wants
+# plane copper, and rev B had it the wrong way round -- V+ got an inner layer
+# and V- got a 0.25mm track running up to 51mm to the nearest capacitor.
+#
+# Swapping them costs the V+ routing in route_supply() and buys three things:
+# every op-amp V- pin reaches its rail through one via, the whole V- spine and
+# its dives under the buses disappear, and the three-lane bundle east of each
+# quad (SWN odd, V-, SWN even) loses its middle lane.
+PLANE_NETS = {"AGND": pcbnew.In1_Cu, "V-": pcbnew.In2_Cu}
+
+# Bypass capacitors whose plane stub vias do not go axially -- see the
+# BYPASS_STUB branch in route_planes(). Both of these lie flat on the header
+# row, where north is the SW_TOG and SW_CTL approach rows and south is empty
+# board down to the edge.
+BYPASS_STUB = {"C901": (0.0, 1.6), "C902": (0.0, 1.6)}
 
 
 def channel_signs():
@@ -412,11 +538,13 @@ def channel_signs():
 
 
 def route_planes(board):
-    """Drop every AGND and V+ pad onto its plane through a via beside the pad.
+    """Drop every AGND and V- pad onto its plane through a via beside the pad.
 
-    V- is deliberately NOT a plane: at about 2 mA it never needed one, and a
-    B.Cu pour is the project's worst failure mode -- fragmentation shows up as
-    unconnected items far from the cause. V- is left for the router.
+    V- rather than V+ since rev C -- see PLANE_NETS. That one change connects
+    every op-amp and switch supply-return pin, J7 pin 8, R701 and five
+    capacitors with nothing but a via each, and deletes the spine, the taps
+    and the three dives under the buses that rev B needed to do the same job
+    worse. V+ is routed instead, in route_supply().
     """
     owner = circuit.DESIGN.pin_owner()
     # Every 14-pin package on this board is on a 1.27mm pitch and too narrow
@@ -424,6 +552,7 @@ def route_planes(board):
     # op-amps.
     quads = {ref for ref, part in circuit.PARTS.items()
              if "-14_" in part.footprint and part.footprint.endswith("_P1.27mm")}
+    bypass_caps = {ref for pair in circuit.BYPASS.values() for ref in pair[:2]}
     signs = channel_signs()
     count = 0
     for (ref, number), net in sorted(owner.items()):
@@ -431,7 +560,24 @@ def route_planes(board):
             continue
         if ref.startswith("#"):
             continue
-        if ref in quads:
+        if ref in bypass_caps:
+            # Explicit, not chosen. free_offset() checks courtyards, and every
+            # obstacle that matters to a bypass capacitor's stub via is a
+            # track: the rail run passing between its own two pads, the OUT
+            # bus, the V+ spine. Left to choose, it put one via 0.125mm from
+            # the very run the capacitor is there to bypass.
+            #
+            # The default is axial -- straight out past the pad, along the
+            # part -- which is right for the five that stand on end. The two
+            # on the header row lie flat, so both their pads are level with
+            # the part centre and there is no axis to follow; they are named
+            # in BYPASS_STUB instead, pointing south, away from the two
+            # control approach rows above them.
+            pad = board.pad(ref, number)
+            centre_y = to_mm(board.footprints[ref].GetPosition().y)
+            offset = BYPASS_STUB.get(
+                ref, (0.0, 1.6 if pad[1] > centre_y else -1.6))
+        elif ref in quads:
             # Inboard, under the package body: the space between the two pad
             # columns is the only clear ground on a 1.27mm-pitch package. Each
             # column keeps to its own side of the centreline, so two pads at
@@ -451,7 +597,13 @@ def route_planes(board):
                                  [(0.0, -s * 1.6), (0.0, s * 1.6),
                                   (1.9, 0.0), (-1.9, 0.0),
                                   (1.5, 1.5), (-1.5, 1.5), (1.5, -1.5), (-1.5, -1.5)])
-        board.stub_via(ref, number, offset)
+        # Doubled where there is room for it, which is the bypass capacitors:
+        # they stand alone in the margins and their stubs point into open
+        # board. The channel passives cannot have it -- they sit two lanes
+        # apart by design -- and the 14-pin packages certainly cannot, with
+        # 3.0mm between their pad columns and 1.27mm between their pins. This
+        # is RMC's own "where it is practical to do so".
+        board.stub_via(ref, number, offset, double=ref in bypass_caps)
         count += 1
     return count
 
@@ -692,8 +844,19 @@ OUT_BUS_PITCH = 0.6
 # and pass under none of their drops. Only the drop onto the pin surfaces --
 # the fan-in itself stays on B.Cu, which is what lets the bus keep channel 1
 # outermost at the same time.
-OUT_FANIN_Y = 75.15      # channel 1, just clear of the header pads
-OUT_FANIN_PITCH = -0.765
+# Each approach row ends in a via, so the pitch is set by via-to-track and not
+# by track-to-track: 0.4 of via radius, 0.25 of clearance and 0.15 of the
+# neighbouring row. 0.80mm minimum, against the 0.765 that carried 0.6mm vias
+# and the 0.625 the old notes record.
+#
+# Six rows at that pitch do not fit between the last sub-row and the header
+# where the header was, which is why J7 and J8 moved 1.1mm down the board.
+# The alternative -- keeping the whole fan-in on B.Cu and landing straight on
+# the through-hole pins, no vias at all -- does not work: each channel's drop
+# would cross the row of every lower-numbered channel, whose pins are further
+# west and whose rows are below it.
+OUT_FANIN_Y = 76.0       # channel 1, just clear of the header pads
+OUT_FANIN_PITCH = -0.82
 SWN_BUS_X = 50.4         # channel 1's lane; the bus fills outwards
 SWN_BUS_PITCH = 0.7
 SWITCH_CLEARANCE = 2.2   # below a switch package, for the right-column cells
@@ -770,98 +933,131 @@ def route_board(board):
 # bypass caps -- the one column east of every switched node -- and reach the
 # tail connectors along the bottom edge, below the headers rather than above,
 # where the OUT fan-in already occupies every row.
-VMINUS_X = 69.0          # B.Cu spine, tapped by every V- pin on the board
-CTL_RISER_X = 70.4       # B.Cu, beside it, for the two right-column cells
+# V+ is the only rail that is routed now, and it is routed as a U on B.Cu:
+# down the west margin past the three quads, along the bottom below the tail
+# connectors, and back up the east margin to the switches. All three legs were
+# measured clear end to end on B.Cu before being written here -- B.Cu carries
+# 77 segments against F.Cu's 303, and the whole west margin, the whole bottom
+# and the whole east margin are empty on it.
+#
+# The west leg is what the swap bought. It exists because pin 4 is on the
+# package's west side, and rev B's spine was on the east because pin 11 was.
+# The west leg goes in the far margin, not between the parts. Measured pad
+# extents across the block, all of them through-hole or 1206 and so blocking
+# every layer: R02 5.98-7.10 and 8.90-10.03, J 7.15-8.85, 9.69-11.39 and
+# 12.23-13.93, C01 11.45-12.60 and 14.40-15.55. From 5.98 to 15.55 the widest
+# gap between two of them is 0.47mm, which is not a corridor. West of 5.98 the
+# margin is empty all the way to the board edge.
+#
+# The taps are long as a result -- 22mm from pin 4 -- and that is fine: the
+# bypass capacitor is 8mm from the pin, and it is the loop through the
+# capacitor that has to be short, not the feed behind it.
+VPLUS_WEST_X = 4.0       # B.Cu, in the west margin outboard of the R02 column
+VPLUS_EAST_X = 68.0      # B.Cu, inboard of the control riser
+# 80.4, not 79.5: J7's own ground and V- pads drop their plane stubs 1.6mm
+# south into exactly that strip, and the bottom leg has to pass beneath them.
+VPLUS_BOTTOM_Y = 80.4    # B.Cu, below the tail connectors and their stubs
+CTL_RISER_X = 70.4       # B.Cu, for the two right-column cells
 CTL_SPINE_X = 59.3       # between the OUT bus and the control network's pads
-TOG_RISER_X = 76.8       # outboard of everything, in the margin past the caps
-# The three approach rows above the tail connectors, on F.Cu. The row order
-# is set by how far west each one has to drop: V- reaches the furthest, so it
-# turns off first and takes the row furthest from the pads.
-TAIL_Y = {"V-": 72.0, "SW_TOG": 73.0, "SW_CTL": 74.0}
-V_STEP = 1.19            # how far a switch's pin 7 steps clear of the package
+# 69.2, between the V+ spine and the control riser. It was 76.8, outboard of
+# the four bypass capacitors that used to sit in a column at x=73.5; those are
+# gone, the board is 5mm narrower for it, and 76.8 is now off the edge.
+TOG_RISER_X = 69.2
+# The approach rows above the tail connectors, on F.Cu. V- no longer needs one
+# -- it is a plane, and J7 pin 8 reaches it through a via like every other V-
+# pad on the board -- so the two that are left move up into the space it used
+# to take.
+TAIL_Y = {"SW_TOG": 72.0, "SW_CTL": 73.0}
 
 
 def route_supply(board):
-    """V-, the switch control net and the toggle line.
+    """V+, the switch control net and the toggle line.
 
-    V- is an ordinary net here rather than a pour, which is the whole point of
-    the stackup change: at about 2mA it never needed copper, and a fragmented
-    B.Cu pour was this project's worst failure mode. What it costs is this
-    function.
+    V+ is the one rail that is routed. V- and AGND are planes, so their pads
+    are done by route_planes() and never appear here. In rev B it was the
+    other way round and this function carried V-; the swap is RMC's point that
+    an audio op-amp is V- referenced, and what it cost is the west leg below.
     """
     F, B = pcbnew.F_Cu, pcbnew.B_Cu
     p = board.pad
 
-    def tap(net, pad, x, y=None, layer=F):
-        """Run from a pad to the spine at `x` and drop a via onto it."""
+    def tap(net, pad, x, y=None, layer=F, width=POWER_TRACK, double=True):
+        """Run from a pad to the spine at `x` and drop vias onto it.
+
+        Defaults to POWER_TRACK. It used to default to TRACK, which is how
+        every rail tap on rev B came out at 0.25mm while the spine they fed
+        was 0.5mm -- not a decision, just an argument nobody passed. RMC:
+        "beef up your Vcc, Vdd & Vss traces".
+
+        Doubled by default too: every tap here lands in a margin with room
+        for the pair, and each one is a power net changing layer, which is
+        exactly what RMC asked to see doubled.
+        """
         y = pad[1] if y is None else y
-        board.track(net, [pad, (pad[0], y), (x, y)], layer=layer)
-        board.via(net, x, y)
+        board.track(net, [pad, (pad[0], y), (x, y)], layer=layer, width=width)
+        if double:
+            board.power_via(net, x, y, along=(0.0, 1.0) if x == pad[0]
+                            else (1.0, 0.0))
+        else:
+            board.via(net, x, y)
 
     def hop(net, x, top, bottom, layer=B):
         board.via(net, x, top)
         board.track(net, [(x, top), (x, bottom)], layer=layer)
         board.via(net, x, bottom)
 
-    # -- V- ----------------------------------------------------------------
-    # Every V- pin taps the same B.Cu spine. The two bottom-left switch pins
-    # are the only ones that cannot go straight out: pin 8 of each package
-    # sits at the same height on the other column, so they step down first,
-    # into the gap the switched node's own approach row leaves free.
-    board.track("V-", [(VMINUS_X, 12.0), (VMINUS_X, 66.0)], layer=B,
-                width=POWER_TRACK)
-    tap("V-", p("C902", 1), VMINUS_X)
-    tap("V-", p("C904", 1), VMINUS_X)
-    tap("V-", p("R701", 2), VMINUS_X)
-    for switch in ("U4", "U5"):
-        box = board.footprints[switch].GetCourtyard(pcbnew.F_CrtYd).BBox()
-        # Pin 7 is the bottom of the left column and pin 8 the bottom of the
-        # right, at the same height -- so pin 7 cannot leave along its own row,
-        # and the row below is the one the switched node arrives on. It drops
-        # to B.Cu instead, in the gap between the two.
-        step = round(p(switch, 7)[1] + V_STEP, 4)
-        assert step < to_mm(box.GetBottom()) + SWITCH_CLEARANCE, (
-            f"{switch} V- step at {step} is under the switched node's row")
-        tap("V-", p(switch, 12), VMINUS_X)
-        board.track("V-", [p(switch, 7), (p(switch, 7)[0], step)])
-        board.via("V-", p(switch, 7)[0], step)
-        board.track("V-", [(p(switch, 7)[0], step), (VMINUS_X, step)], layer=B)
-    # The quads reach it along their own centrelines -- the one row in a block
-    # with no channel routing on it, because the two halves are mirrored about
-    # it. Each still has to get past the two buses, and each does it
-    # differently because what blocks it differs.
+    # -- V+ ----------------------------------------------------------------
+    # V- is a plane now, so every V- pin on the board -- both switch packages,
+    # all three quads, J7 pin 8, R701, five capacitors -- is already connected
+    # by route_planes() and nothing about it appears here. What is left is V+,
+    # and this is the whole of it.
     #
-    # U1: channel 1's switched node crosses the centreline on the SWN bus, so
-    # this one dives under the bus and comes up beyond it.
-    centre = p("U1", 11)[1]
-    board.track("V-", [p("U1", 11), (50.0, centre)])
-    board.via("V-", 50.0, centre)
-    board.track("V-", [(50.0, centre), (52.0, centre)], layer=B)
-    board.via("V-", 52.0, centre)
-    board.track("V-", [(52.0, centre), (52.0, 12.0), (p("C902", 1)[0], 12.0)])
-    # U2: nothing crosses y=37, which is why the control network was moved
-    # off it, so this one runs straight out.
-    board.track("V-", [p("U2", 11), (VMINUS_X, p("U2", 11)[1])])
-    board.via("V-", VMINUS_X, p("U2", 11)[1])
-    # U3: channel 6's switched node crosses this row on its way up the bus,
-    # and it is the one crossing on the board that cannot be designed away --
-    # the pin, the lane and the cell are all fixed. So V- dives under it, in
-    # the gap deliberately left between the two buses.
-    centre = p("U3", 11)[1]
-    board.track("V-", [p("U3", 11), (53.0, centre)])
-    board.via("V-", 53.0, centre)
-    board.track("V-", [(53.0, centre), (54.65, centre)], layer=B)
-    board.via("V-", 54.65, centre)
-    board.track("V-", [(54.65, centre), (VMINUS_X, centre)])
-    board.via("V-", VMINUS_X, centre)
-    # Down to the DIN pin. The rows above the header are free on F.Cu --
-    # the OUT fan-in is all on B.Cu and its drops are all west of here -- so
-    # the riser surfaces and the last stretch runs on the front.
-    board.track("V-", [(VMINUS_X, 66.0), (VMINUS_X, TAIL_Y["V-"])], layer=B,
-                width=POWER_TRACK)
-    board.via("V-", VMINUS_X, TAIL_Y["V-"])
-    board.track("V-", [(VMINUS_X, TAIL_Y["V-"]),
-                       (p("J7", 8)[0], TAIL_Y["V-"]), p("J7", 8)])
+    # A U on B.Cu, laid out so that no leg crosses anything: down the west
+    # margin past the three quads, east along the bottom below the tail
+    # connectors, and back up the east margin to the switches. J7 pin 7 is
+    # through-hole, so the bottom leg reaches it without a via of its own.
+    top = round(p("U4", 14)[1], 4)
+    board.track("V+", [(VPLUS_WEST_X, p("U1", 4)[1]),
+                       (VPLUS_WEST_X, VPLUS_BOTTOM_Y),
+                       (VPLUS_EAST_X, VPLUS_BOTTOM_Y),
+                       (VPLUS_EAST_X, top)], layer=B, width=POWER_TRACK)
+    board.track("V+", [(p("J7", 7)[0], VPLUS_BOTTOM_Y), p("J7", 7)],
+                layer=B, width=POWER_TRACK)
+
+    # Each quad taps the west leg along its own centreline. Pin 4 is the
+    # middle of the package's west column, so this run leaves the pad going
+    # west and meets nothing: the BUFIN lanes flank the centreline at 1.27mm
+    # and stop at the pad column, and west of them the block is empty.
+    for index in range(1, circuit.CHANNELS // 2 + 1):
+        pad = p(f"U{index}", 4)
+        board.track("V+", [pad, (VPLUS_WEST_X, pad[1])], width=POWER_TRACK)
+        board.power_via("V+", VPLUS_WEST_X, pad[1], along=(0.0, 1.0))
+        # and the bypass capacitor sits on that run, 8mm from the pin. Its V+
+        # pad is the southern one -- the run passes between the two pads, so
+        # this is a stub off it rather than a break in it.
+        cap = p(circuit.BYPASS[f"U{index}"][0], 1)
+        board.track("V+", [(cap[0], pad[1]), cap], width=POWER_TRACK)
+
+    # The east leg serves the switches and the control network. Pin 14 is the
+    # top of each package's east column, which is the side the leg is on, so
+    # both taps are 1.5mm long.
+    for switch in ("U4", "U5"):
+        # Single via, not the pair. Pin 13 leaves along the row 1.27mm below
+        # on its way to the control riser, and a pair spread across the tap
+        # closes to 0.195mm of it; spread along the tap instead and the far
+        # via closes to 0.125mm of the toggle riser. There is no room here,
+        # which is the whole of RMC's "where it is practical to do so".
+        tap("V+", p(switch, 14), VPLUS_EAST_X, double=False)
+    # R702's V+ pad is its western one, and its eastern one is SW_TOG, so this
+    # cannot leave along its own row without crossing the part. It steps north
+    # into the clear row above the control network instead.
+    step = round(p("R702", 1)[1] - 2.5, 4)
+    tap("V+", p("R702", 1), VPLUS_EAST_X, y=step)
+    # The remaining two V+ capacitors. C941 runs west to the east leg, over
+    # the two control risers -- they are on B.Cu and this is not. C901 sits on
+    # the header row and drops straight onto the bottom leg beneath it.
+    tap("V+", p("C941", 1), VPLUS_EAST_X)
+    tap("V+", p("C901", 1), p("C901", 1)[0], y=VPLUS_BOTTOM_Y)
 
     # -- SW_CTL ------------------------------------------------------------
     # Nine pins on one net, spread over both switch packages and the control
@@ -907,14 +1103,13 @@ def route_supply(board):
 
 
 def add_copper(board, rectangle):
-    """AGND on In1, V+ on In2. B.Cu is a signal layer, not a V- pour.
+    """AGND on In1, V- on In2. B.Cu is a signal layer, not a pour.
 
-    Two planes rather than three: every supply and ground pad reaches its rail
-    through a single via, and the high-impedance piezo traces on the front run
-    over unbroken ground. V- is routed like any other net.
+    Two planes rather than three, and V- is the one that gets the second --
+    see PLANE_NETS for why. V+ is routed instead, in route_supply().
     """
     board.zone("AGND", pcbnew.In1_Cu, rectangle)
-    board.zone("V+", pcbnew.In2_Cu, rectangle)
+    board.zone("V-", pcbnew.In2_Cu, rectangle)
 
 
 def silkscreen(board, rectangle):
@@ -934,7 +1129,7 @@ def silkscreen(board, rectangle):
             f"silkscreen line is wider than the board: {body!r}")
         board.text(body, middle, y, size=size)
 
-    legend("RMC pizz/arco  6 channel  rev B", top + 1.8, 1.4)
+    legend("RMC pizz/arco  6 channel  rev C", top + 1.8, 1.4)
     # Below the tail connectors, not above them: above is the OUT fan-in, six
     # approach rows deep, and the header pads themselves.
     legend("J7  1-6=STRINGS  7=+4.5V  8=-4.5V  9=SHELL/GND", bottom - 2.9, 1.1)
@@ -981,8 +1176,8 @@ def main():
 
     rectangle = board_extent(board)
     board.outline(rectangle)
-    inner = (rectangle[0] + 0.3, rectangle[1] + 0.3,
-             rectangle[2] - 0.3, rectangle[3] - 0.3)
+    inner = (rectangle[0] + rules.ZONE_INSET, rectangle[1] + rules.ZONE_INSET,
+             rectangle[2] - rules.ZONE_INSET, rectangle[3] - rules.ZONE_INSET)
     add_copper(board, inner)
     silkscreen(board, rectangle)
 

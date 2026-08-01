@@ -11,7 +11,8 @@ the outboard pedal that `DESIGN.md` considered and rejected.
 > circuit anywhere on this instrument. Everything about the battery bay, the
 > hatch and the charging hazard has been cut; the mounting analysis and the
 > loom problem, which is still the least resolved part of this, stand
-> unchanged. The board itself is finished and measures **78.8 × 81.3 mm**.
+> unchanged. The board itself is finished and measures **77.2 × 82.4 mm** (rev C; it was
+> 78.8 × 81.3 before RMC's layout review).
 
 ## Why this is not the pedal that was rejected
 
@@ -47,7 +48,7 @@ See "The loom", which is the least resolved part of this.
 
 ## The board, as built
 
-**78.8 × 81.3 mm, and finished.** The respin this document called for has
+**77.2 × 82.4 mm, and finished.** The respin this document called for has
 happened (for reasons that had nothing to do with the enclosure), and the
 board is placed, routed and DRC-clean. See [`DESIGN.md`](DESIGN.md).
 
@@ -61,8 +62,8 @@ height of the board. The finished board is 14% land, *less* dense than either
 earlier revision, because room for lanes, not area for parts, is the binding
 constraint.
 
-**So the enclosure has to be designed around 78.8 × 81.3, not the other way
-round.** That is 23.8 mm wider and 13.7 mm shorter than the target above. The
+**So the enclosure has to be designed around 77.2 × 82.4, not the other way
+round.** That is 22.2 mm wider and 12.6 mm shorter than the target above. The
 tailpiece is 100 mm, so length is comfortable; **width is now the problem this
 document has to solve**, and the six parallel lanes running away from the
 bridge that were sketched here are not what got built.
@@ -133,8 +134,8 @@ analysis above comes back to this document from theirs.
 
 ## Mass, and where it is carried
 
-Estimated: board ~25 g as built (78.8 × 81.3 × 1.6 mm of 4-layer FR4 is about
-19 g of laminate, plus copper and 80 small parts), shell ~25 g, wiring and
+Estimated: board ~25 g as built (77.2 × 82.4 × 1.6 mm of 4-layer FR4 is about
+19 g of laminate, plus copper and 86 small parts), shell ~25 g, wiring and
 fixings ~10 g. **Call it 60 g**, now that the 45 g pack that used to dominate
 this budget is gone.
 
@@ -164,7 +165,7 @@ available:
   leading edge.
 
 **The wedge may not survive the board's width.** It was drawn around a 55 mm
-board and the built one is 78.8 mm. Whether that fits under the tailpiece at
+board and the built one is 77.2 mm. Whether that fits under the tailpiece at
 all is one of the measurements below, and it is now the first of them.
 
 The board lies flat and parallel to the belly through both sections; only the
@@ -213,13 +214,15 @@ The box cannot be modelled without these. All from the instrument itself:
 *Updated 2026-08-01.*
 
 - Concept agreed: external, tail-block mounted. **No battery, no hatch.**
-- Board: **finished at 78.8 × 81.3 mm and DRC-clean.** The respin this document
+- Board: **finished at 77.2 × 82.4 mm and DRC-clean.** The respin this document
   asked for happened; the 55 × 95 target it set did not survive and was not
   reachable. The enclosure now has to be designed around the board.
 - Supply: **settled.** ±4.5 V from the Poly-Drive II. The charge-pump and
   inline-boost alternatives are closed; see "The former fallback".
-- **Width is the new open question.** 78.8 mm under a 100 mm tailpiece, against
-  a design drawn for 55 mm.
+- **Width is the new open question.** 77.2 mm under a 100 mm tailpiece, against
+  a design drawn for 55 mm. Rev C took 1.6 mm off the width and added 1.1 mm to
+  the length, which helps the binding dimension slightly and changes nothing
+  about the conclusion.
 - Instrument measurements: **outstanding.** Still blocks the model.
 - Loom routing: **open**, pending a view on drilling the belly. Unchanged, and
   still the least resolved part of this.

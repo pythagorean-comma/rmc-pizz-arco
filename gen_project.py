@@ -12,19 +12,22 @@ import json
 import pathlib
 
 import design as circuit
+import rules
 import symlib
 from kisch import Schematic, _uuid
 from sexp import Sym, dumps
 
 PROJECT = circuit.PROJECT
 
-# 2-layer, 1 oz copper, comfortably inside every low-cost fab's capability
-# (JLCPCB and PCBWay both accept 0.127 mm; this leaves a wide margin).
-TRACK_WIDTH = 0.25
-POWER_TRACK_WIDTH = 0.5
-CLEARANCE = 0.2
-VIA_DIAMETER = 0.6
-VIA_DRILL = 0.3
+# 4-layer, 1 oz outer / 0.5 oz inner, comfortably inside every low-cost fab's
+# capability (JLCPCB and PCBWay both accept 0.127mm; this leaves a wide
+# margin). The numbers themselves live in rules.py, because gen_pcb.py lays
+# copper against the same ones and the two must not drift.
+TRACK_WIDTH = rules.TRACK
+POWER_TRACK_WIDTH = rules.POWER_TRACK
+CLEARANCE = rules.CLEARANCE
+VIA_DIAMETER = rules.VIA_DIAMETER
+VIA_DRILL = rules.VIA_DRILL
 
 
 def net_classes():
@@ -41,7 +44,18 @@ def net_classes():
     return [default, power]
 
 
-def project_file(path, root_uuid):
+def project_document(root_uuid):
+    """The .kicad_pro as a dict.
+
+    Separated from writing it so verify.py can read the file on disk back and
+    check it still says what this says. It does not always: opening the
+    project in the KiCad GUI rewrites the whole file in KiCad's own expanded
+    form, and that rewrite drops `netclass_patterns` and resets the constraint
+    floors to KiCad's defaults. A build regenerates it, so builds are never
+    affected -- but the rewritten file can be committed, and then anyone who
+    runs DRC without building first is checking against different rules from
+    the ones the board was laid out to.
+    """
     document = {
         "board": {
             "design_settings": {
@@ -62,21 +76,21 @@ def project_file(path, root_uuid):
                     "allow_blind_buried_vias": False,
                     "allow_microvias": False,
                     "max_error": 0.005,
-                    "min_clearance": 0.0,
+                    "min_clearance": rules.MIN_CLEARANCE,
                     "min_connection": 0.0,
-                    "min_copper_edge_clearance": 0.3,
-                    "min_hole_clearance": 0.25,
-                    "min_hole_to_hole": 0.25,
+                    "min_copper_edge_clearance": rules.MIN_COPPER_EDGE_CLEARANCE,
+                    "min_hole_clearance": rules.MIN_HOLE_CLEARANCE,
+                    "min_hole_to_hole": rules.MIN_HOLE_TO_HOLE,
                     "min_microvia_diameter": 0.2,
                     "min_microvia_drill": 0.1,
                     "min_resolved_spokes": 2,
                     "min_silk_clearance": 0.0,
                     "min_text_height": 0.8,
                     "min_text_thickness": 0.08,
-                    "min_through_hole_diameter": 0.3,
-                    "min_track_width": 0.15,
-                    "min_via_annular_width": 0.13,
-                    "min_via_diameter": 0.45,
+                    "min_through_hole_diameter": rules.MIN_THROUGH_HOLE_DIAMETER,
+                    "min_track_width": rules.MIN_TRACK_WIDTH,
+                    "min_via_annular_width": rules.MIN_VIA_ANNULAR_WIDTH,
+                    "min_via_diameter": rules.MIN_VIA_DIAMETER,
                     "solder_mask_to_copper_clearance": 0.0,
                     "use_height_for_length_calcs": True,
                 },
@@ -105,7 +119,11 @@ def project_file(path, root_uuid):
         "sheets": [[root_uuid, "Root"]],
         "text_variables": {},
     }
-    path.write_text(json.dumps(document, indent=2) + "\n")
+    return document
+
+
+def project_file(path, root_uuid):
+    path.write_text(json.dumps(project_document(root_uuid), indent=2) + "\n")
 
 
 def library_tables(directory):

@@ -45,6 +45,20 @@ echo "== schematic and project =="
 echo "== board =="
 "$KICAD_PY" gen_pcb.py 2>&1 | grep -v "assert" || true
 
+# Again, and not redundantly. pcbnew.SaveBoard() writes the .kicad_pro too,
+# through KiCad's settings manager, and what it writes is KiCad's defaults --
+# no Power net class, no netclass patterns, min_via_annular_width back to 0.10
+# and clearance back to 0.20. Every DRC run in this project's history was
+# therefore checked against looser rules than the layout was drawn to, and
+# nothing said so.
+#
+# It has to run before the board the first time as well: gen_sch.py and
+# gen_pcb.py both need the library tables it writes.
+#
+# verify.py checks the file again after this, so if some later step learns to
+# clobber it too, the build says so instead of quietly passing.
+"$PY" gen_project.py >/dev/null
+
 # After the board, not before: this checks the drawing against design.py and
 # the board's footprint linkage against the drawing, so both must be current.
 echo "== checking the drawing and the board against design.py =="

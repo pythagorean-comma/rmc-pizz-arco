@@ -286,16 +286,25 @@ def output_section(sch, origin):
 
 
 def bypass_section(sch, origin):
-    """RMC's four rail capacitors, a pair at each end of the rails."""
+    """The bypass pairs, one column per package they belong to.
+
+    Driven off design.BYPASS rather than listed here, so adding or moving a
+    pair is one edit in the circuit and the drawing follows. Each pair draws
+    as two capacitors side by side under a label naming what they bypass,
+    because "a pair per package" is the thing a reviewer is checking and it
+    should be legible without counting.
+    """
     ox, oy = origin
-    for offset, (ref, net) in enumerate((("C901", "V+"), ("C902", "V-"),
-                                         ("C903", "V+"), ("C904", "V-"))):
-        x = ox + offset * 15.24
-        _, top, bottom = hang(sch, ref, (x, oy), net, "AGND")
-        sch.wire(top, (x, oy - 6.35))
-        sch.label(net, x, oy - 6.35, angle=90)
-        sch.wire(bottom, (x, oy + 6.35))
-        sch.power("power:GNDA", x, oy + 6.35, value="AGND")
+    for column, (where, (plus, minus, _)) in enumerate(circuit.BYPASS.items()):
+        x = ox + column * 30.48
+        sch.text(where, x + 7.62, oy - 12.7)
+        for offset, (ref, net) in enumerate(((plus, "V+"), (minus, "V-"))):
+            cx = x + offset * 15.24
+            _, top, bottom = hang(sch, ref, (cx, oy), net, "AGND")
+            sch.wire(top, (cx, oy - 6.35))
+            sch.label(net, cx, oy - 6.35, angle=90)
+            sch.wire(bottom, (cx, oy + 6.35))
+            sch.power("power:GNDA", cx, oy + 6.35, value="AGND")
 
 
 def flags(sch, origin):
