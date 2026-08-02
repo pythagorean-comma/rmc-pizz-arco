@@ -33,7 +33,7 @@ advanced process, no extra charge.
 | Min annular ring | 0.20 mm | 0.10–0.13 mm |
 | Board edge clearance | 0.50 mm | n/a |
 
-Hole count: **177 vias at 0.40 mm** and **29 connector holes at 1.00 mm**, 206
+Hole count: **147 vias at 0.40 mm** and **29 connector holes at 1.00 mm**, 176
 plated holes in all.
 
 Every one of these numbers went up in rev C, on RMC's advice of 2026-08-01.

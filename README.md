@@ -67,6 +67,7 @@ Run `python3 kicad.py` to see what it found.
 | [`DESIGN.md`](DESIGN.md) | What the circuit does and why, what must not be got wrong when wiring it, how the board came out, and what is still open with RMC. **Start here.** |
 | [`fab/ORDER.md`](fab/ORDER.md) | How to order it, including the four requirements that are invisible in the gerbers and the BOM. |
 | [`ENCLOSURE.md`](ENCLOSURE.md) | The tail-mounted housing study. Mounting and the loom are settled in principle; the box is not yet designed. |
+| [`docs/`](docs) | RMC's own schematic, and the correspondence: what was sent to them and the memo written before acting on their review. Records, not specifications — where they and `DESIGN.md` differ, `DESIGN.md` is right. |
 
 ## Status
 
