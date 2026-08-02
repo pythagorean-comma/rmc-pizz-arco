@@ -11,9 +11,12 @@ import pathlib
 import subprocess
 import sys
 
+import re
+
 import design as circuit
 import gen_project
 import kicad
+import rules
 import sexp
 
 KICAD_CLI = kicad.KICAD_CLI
@@ -214,6 +217,137 @@ def check_project_rules(project):
     return problems
 
 
+def board_figures(board):
+    """The numbers fab/ORDER.md quotes, read back off the built board.
+
+    Parsed with sexp rather than pcbnew, because verify.py runs under plain
+    python3 and only gen_pcb.py gets KiCad's bundled interpreter. Everything
+    needed is in the board file as text.
+    """
+    tree = sexp.parse(board.read_text())
+
+    copper = [layer for layer in sexp.find(tree, "layers")[1:]
+              if str(layer[1]).endswith(".Cu")]
+
+    xs, ys = [], []
+    for line in sexp.find_all(tree, "gr_line"):
+        for end in ("start", "end"):
+            point = sexp.find(line, end)
+            xs.append(float(point[1]))
+            ys.append(float(point[2]))
+
+    vias = list(sexp.find_all(tree, "via"))
+    via_drills = {float(sexp.find(v, "drill")[1]) for v in vias}
+
+    # A footprint counts as through-hole if any of its pads is drilled. The
+    # eight connectors are the only ones, and their holes are what the fab
+    # drills at a different size from the vias.
+    footprints = list(sexp.find_all(tree, "footprint"))
+    through_hole, pad_holes = 0, []
+    for footprint in footprints:
+        drilled = [p for p in sexp.find_all(footprint, "pad")
+                   if any(str(item) == "thru_hole" for item in p[:4])]
+        if drilled:
+            through_hole += 1
+            pad_holes += [float(sexp.find(p, "drill")[1]) for p in drilled]
+
+    return {
+        "layers": len(copper),
+        "width": round(max(xs) - min(xs), 1),
+        "height": round(max(ys) - min(ys), 1),
+        "vias": len(vias),
+        "via_drill": via_drills.pop() if len(via_drills) == 1 else None,
+        "connector_holes": len(pad_holes),
+        "connector_drill": (set(pad_holes).pop()
+                            if len(set(pad_holes)) == 1 else None),
+        "plated": len(vias) + len(pad_holes),
+        "placements": len(footprints),
+        "through_hole": through_hole,
+        "smd": len(footprints) - through_hole,
+    }
+
+
+def check_order_figures(board, order):
+    """fab/ORDER.md must still be describing the board that was just built.
+
+    ORDER.md carries about a dozen numbers that are all derivable -- the board
+    size, the layer count, every design rule, the hole count, the placement
+    split. They are written by hand, because the prose around them is worth
+    more than a generated table, and **twice** they have gone stale: the board
+    dimensions after the plane swap, and the hole count after the all-pass
+    feedback pair moved, which said 177 vias and 206 plated holes when the
+    board had 147 and 176.
+
+    That is worse than an ordinary documentation slip, because build.sh copies
+    this file into the fabrication zip. A stale figure is a wrong number in
+    front of the contractor, in the one document whose whole job is to carry
+    what the gerbers cannot.
+
+    So the numbers are asserted rather than generated: write the prose freely,
+    and the build refuses to package a board the document no longer describes.
+    """
+    text = order.read_text()
+    figures = board_figures(board)
+    problems = []
+
+    def stated(pattern, what):
+        """Pull one figure out of ORDER.md, or report that it has moved."""
+        found = re.search(pattern, text)
+        if found is None:
+            problems.append(f"{order.name}: cannot find the {what} figure -- "
+                            f"the wording moved, so this check stopped "
+                            f"checking it")
+            return None
+        return found
+
+    def show(values):
+        """Whole numbers as integers, so 147 does not read as 147.0."""
+        return " / ".join(f"{v:g}" for v in values)
+
+    def compare(pattern, what, *expected):
+        found = stated(pattern, what)
+        if found is None:
+            return
+        actual = tuple(float(g) for g in found.groups())
+        if actual != tuple(float(e) for e in expected):
+            problems.append(
+                f"{order.name}: {what} says {show(actual)}, "
+                f"the board says {show(float(e) for e in expected)}")
+
+    compare(r"\*\*Layers\*\* \| \*\*(\d+)\.", "layer count", figures["layers"])
+    compare(r"Board size \| ([\d.]+) × ([\d.]+) mm",
+            "board size", figures["width"], figures["height"])
+    compare(r"Hole count: \*\*(\d+) vias at ([\d.]+) mm\*\* and "
+            r"\*\*(\d+) connector holes at ([\d.]+) mm\*\*, (\d+)",
+            "hole count", figures["vias"], figures["via_drill"],
+            figures["connector_holes"], figures["connector_drill"],
+            figures["plated"])
+    compare(r"\*\*(\d+) placements: (\d+) SMD and (\d+) through-hole",
+            "placement count", figures["placements"], figures["smd"],
+            figures["through_hole"])
+
+    # The design rules come from rules.py, which gen_project.py writes into the
+    # .kicad_pro for DRC to enforce -- so this closes the loop from the rule,
+    # through the checker, to what the fab is told.
+    for pattern, what, expected in (
+            (r"\| Min track width \| ([\d.]+) mm", "min track width",
+             rules.TRACK),
+            (r"\| Power track width \| ([\d.]+) mm", "power track width",
+             rules.POWER_TRACK),
+            (r"\| Min clearance \| ([\d.]+) mm", "min clearance",
+             rules.CLEARANCE),
+            (r"\| Min drill \| ([\d.]+) mm", "min drill", rules.VIA_DRILL),
+            (r"\| Min annular ring \| ([\d.]+) mm", "min annular ring",
+             rules.ANNULAR_RING),
+            (r"\| Board edge clearance \| ([\d.]+) mm", "board edge clearance",
+             rules.MIN_COPPER_EDGE_CLEARANCE)):
+        compare(pattern, what, expected)
+    compare(r"\| Via pad / drill \| ([\d.]+) / ([\d.]+) mm", "via pad / drill",
+            rules.VIA_DIAMETER, rules.VIA_DRILL)
+
+    return problems
+
+
 def check_board_linkage(schematic, board):
     """Every footprint must point at its schematic symbol and name its library.
 
@@ -284,6 +418,7 @@ def main():
     problems += check_supply_annotations(schematic, board)
     problems += check_project_rules(
         here / circuit.PROJECT / f"{circuit.PROJECT}.kicad_pro")
+    problems += check_order_figures(board, here / "fab" / "ORDER.md")
     if problems:
         print(f"{len(problems)} board linkage problem(s):")
         for problem in problems[:20]:
@@ -294,6 +429,11 @@ def main():
           f"{gen_project.POWER_TRACK_WIDTH}mm power, "
           f"{gen_project.VIA_DIAMETER}/{gen_project.VIA_DRILL}mm vias, "
           f"{gen_project.CLEARANCE}mm clearance")
+    figures = board_figures(board)
+    print(f"fab/ORDER.md still describes this board: "
+          f"{figures['width']} x {figures['height']}mm, "
+          f"{figures['layers']} layers, {figures['placements']} placements, "
+          f"{figures['plated']} plated holes")
     return 0
 
 

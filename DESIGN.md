@@ -823,6 +823,25 @@ are. The generated schematic is read back through KiCad and compared against
 is fully routed with **0 DRC violations and 0 unconnected items**; routing is
 entirely in `gen_pcb.py` and no autorouter is involved.
 
+**`fab/ORDER.md` is checked against the board, not trusted.** It quotes about a
+dozen figures that are all derivable — board size, layer count, every design
+rule, the hole count, the placement split — and it is written by hand, because
+the prose around those numbers is worth more than a generated table would be.
+Twice that hand-maintenance failed: the board dimensions went stale after the
+plane swap, and the hole count after the feedback pair moved, claiming 177 vias
+and 206 plated holes when the board had 147 and 176. Both survived a commit.
+
+That is worse than an ordinary documentation slip, because `build.sh` copies this
+file into the fabrication zip: a stale figure is a wrong number in front of the
+contractor, in the one document whose whole job is to carry what the gerbers
+cannot. So `verify.check_order_figures()` reads the numbers back out of the
+document and compares them against the built board and `rules.py`. A mismatch
+fails the build, and the package is never written.
+
+It also fails if the *wording* moves — if a figure can no longer be found, that
+is reported rather than passed over, so rewording the document cannot quietly
+switch the check off.
+
 **`build.sh` runs `gen_project.py` twice, and that is not redundant.**
 `pcbnew.SaveBoard()` writes the `.kicad_pro` as well as the board, through
 KiCad's settings manager, and what it writes is KiCad's defaults — no `Power`
