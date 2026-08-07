@@ -801,6 +801,61 @@ not blocking.
 
 ---
 
+## Simulating it — not yet done
+
+The infrastructure is here (`kisim.py`, [`docs/simulating.md`](docs/simulating.md),
+both carried over from `summing-mixer` where they were worked out). No
+simulation schematic has been written for this board. What follows is what would
+be worth checking, so that work starts from a question rather than a blank sheet.
+
+**This board's central claim is falsifiable, which is what makes it worth
+simulating.** From `design.py`:
+
+> The second stage is a first-order all-pass whose RC corner sits at 34 kHz,
+> well above the audio band, so in-band it is a polarity flip [...] The all-pass
+> form keeps gain magnitude and source loading identical either way, so flipping
+> it produces no level jump.
+
+That is four assertions, each testable:
+
+| Analysis | Tests |
+| --- | --- |
+| AC magnitude, switch open vs closed | *"no level jump"* — the two traces should overlay to a fraction of a decibel |
+| AC phase, both states | *"a polarity flip"* — 180° apart in band, and how far it has drifted from 180° by 20 kHz |
+| Phase through the corner | the stated 34 kHz. R05 47 kΩ × C03 100 pF = 33.9 kHz, so this checks the arithmetic against the circuit |
+| CD4066 on-resistance in the switched leg | whether R<sub>on</sub> perturbs either. Against 47 kΩ it should be well under a tenth of a decibel — worth confirming rather than assuming, since R<sub>on</sub> rises sharply at ±4.5 V |
+
+### Model the piezo properly — it matters more here
+
+A PZT element is a **capacitive source**, roughly 1700 pF (the figure `C04`'s
+comment is matched to). With `R02`'s 3M3 bias resistor that is a high-pass at
+
+```
+1 / (2π × 3.3 MΩ × 1700 pF) = 28 Hz
+```
+
+**which is inside the audio band.** On `summing-mixer` the equivalent source
+interaction sat at 3 Hz and getting it wrong only weakened a measurement. Here
+it moves a corner that matters musically — a 28 Hz corner is close enough to the
+bottom of a bass viol's range to affect what the instrument sounds like, and
+it is set by two components whose values are already fixed.
+
+So the source model is not a detail to add later. Model it as a voltage source
+in series with ~1700 pF, and treat the resulting low-frequency response as a
+result in its own right.
+
+### Parts needing models
+
+- **OPA4191** — TI publish one. Note it will be a *single* amplifier, and the
+  symbol here is a quad; see `docs/simulating.md` for the borrow-and-rename
+  pattern
+- **CD4066B** — TI publish one. The switch is the interesting part of this
+  board, so a model that carries R<sub>on</sub> against supply voltage is worth
+  having
+- **The piezo** — no vendor model exists; build it as above
+
+---
+
 ## Building and verifying
 
 ```bash

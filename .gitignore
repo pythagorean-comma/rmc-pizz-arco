@@ -18,3 +18,9 @@ rmc-pizz-arco/*.kicad_prl
 
 .DS_Store
 *.iml
+
+# The unzipped staging copy of the gerbers. build.sh deletes and rebuilds it
+# every run, and rmc-pizz-arco-pcbway.zip beside it holds byte-identical
+# content -- so tracking both means ~1100 lines of churn per build for a
+# second copy of the same thing. The zip is the deliverable; this is scratch.
+fab/pcbway/

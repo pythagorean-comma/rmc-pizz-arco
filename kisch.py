@@ -176,6 +176,35 @@ class Schematic:
             for number, position in part.drawn_pins():
                 pin_points.setdefault(position, []).append(f"{part.ref}.{number}")
 
+        # Two different net names at one coordinate is one net, silently.
+        #
+        # A global label and a power symbol are both just a name attached to a
+        # point. Land them on the same point -- by a placement arithmetic slip,
+        # or because a row pitch happens to equal a drop length -- and KiCad
+        # merges the nets without a word. Everything downstream still passes:
+        # the sheet opens, ERC is clean, the netlist is well-formed. It is
+        # simply a different circuit.
+        #
+        # This cost two rounds on the simulation sheet. Ground was dropped one
+        # channel pitch below each row, which put it exactly on the next
+        # channel's input label, and the whole ground net became IN2 -- the
+        # netlist showed a bleed resistor as "R290 IN2 IN2", shorted end to
+        # end. Moving the pitch put channel 6's ground on the V+ rail label
+        # instead. Neither was visible on the drawing.
+        named = {}
+        for name, point, _, _ in self.labels:
+            named.setdefault(point, set()).add(name)
+        for part in self.parts:
+            if part.ref.startswith("#PWR"):
+                for _, position in part.drawn_pins():
+                    named.setdefault(position, set()).add(part.value)
+        collisions = [f"{point}: {sorted(names)}"
+                      for point, names in sorted(named.items()) if len(names) > 1]
+        if collisions:
+            raise ValueError(
+                "different net names share a coordinate, which silently merges "
+                "them:\n  " + "\n  ".join(collisions))
+
         # KiCad connects a pin sitting on a wire *end*, but not one sitting
         # part-way along a wire -- that silently drops the connection, so
         # refuse to emit a sheet containing one.
@@ -267,7 +296,12 @@ class Schematic:
     def render(self):
         root = [Sym("kicad_sch"),
                 [Sym("version"), SCH_VERSION],
-                [Sym("generator"), "violet-bridge"],
+                # The project's own name, not a literal. Both siblings hard-code
+                # one here and rmc-pizz-arco's still says "violet-bridge" -- a
+                # different project entirely. Deriving it is what lets this file
+                # be copied between repos unchanged, which is the whole premise
+                # of the shared infrastructure.
+                [Sym("generator"), self.project],
                 [Sym("generator_version"), "10.0"],
                 [Sym("uuid"), self.uuid],
                 [Sym("paper"), self.paper]]
