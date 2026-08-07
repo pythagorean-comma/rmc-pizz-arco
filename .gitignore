@@ -19,6 +19,16 @@ rmc-pizz-arco/*.kicad_prl
 .DS_Store
 *.iml
 
+# TI's OPA191 macromodel, fetched for the simulation schematic. Their licence
+# grants use, not redistribution, and this repository is public -- so the file
+# is fetched locally and never committed. gen_sim.py says where to get it and
+# generates the sheet whether or not it is present.
+#
+# There is no equivalent line for the CD4066B because TI publish no SPICE model
+# for it at all; gen_sim.py models the switch instead. See its MODEL_FILE
+# comment.
+rmc-pizz-arco/*.LIB
+
 # The unzipped staging copy of the gerbers. build.sh deletes and rebuilds it
 # every run, and rmc-pizz-arco-pcbway.zip beside it holds byte-identical
 # content -- so tracking both means ~1100 lines of churn per build for a

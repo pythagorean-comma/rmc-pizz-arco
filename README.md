@@ -22,8 +22,9 @@ The bridge these pickups sit in is a separate project:
 ## Everything is generated
 
 `design.py` is the single source of truth for the circuit. `gen_sch.py` draws
-the schematic from it, `gen_pcb.py` places and routes the board from it, and
-`verify.py` reads KiCad's own netlist back and compares it net by net.
+the schematic from it, `gen_pcb.py` places and routes the board from it,
+`gen_sim.py` draws a simulation sheet from it, and `verify.py` reads KiCad's own
+netlist back and compares it net by net.
 
 ```bash
 ./build.sh
@@ -37,6 +38,19 @@ accident.
 > **Anything changed in the KiCad GUI is destroyed by the next build.** Use the
 > editor to inspect, measure and try things out; changes that should survive
 > belong in the generator.
+
+## Simulating it
+
+`./build.sh` also writes `rmc-pizz-arco/rmc-pizz-arco-sim.kicad_sch`. Open it in
+KiCad and press Simulate; KiCad ships ngspice, so there is nothing to install.
+It tests the board's central claim — that the toggle flips polarity without
+changing level — and the low-frequency behaviour of the two piezo elements
+summing, which is where the surprises were. One file is needed and is not in
+this repository: TI's OPAx191 macromodel, from
+<https://www.ti.com/lit/zip/SBOMA30>, because their licence grants use but not
+redistribution. [`gen_sim.py`](gen_sim.py) says where to put it, and
+[`DESIGN.md`](DESIGN.md) says what the analyses found and what a failure would
+have looked like.
 
 ## Requirements
 
@@ -78,6 +92,13 @@ fabricated.
 This is **rev D**, which is RMC's rev.3: it answers their layout review of
 2026-08-01 and its addendum — the V− plane moved onto In2, the four bypass
 capacitors became ten, every design rule widened, the all-pass feedback pair
-moved up against the op-amp, and the buffer's 1 kΩ deleted. Two questions are still
-awaiting reply and one of them blocks ordering; both are listed in
+moved up against the op-amp, and the buffer's 1 kΩ deleted. Three questions are
+still awaiting reply and one of them blocks ordering; all are listed in
 [`DESIGN.md`](DESIGN.md).
+
+**Simulated, and no change to the board follows from it.** The polarity flip and
+the 34 kHz corner check out; the level match holds to about 3 kHz and reaches
+1.5 dB at 20 kHz; the summing capacitor turns out to be right for a reason
+nobody had written down. The one result worth acting on is a question rather
+than a fix — the Poly-Drive II's input impedance, which sets the bass response
+and which only RMC can supply.

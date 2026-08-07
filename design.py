@@ -11,11 +11,23 @@ Per string channel, following RMC's schematic of 2026-07-29:
                                                  |
     PZT2 (white) -- 1k --> [buffer] -- 47k --> [+-1 stage] -- 1n8 --+
 
-The second stage is a first-order all-pass whose RC corner sits at 34 kHz,
-well above the audio band, so in-band it is a polarity flip: switch open
-gives +1, switch closed grounds the non-inverting input and gives -1. The
-all-pass form keeps gain magnitude and source loading identical either way,
-so flipping it produces no level jump.
+The second stage is RMC's all-pass, whose RC corner sits at 34 kHz, so in
+band it is a polarity flip: switch open gives +1, switch closed grounds the
+non-inverting input and gives -1. The all-pass form rather than a plain
+switched inverter is what keeps gain magnitude and source loading the same
+either way, so flipping it produces no level jump.
+
+Simulated (gen_sim.py), that holds to about 3 kHz -- 0.03 dB and 2 degrees
+between the two states -- and not to the top of the band, where it reaches
+1.5 dB and 32 degrees at 20 kHz. C02 sits across R06, so the feedback
+impedance is not a resistor and the stage is not strictly an all-pass: open
+it is 1/(1+sT)^2 and closed it is -1/(1+sT). RMC drew it that way and it is
+built that way; see DESIGN.md, "What the simulation found".
+
+One consequence worth having next to the netlist: C01's 100 pF divides
+against the element's own 1700 pF, so the two elements balance at the
+summing node when C04 = 1700 + 100 = 1800 pF, not when C04 = 1700. That is
+the value fitted, and it means C01 cannot be changed without changing C04.
 
 The elements are wired out of phase on the transducer plate, so closing the
 switch brings them *into* phase. In phase is pizz; out of phase is arco.
@@ -314,11 +326,15 @@ def channel(design, index, quad_ref, half):
     _resistor(design, f"R{n}06", "47k 1%", ap_n, ap_out, "All-pass feedback")
     _capacitor(design, f"C{n}02", "100p", ap_n, ap_out, "All-pass feedback")
     _capacitor(design, f"C{n}03", "100p", ap_p, "AGND", "All-pass lag")
-    # Matched to the element's own 1700 pF so the two elements sum at equal
-    # weight -- string balance, not tolerance fussiness. C0G/NP0 is not
-    # optional: X7R at this value drifts with temperature and signal voltage.
-    # All six should come from one reel, because RMC's requirement is that the
-    # channels match each other rather than the nominal.
+    # Matched so the two elements sum at equal weight -- string balance, not
+    # tolerance fussiness. Not to the element's 1700 pF but to that plus C01's
+    # 100 pF, which divides against it and costs the white path 0.53 dB before
+    # the buffer. 1n8 is the balance point, measured; see gen_sim.py. So C01
+    # and C04 are now a pair and neither moves alone.
+    #
+    # C0G/NP0 is not optional: X7R at this value drifts with temperature and
+    # signal voltage. All six should come from one reel, because RMC's
+    # requirement is that the channels match each other rather than the nominal.
     _capacitor(design, f"C{n}04", "1n8 C0G", ap_out, out, "Sum into red element")
 
 

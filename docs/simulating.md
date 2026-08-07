@@ -15,10 +15,10 @@ connectors become sources, a supply section becomes ideal rails at the voltages
 the design predicts, and anything the analysis depends on that the board takes
 for granted — stray capacitance, source impedance — is modelled explicitly.
 
-## The three ways it lies to you
+## The four ways it lies to you
 
-Every one of these returns numbers. None of them errors. All three were hit on
-`summing-mixer`, and two of them are now impossible.
+Every one of these returns numbers. None of them errors. Three were hit on
+`summing-mixer` and the fourth on `rmc-pizz-arco`; two are now impossible.
 
 ### Ground must be node 0
 
@@ -45,6 +45,42 @@ The entire ground net became `IN2`, and a resistor appeared in the netlist as
 **`kisch.auto_junctions()` now refuses to emit any sheet where two different net
 names share a coordinate.** That is why the check exists.
 
+### A switch that is open in AC whichever way it is thrown
+
+`Simulation_SPICE:SWITCH` is the obvious part for a analog switch and it is
+wrong. ngspice's `SW` device **always contributes `roff` in AC analysis**,
+whatever its control voltage is doing. Its DC operating point is right — on
+`rmc-pizz-arco` the switched node sat at 0 V with the cell on and followed the
+buffer with it off — so nothing looks amiss, and then every AC sweep returns
+the switch-open circuit for both switch positions.
+
+The symptom is a *perfect* result. The two states came out identical to four
+decimal places at every frequency, which reads as a triumphant confirmation of
+"flipping the switch produces no level jump" and is the same answer the run
+would have given for a circuit with no switch in it at all. Sweeping `ron`
+changed nothing; sweeping `roff` changed both states together. That pair of
+observations is the diagnosis.
+
+The fix is to model the switch as what it electrically is, a resistance
+controlled by a voltage. ngspice linearises a behavioural resistor about its
+operating point, so its AC conductance is the one the DC solution chose:
+
+```
+R802 SWN 0 R='100+1e8/(1+exp(V(SW_CTL)/0.15))'
+```
+
+KiCad's netlister passes an ideal resistor's value through unchanged, so
+writing ngspice's own syntax into the `r` parameter is what gets that line out
+the other side. Check the exported netlist rather than assuming it.
+
+And the guard, which is cheap but has to be the right one: **read the switch's
+effect out of the same analysis you are about to trust.** On `rmc-pizz-arco`
+that is the phase of the switched stage at 100 Hz — near 0° open, near 180°
+closed. An `.op` does *not* catch it: with no signal applied the switched node
+sits at 0 V either way, so the operating point looks identical in both states
+and reads as agreement. The first version of the guard was an `.op`, and it was
+useless for exactly the reason the bug existed.
+
 ### A test that cannot fail is not evidence
 
 The one worth internalising, because no tool will catch it.
@@ -67,6 +103,17 @@ cannot say, the test is not testing.
 
 Manufacturers publish PSpice models. TI's are at `ti.com/lit/zip/<sbom-number>`,
 linked from the product page.
+
+**Not for everything, and the gap is not advertised.** TI have a model for the
+OPA4191 (`sbomA30`) and none at all for the CD4066B — not on the product page,
+not under tools and software, not anywhere; what circulates is community
+rebuilds from CD4007 gates. Check before planning an analysis around a model,
+because "TI publish PSpice models" is true in general and false in particular.
+Where there is no model, the honest substitute for a datasheet curve is a
+**sweep**: on `rmc-pizz-arco` the switch's on-resistance is swept across an
+order of magnitude rather than quoted at one value, which answers the question
+that was actually being asked (how sensitive is this to R<sub>on</sub>) instead
+of a question the model could not have answered anyway.
 
 **Do not commit them.** The licence grants use, not redistribution, and these
 repositories are public. Fetch the zip, unpack the `.LIB` beside the schematic

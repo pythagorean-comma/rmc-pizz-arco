@@ -1,0 +1,6526 @@
+(kicad_sch
+	(version 20250610)
+	(generator "rmc-pizz-arco-sim")
+	(generator_version "10.0")
+	(uuid "a17298ed-6459-5d1e-941d-e887f5fd59ed")
+	(paper "A2")
+	(title_block
+		(title "RMC pizz/arco switching board -- simulation")
+		(date "2026-08-07")
+		(rev "D")
+		(company "pythagorean-comma")
+	)
+	(lib_symbols
+		(symbol "Device:C"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.254)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "C"
+				(at 0.635 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "C"
+				(at 0.635 -2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0.9652 -3.81 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Unpolarized capacitor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "cap capacitor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "C_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "C_0_1"
+				(polyline
+					(pts
+						(xy -2.032 0.762)
+						(xy 2.032 0.762)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.032 -0.762)
+						(xy 2.032 -0.762)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "C_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 2.794)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 2.794)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Device:R"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "R"
+				(at 2.032 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "R"
+				(at 0 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at -1.778 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Resistor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "R res resistor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "R_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "R_0_1"
+				(rectangle
+					(start -1.016 -2.54)
+					(end 1.016 2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "R_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 1.27)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 1.27)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Simulation_SPICE:0"
+			(power global)
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "#GND"
+				(at 0 -5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "0"
+				(at 0 -2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" "https://ngspice.sourceforge.io/docs/ngspice-html-manual/manual.xhtml#subsec_Circuit_elements__device"
+				(at 0 -10.16 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "0V reference potential for simulation"
+				(at 0 -7.62 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "simulation"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "0_0_1"
+				(polyline
+					(pts
+						(xy -1.27 0)
+						(xy 0 -1.27)
+						(xy 1.27 0)
+						(xy -1.27 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "0_1_1"
+				(pin power_in line
+					(at 0 0 0)
+					(length 0)
+					(name ""
+						(effects
+							(font
+								(size 1.016 1.016)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.016 1.016)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Simulation_SPICE:VDC"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.0254)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "V"
+				(at 2.54 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "VDC"
+				(at 2.54 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" "https://ngspice.sourceforge.io/docs/ngspice-html-manual/manual.xhtml#sec_Independent_Sources_for"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Voltage source, DC"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Sim.Pins" "1=+ 2=-"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Sim.Type" "DC"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Sim.Device" "V"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "ki_keywords" "simulation"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "VDC_0_0"
+				(polyline
+					(pts
+						(xy -1.27 0.254)
+						(xy 1.27 0.254)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -0.762 -0.254)
+						(xy -1.27 -0.254)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.254 -0.254)
+						(xy -0.254 -0.254)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 -0.254)
+						(xy 0.762 -0.254)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(text "+"
+					(at 0 1.905 0)
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(symbol "VDC_0_1"
+				(circle
+					(center 0 0)
+					(radius 2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "VDC_1_1"
+				(pin passive line
+					(at 0 5.08 270)
+					(length 2.54)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -5.08 90)
+					(length 2.54)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Simulation_SPICE:VPULSE"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.0254)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "V"
+				(at 2.54 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "VPULSE"
+				(at 2.54 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" "https://ngspice.sourceforge.io/docs/ngspice-html-manual/manual.xhtml#sec_Independent_Sources_for"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Voltage source, pulse"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Sim.Pins" "1=+ 2=-"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Sim.Type" "PULSE"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Sim.Device" "V"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Sim.Params" "y1=0 y2=1 td=2n tr=2n tf=2n tw=50n per=100n"
+				(at 2.54 -2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "ki_keywords" "simulation"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "VPULSE_0_0"
+				(polyline
+					(pts
+						(xy -2.032 -0.762)
+						(xy -1.397 -0.762)
+						(xy -1.143 0.762)
+						(xy -0.127 0.762)
+						(xy 0.127 -0.762)
+						(xy 1.143 -0.762)
+						(xy 1.397 0.762)
+						(xy 2.032 0.762)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(text "+"
+					(at 0 1.905 0)
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(symbol "VPULSE_0_1"
+				(circle
+					(center 0 0)
+					(radius 2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "VPULSE_1_1"
+				(pin passive line
+					(at 0 5.08 270)
+					(length 2.54)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -5.08 90)
+					(length 2.54)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Simulation_SPICE:VSIN"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.0254)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "V"
+				(at 2.54 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "VSIN"
+				(at 2.54 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" "https://ngspice.sourceforge.io/docs/ngspice-html-manual/manual.xhtml#sec_Independent_Sources_for"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Voltage source, sinusoidal"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Sim.Pins" "1=+ 2=-"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Sim.Params" "dc=0 ampl=1 f=1k ac=1"
+				(at 2.54 -2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Sim.Type" "SIN"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Sim.Device" "V"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "ki_keywords" "simulation ac vac"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "VSIN_0_0"
+				(arc
+					(start -1.27 0)
+					(mid -0.635 0.6323)
+					(end 0 0)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 1.27 0)
+					(mid 0.635 -0.6323)
+					(end 0 0)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(text "+"
+					(at 0 1.905 0)
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(symbol "VSIN_0_1"
+				(circle
+					(center 0 0)
+					(radius 2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "VSIN_1_1"
+				(pin passive line
+					(at 0 5.08 270)
+					(length 2.54)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -5.08 90)
+					(length 2.54)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "rmc:OPA4191_SIM"
+			(pin_names
+				(offset 0.127)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "U"
+				(at 0 7.62 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "OPA4191_SIM"
+				(at 0 5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" "Package_TO_SOT_SMD:SOT-23-5"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" "http://www.ti.com/lit/ds/symlink/lm321.pdf"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Low Power Single Operational Amplifier, SOT-23-5"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "single opamp"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "SOT?23*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "OPA4191_SIM_0_1"
+				(polyline
+					(pts
+						(xy -5.08 5.08)
+						(xy 5.08 0)
+						(xy -5.08 -5.08)
+						(xy -5.08 5.08)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "OPA4191_SIM_1_1"
+				(pin input line
+					(at -7.62 2.54 0)
+					(length 2.54)
+					(name "+"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at -2.54 -7.62 90)
+					(length 3.81)
+					(name "V-"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -7.62 -2.54 0)
+					(length 2.54)
+					(name "-"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin output line
+					(at 7.62 0 180)
+					(length 2.54)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at -2.54 7.62 270)
+					(length 3.81)
+					(name "V+"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+	)
+	(wire
+		(pts
+			(xy 30.48 76.2)
+			(xy 30.48 81.28)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "793dcb1a-b47e-548d-b418-9e6bb2dafa1e")
+	)
+	(wire
+		(pts
+			(xy 30.48 66.04)
+			(xy 41.91 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8adcbb2b-3408-5dc5-a37d-070b7d236fc7")
+	)
+	(wire
+		(pts
+			(xy 49.53 66.04)
+			(xy 83.82 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f75404f5-8106-5fb9-8dfa-0e688a503e12")
+	)
+	(wire
+		(pts
+			(xy 83.82 66.04)
+			(xy 83.82 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7ade9f34-228f-5284-bf4a-c773d976c9a2")
+	)
+	(wire
+		(pts
+			(xy 83.82 78.74)
+			(xy 83.82 83.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9770f6af-9929-5b0f-9cbd-a86d69e6df1e")
+	)
+	(wire
+		(pts
+			(xy 83.82 66.04)
+			(xy 88.9 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d9535e51-92e1-5873-9f71-4d927348fa1d")
+	)
+	(wire
+		(pts
+			(xy 96.52 66.04)
+			(xy 104.14 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a449589d-0c96-5099-8693-57c2d46732f4")
+	)
+	(wire
+		(pts
+			(xy 104.14 66.04)
+			(xy 104.14 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "06881bad-1407-5577-bf14-f48b30e59b45")
+	)
+	(wire
+		(pts
+			(xy 104.14 78.74)
+			(xy 104.14 83.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "52c6ee85-af2e-5d5e-9ed0-392ec56ae946")
+	)
+	(wire
+		(pts
+			(xy 104.14 66.04)
+			(xy 111.76 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8b394ee1-4725-5fe6-a62b-d3ac4d5b746d")
+	)
+	(wire
+		(pts
+			(xy 127 68.58)
+			(xy 127 88.9)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "29c8002b-b02b-518d-a40c-3c9eb2a55f3d")
+	)
+	(wire
+		(pts
+			(xy 127 88.9)
+			(xy 107.95 88.9)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0a518519-1f59-57a0-9a3a-f9d41687b4e5")
+	)
+	(wire
+		(pts
+			(xy 107.95 88.9)
+			(xy 107.95 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "aa2f4bcb-cf6b-51ec-ba41-30ab27dc5678")
+	)
+	(wire
+		(pts
+			(xy 107.95 71.12)
+			(xy 111.76 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "023b26f0-45ff-5b4d-95bb-7e27411207a7")
+	)
+	(wire
+		(pts
+			(xy 127 68.58)
+			(xy 132.08 68.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "820e1fcd-630f-533a-9b9c-da35560b4399")
+	)
+	(wire
+		(pts
+			(xy 116.84 60.96)
+			(xy 116.84 53.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ac218c91-e8d1-50b4-960e-b6a0dd3e5b7b")
+	)
+	(wire
+		(pts
+			(xy 116.84 76.2)
+			(xy 116.84 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5e53c711-3809-5146-b453-63aeeeb81b9d")
+	)
+	(wire
+		(pts
+			(xy 132.08 63.5)
+			(xy 132.08 86.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a419ea1d-1f5c-5c05-8bf1-8a1f2c2a00d2")
+	)
+	(wire
+		(pts
+			(xy 132.08 66.04)
+			(xy 138.43 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "deb37120-75fd-53c5-a3d5-488683843e3e")
+	)
+	(wire
+		(pts
+			(xy 146.05 66.04)
+			(xy 157.48 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ed205a5f-7ca5-57cd-9f47-ce26c1f6f7cd")
+	)
+	(wire
+		(pts
+			(xy 132.08 86.36)
+			(xy 138.43 86.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b5819220-aded-5dba-aff5-2e03945d50ca")
+	)
+	(wire
+		(pts
+			(xy 146.05 86.36)
+			(xy 152.4 86.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4c31f3f8-1b1f-50c1-b685-ea68824b5d1e")
+	)
+	(wire
+		(pts
+			(xy 152.4 86.36)
+			(xy 165.1 86.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e58b89a3-ed83-5163-8407-7a3ca7626e42")
+	)
+	(wire
+		(pts
+			(xy 157.48 55.88)
+			(xy 157.48 73.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9a427335-6a7e-5253-acd9-c42e09191140")
+	)
+	(wire
+		(pts
+			(xy 157.48 73.66)
+			(xy 172.72 73.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "38b1bfae-bc01-5cd7-9e9f-3a85e8e62101")
+	)
+	(wire
+		(pts
+			(xy 157.48 55.88)
+			(xy 157.48 50.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a04506a2-3b67-5d5e-91ee-19967ac0096f")
+	)
+	(wire
+		(pts
+			(xy 172.72 78.74)
+			(xy 165.1 78.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "51b5d05e-b930-5e0e-9521-2d0ae7d58bd8")
+	)
+	(wire
+		(pts
+			(xy 165.1 78.74)
+			(xy 165.1 91.44)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bacaaa68-1152-583e-96d0-4521d23a5130")
+	)
+	(wire
+		(pts
+			(xy 165.1 99.06)
+			(xy 165.1 104.14)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8bb9eac4-c8c1-5d1c-b356-f5733dcce32c")
+	)
+	(wire
+		(pts
+			(xy 157.48 55.88)
+			(xy 165.1 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "70a9f367-08a3-5b3a-83fe-c97c73cd5205")
+	)
+	(wire
+		(pts
+			(xy 172.72 55.88)
+			(xy 195.58 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b1c332ac-9270-5df7-bb95-490160000375")
+	)
+	(wire
+		(pts
+			(xy 157.48 60.96)
+			(xy 165.1 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7a8f4799-7071-57a4-8eec-293f76bc47f7")
+	)
+	(wire
+		(pts
+			(xy 172.72 60.96)
+			(xy 195.58 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "01f687b9-a099-535e-9f3d-ca56e12e5ce0")
+	)
+	(wire
+		(pts
+			(xy 187.96 76.2)
+			(xy 195.58 76.2)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "76423547-513b-5fcb-8ee4-75f40d859d28")
+	)
+	(wire
+		(pts
+			(xy 195.58 55.88)
+			(xy 195.58 76.2)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e1c9068b-08f6-5074-a543-6546d8ebf243")
+	)
+	(wire
+		(pts
+			(xy 195.58 55.88)
+			(xy 195.58 50.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "cd1368f5-ef86-5f3e-a452-dc70da594199")
+	)
+	(wire
+		(pts
+			(xy 177.8 68.58)
+			(xy 177.8 63.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1d4cd4d8-f55f-5fe6-a827-91a0cef9883a")
+	)
+	(wire
+		(pts
+			(xy 177.8 83.82)
+			(xy 177.8 90.17)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0319ef39-6ddc-5565-807e-623cc34f6c91")
+	)
+	(wire
+		(pts
+			(xy 152.4 86.36)
+			(xy 152.4 99.06)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8cfe7318-768d-547b-b648-3dc4cfccda1b")
+	)
+	(wire
+		(pts
+			(xy 152.4 99.06)
+			(xy 152.4 104.14)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8bafe7a6-bd20-529b-81f2-8f2d41784f78")
+	)
+	(wire
+		(pts
+			(xy 152.4 111.76)
+			(xy 152.4 116.84)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b5aed1c7-1de5-5ba3-9511-5e7e4cc99cf2")
+	)
+	(wire
+		(pts
+			(xy 30.48 48.26)
+			(xy 30.48 53.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "92578e72-0db0-572a-a15b-1bcee4132b55")
+	)
+	(wire
+		(pts
+			(xy 30.48 38.1)
+			(xy 41.91 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b021cf01-85d7-5fdf-95a1-6e8349d7680f")
+	)
+	(wire
+		(pts
+			(xy 49.53 38.1)
+			(xy 220.98 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0a529f97-7bc5-5e4a-aec2-f5514f10840a")
+	)
+	(wire
+		(pts
+			(xy 195.58 55.88)
+			(xy 204.47 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "eb90eaa6-08f7-5ed5-9e00-e63c417f7631")
+	)
+	(wire
+		(pts
+			(xy 212.09 55.88)
+			(xy 220.98 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "636a0eee-fc0d-59e8-b284-2b9e9afd8f71")
+	)
+	(wire
+		(pts
+			(xy 220.98 55.88)
+			(xy 220.98 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "00df1a8b-2735-5b93-accc-a99b14edbb4e")
+	)
+	(wire
+		(pts
+			(xy 220.98 38.1)
+			(xy 233.68 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f50cd45e-beff-5945-9dab-07fac00c5368")
+	)
+	(wire
+		(pts
+			(xy 233.68 38.1)
+			(xy 233.68 43.18)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "28a64c67-8b3c-5f25-b91b-d8c2dbfc3343")
+	)
+	(wire
+		(pts
+			(xy 233.68 50.8)
+			(xy 233.68 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "30d28471-42a6-561d-92e3-fd63ad92c613")
+	)
+	(wire
+		(pts
+			(xy 233.68 38.1)
+			(xy 246.38 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e996f9a3-3334-552f-8d4b-880d4ab769c1")
+	)
+	(wire
+		(pts
+			(xy 246.38 38.1)
+			(xy 246.38 43.18)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3fd85c9d-628e-5602-94c2-2c2b20968705")
+	)
+	(wire
+		(pts
+			(xy 246.38 50.8)
+			(xy 246.38 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b3941938-57b7-50bc-9e1d-076cc30e6daa")
+	)
+	(wire
+		(pts
+			(xy 246.38 38.1)
+			(xy 259.08 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6ce9720b-b0da-52bf-91b9-eceb3e292041")
+	)
+	(wire
+		(pts
+			(xy 76.2 139.7)
+			(xy 83.82 139.7)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2bbd0bb1-92eb-516e-a08b-47ba1c7f9e98")
+	)
+	(wire
+		(pts
+			(xy 91.44 139.7)
+			(xy 95.25 139.7)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9de7222a-f960-561e-b33e-895baef46ca4")
+	)
+	(wire
+		(pts
+			(xy 95.25 139.7)
+			(xy 100.33 139.7)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5bb7dbaf-08cd-5bf6-be87-a3e9749f3dc2")
+	)
+	(wire
+		(pts
+			(xy 107.95 139.7)
+			(xy 121.92 139.7)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9b044209-9f51-5aa1-88b4-3440087700e4")
+	)
+	(wire
+		(pts
+			(xy 121.92 139.7)
+			(xy 134.62 139.7)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "eb1dfcef-240f-5f50-8cfb-7942ea58d8bc")
+	)
+	(wire
+		(pts
+			(xy 121.92 139.7)
+			(xy 121.92 144.78)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ca8ecf5d-0085-5449-948e-4c4d3f2bc9e2")
+	)
+	(wire
+		(pts
+			(xy 121.92 152.4)
+			(xy 121.92 157.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c9ae9c7f-2849-5b47-985e-3fda9d846c8b")
+	)
+	(wire
+		(pts
+			(xy 134.62 139.7)
+			(xy 134.62 144.78)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a94339d2-063d-53a7-8e46-354533c31fe0")
+	)
+	(wire
+		(pts
+			(xy 134.62 152.4)
+			(xy 134.62 157.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "dfceb14e-9b87-5998-9c97-62dcf0e023e5")
+	)
+	(wire
+		(pts
+			(xy 104.14 152.4)
+			(xy 104.14 147.32)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "89bb6dc2-8046-52c9-a03d-e8b995687a34")
+	)
+	(wire
+		(pts
+			(xy 104.14 162.56)
+			(xy 104.14 167.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f8b49f75-ab92-5ee9-a255-656b693b82c0")
+	)
+	(wire
+		(pts
+			(xy 279.4 121.92)
+			(xy 279.4 116.84)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e23d2767-f9a4-574d-87e6-39e649e91b4a")
+	)
+	(wire
+		(pts
+			(xy 279.4 132.08)
+			(xy 279.4 137.16)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4fac93a0-dc8d-5aab-a4e3-2469a2e5bfe4")
+	)
+	(wire
+		(pts
+			(xy 304.8 121.92)
+			(xy 304.8 116.84)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bd5c7f87-bdde-55f4-bc26-f5dd495246ed")
+	)
+	(wire
+		(pts
+			(xy 304.8 132.08)
+			(xy 304.8 137.16)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d0ecb5c3-59a9-591b-a894-80e109c60867")
+	)
+	(junction
+		(at 83.82 66.04)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "d5d5190f-dfeb-5d45-a6c6-403dc2435425")
+	)
+	(junction
+		(at 104.14 66.04)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "06b89002-630c-5788-b793-a89019c170e5")
+	)
+	(junction
+		(at 121.92 139.7)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "fd493d35-727c-5601-8daa-6a333fda2747")
+	)
+	(junction
+		(at 127 68.58)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "ac515d31-27ba-5be4-90be-50cd3639a310")
+	)
+	(junction
+		(at 132.08 66.04)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "479f2269-3141-597b-b4a8-7c69be32959f")
+	)
+	(junction
+		(at 132.08 68.58)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "484f38eb-a735-5e5b-848a-5fedc98adf0e")
+	)
+	(junction
+		(at 152.4 86.36)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "876a463e-36e6-53c0-bce6-ef48a2c852e9")
+	)
+	(junction
+		(at 157.48 55.88)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "be408976-38fd-5a1b-ab64-1bbec71ef687")
+	)
+	(junction
+		(at 157.48 60.96)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "530a8cad-b30d-514c-a43f-e79fd7ca1fb7")
+	)
+	(junction
+		(at 157.48 66.04)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "2488fd70-c0c6-566c-b928-48310caa2a64")
+	)
+	(junction
+		(at 165.1 86.36)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "d39ad8ed-9243-5960-89a1-c5d4e920eff9")
+	)
+	(junction
+		(at 195.58 55.88)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "034b6df1-2d12-5001-8d1e-6f29b5526924")
+	)
+	(junction
+		(at 195.58 60.96)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "235660fb-009d-5d24-8723-cc2f444b7f82")
+	)
+	(junction
+		(at 220.98 38.1)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "d7c46bf7-b24b-5b29-9910-00b7baf42ebd")
+	)
+	(junction
+		(at 233.68 38.1)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "f1cc7990-5df1-578e-958c-3c1f777a0d7d")
+	)
+	(junction
+		(at 246.38 38.1)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "f5165630-b011-5058-b6db-d31448cb7421")
+	)
+	(global_label "IN_W"
+		(shape input)
+		(at 83.82 66.04 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "376cfbaa-17b0-556a-9936-ab9f9874a7fc")
+	)
+	(global_label "BUFIN"
+		(shape input)
+		(at 104.14 66.04 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "0684425d-d6e1-541e-8d16-8ccf6722ebf3")
+	)
+	(global_label "V+"
+		(shape input)
+		(at 116.84 53.34 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "dd96da4f-a850-5b4f-80e1-4def111e98de")
+	)
+	(global_label "V-"
+		(shape input)
+		(at 116.84 82.55 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "aeb05575-beee-58f8-a366-c03cff737f6a")
+	)
+	(global_label "BUFOUT"
+		(shape input)
+		(at 132.08 63.5 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "1a173cc0-7e61-5d41-93e5-df4849cb1c3c")
+	)
+	(global_label "APN"
+		(shape input)
+		(at 157.48 50.8 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "b91e14bc-2a38-541f-af1c-21ef1d625d99")
+	)
+	(global_label "APOUT"
+		(shape input)
+		(at 195.58 50.8 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "bb5a444a-ac5a-595c-bc0a-7c16ec3a83f2")
+	)
+	(global_label "V-"
+		(shape input)
+		(at 177.8 63.5 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "9bf82398-f372-516d-9f2d-4d4ec7db8c0d")
+	)
+	(global_label "V+"
+		(shape input)
+		(at 177.8 90.17 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "ced21f30-075f-5619-8161-2b47f30d9ab1")
+	)
+	(global_label "SWN"
+		(shape input)
+		(at 152.4 99.06 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "78250898-a8ca-5b82-9d2c-823f4e8ee003")
+	)
+	(global_label "OUT"
+		(shape input)
+		(at 259.08 38.1 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "c770fa7b-fc51-5318-a1bb-8c079deaf781")
+	)
+	(global_label "V+"
+		(shape input)
+		(at 76.2 139.7 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "2106fc5f-1b73-5d4f-a65b-5cf426d4d074")
+	)
+	(global_label "SW_TOG"
+		(shape input)
+		(at 95.25 139.7 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "c15dd9b2-ad33-5f44-82a8-2b7e3e630de9")
+	)
+	(global_label "SW_CTL"
+		(shape input)
+		(at 134.62 139.7 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "c0f790b5-8b9f-5a65-ba63-0641a69e9807")
+	)
+	(global_label "V-"
+		(shape input)
+		(at 121.92 157.48 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "eb47bf95-4111-58b3-b147-c1fb6fc8d1ed")
+	)
+	(global_label "TOGGLE"
+		(shape input)
+		(at 104.14 147.32 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "9dc2028d-a4dc-550c-abb8-91664a97c8b3")
+	)
+	(global_label "V+"
+		(shape input)
+		(at 279.4 116.84 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "2fcc10c5-2211-5a46-bc30-4d920fc7feec")
+	)
+	(global_label "V-"
+		(shape input)
+		(at 304.8 116.84 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "2159d88e-7ee6-5600-ba78-4096a3b0db33")
+	)
+	(text "* The model is included by U101/U102's Sim.Library field -- adding an"
+		(at 12.7 180.34 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "df092525-1a8b-5b56-9882-c650a262534b")
+	)
+	(text "* .include here as well would load it twice."
+		(at 12.7 184.78 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "25aecc7d-883d-5981-b007-5d9131b8aef7")
+	)
+	(text ""
+		(at 12.7 189.23 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "809865bc-a066-5b0b-b9f2-0cb95731b606")
+	)
+	(text "* Not optional for anything driven near a rail. TI's macromodel stalls"
+		(at 12.7 193.68 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "c5db0db5-4365-538f-a5be-e15f7c9416ea")
+	)
+	(text "* when the output is pinned: ngspice reports 'Timestep too small' from"
+		(at 12.7 198.12 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "6b90ec28-ce71-53fe-a286-8c9e37ff3341")
+	)
+	(text "* inside the amplifier and returns a flat zero, which reads exactly"
+		(at 12.7 202.56 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "6c66bc2b-d640-57dd-b7e9-d10c2c956e7d")
+	)
+	(text "* like clipping and is a failed solve."
+		(at 12.7 207.01 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "aa70869d-61f5-55aa-b570-b01cbfe0fd4e")
+	)
+	(text ".options reltol=0.003 abstol=1e-9 vntol=1e-6 itl4=500 method=gear"
+		(at 12.7 211.46 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "1e763d4f-3aee-5a16-a1bb-0f8c86e7e41a")
+	)
+	(text ""
+		(at 12.7 215.9 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "29a78b47-afde-5351-87c3-52b82f248722")
+	)
+	(text "* V803's y1 picks the mode and every analysis below depends on it,"
+		(at 12.7 220.34 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "31b2e67d-fefd-57d1-aa6e-5d1a7fa7c552")
+	)
+	(text "* because y1 is what a pulse holds at the operating point:"
+		(at 12.7 224.79 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "bbfa35df-78eb-55f7-8cfc-aba76799f8aa")
+	)
+	(text "*   y1=1  switch ON  -- all-pass -1, elements in phase     -- PIZZ"
+		(at 12.7 229.24 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "3faefe18-bf18-59f0-b481-e564e9986d6e")
+	)
+	(text "*   y1=-1 switch OFF -- all-pass +1, elements out of phase -- ARCO"
+		(at 12.7 233.68 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "2c99e2eb-27c1-5c61-8585-ad33b18060c3")
+	)
+	(text ""
+		(at 12.7 238.12 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "e222d51f-93b5-5cca-a337-e3ed328e3de1")
+	)
+	(text "* CHECK THE STATE BEFORE TRUSTING ANY SWEEP, and check it in the same"
+		(at 12.7 242.57 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "93935613-f26f-5980-8ff5-ab71cdfd3924")
+	)
+	(text "* analysis you are about to run. Sweep to 100 Hz and read"
+		(at 12.7 247.02 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "8a17416e-c5ae-5a38-913d-3f6dbbcfb4da")
+	)
+	(text "* vp(APOUT)-vp(BUFOUT): near 0 deg is arco, near 180 deg is pizz. If"
+		(at 12.7 251.46 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "9a1f4da5-5634-5492-bde1-4d132aedd6ee")
+	)
+	(text "* both states give the same answer the switch is not reaching the"
+		(at 12.7 255.91 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "abda80be-0b1f-5a75-ab64-47b2a7c8f067")
+	)
+	(text "* small-signal solution and every result below is the same circuit"
+		(at 12.7 260.35 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "0069e0b5-4e84-55f7-a895-9d3dbab11761")
+	)
+	(text "* twice -- which is what Simulation_SPICE:SWITCH does here, silently."
+		(at 12.7 264.8 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "10e75df0-6f7c-5d03-8221-259651b3b357")
+	)
+	(text "*"
+		(at 12.7 269.24 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "e8a892b9-ebd6-530c-91d5-e85c38d86a0f")
+	)
+	(text "* A .op will NOT catch it. With no signal applied the switched node"
+		(at 12.7 273.69 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "c9b0711d-f697-548d-9c8d-7a8142dc2a09")
+	)
+	(text "* sits at 0 V either way, so the operating point looks identical in"
+		(at 12.7 278.13 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "0754af8c-702d-51e9-b0ab-72e86aa3bd43")
+	)
+	(text "* both states and reads as agreement. The state has to be checked"
+		(at 12.7 282.58 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "d99d9531-294e-5c54-88cd-9bce2fdbfded")
+	)
+	(text "* where the state is used."
+		(at 12.7 287.02 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "d009a47f-f77e-5222-95fc-6005e7e2ae45")
+	)
+	(text ""
+		(at 12.7 291.47 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "9dba4287-f336-5828-96bc-931eea692873")
+	)
+	(text "* Results below are what this sheet returned on 2026-08-07, kept"
+		(at 12.7 295.91 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "89084ced-c389-5682-be2d-177255dd6d3f")
+	)
+	(text "* beside each analysis so a later run that disagrees is visible as a"
+		(at 12.7 300.36 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "01a5b4b1-5b7d-5856-9b93-b6a9da17142d")
+	)
+	(text "* disagreement. DESIGN.md carries the same numbers in prose."
+		(at 12.7 304.8 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "5b44cb9e-b543-5643-a6c6-485586a89798")
+	)
+	(text ""
+		(at 12.7 309.25 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "0f97c036-13d9-5c42-b876-092bd7b51dad")
+	)
+	(text "* --- 1. LEVEL JUMP: does flipping the switch change the gain? ------"
+		(at 12.7 313.69 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "1c5d041c-a6c8-547f-889d-eb706ef6a029")
+	)
+	(text "* design.py: 'the all-pass form keeps gain magnitude and source"
+		(at 12.7 318.13 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "45d2a489-6a23-5c52-8bf3-0fcdda238381")
+	)
+	(text "* loading identical either way, so flipping it produces no level"
+		(at 12.7 322.58 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "24a1f83b-f32e-51cf-a5ea-7c261b019881")
+	)
+	(text "* jump.' Plot vdb(APOUT)-vdb(BUFOUT) in each state and subtract."
+		(at 12.7 327.02 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "dfcf4296-c971-5b60-9777-36f68fc3f400")
+	)
+	(text "*"
+		(at 12.7 331.47 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "d4680676-3a26-50f7-8a1d-6549dfccccb3")
+	)
+	(text "* C02 is in parallel with R06, so the feedback impedance is not a"
+		(at 12.7 335.92 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "ade49bf5-5e7e-533d-8ac8-7da6a923a3d2")
+	)
+	(text "* resistor and the stage is not an all-pass: it is 1/(1+sT)^2 open"
+		(at 12.7 340.36 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "c806a628-08c8-5984-bda7-472be7555dc1")
+	)
+	(text "* and -1/(1+sT) closed, T = 4.70 us."
+		(at 12.7 344.81 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "bbb8c35a-0c2f-5f64-b4f0-28a3a91ad6a9")
+	)
+	(text "*"
+		(at 12.7 349.25 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "4063a626-507d-5a5a-bb62-953a99015706")
+	)
+	(text "* MEASURED, pizz minus arco: -0.032 dB at 20 Hz (that part is R_on,"
+		(at 12.7 353.7 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "e658fe35-998c-59f4-9c50-afcb6d346dbe")
+	)
+	(text "* analysis 4), -0.028 at 1 kHz, crossing zero near 3 kHz, then +0.078"
+		(at 12.7 358.14 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "395ed139-42f3-5aea-8913-fce236fda821")
+	)
+	(text "* at 5 kHz and +1.464 at 20 kHz. So: no audible level jump below a few"
+		(at 12.7 362.59 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "847563dd-94be-5527-b50a-63add478bac2")
+	)
+	(text "* kHz, and 1.5 dB at the top of the band, against 'a fraction of a"
+		(at 12.7 367.03 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "75d2b2a7-f005-534f-9a71-00d06b465648")
+	)
+	(text "* decibel'. The two error terms pull opposite ways and cancel at 3 kHz."
+		(at 12.7 371.48 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "ac6a291a-bd89-5990-a200-9515eb6170a8")
+	)
+	(text "*"
+		(at 12.7 375.92 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "60ca128d-0955-5340-ae09-2a5348188d30")
+	)
+	(text "* RED: a perfect overlay to 20 kHz. That is what a true all-pass does"
+		(at 12.7 380.37 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "fc7a982b-1d1c-5042-b101-b5bf958366de")
+	)
+	(text "* -- i.e. C102 is not actually across R106 on this sheet, and the"
+		(at 12.7 384.81 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "89776481-b838-5c8b-916d-4ffda3c9520c")
+	)
+	(text "* drawing has stopped matching design.py."
+		(at 12.7 389.25 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "ff783b8c-64bd-5b3a-920e-0d95e4687bd4")
+	)
+	(text ".ac dec 50 10 1meg"
+		(at 12.7 393.7 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "36b65d8e-0dd9-5a10-8d55-a4a7104a4f1b")
+	)
+	(text ""
+		(at 12.7 398.14 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "b1ab8f3e-03f2-5e9f-ab55-755d6a01c8f0")
+	)
+	(text "* --- 2. POLARITY: is it a flip, and how good a one? -----------------"
+		(at 12.7 402.59 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "c0e191a7-34a9-5899-83f4-e1a32896423c")
+	)
+	(text "* Plot vp(APOUT)-vp(BUFOUT) in each state; the claim is 180 deg apart."
+		(at 203.2 180.34 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "0d911cd8-4b9a-59c7-8e85-8dcd59b0e6d8")
+	)
+	(text "* MEASURED separation 180.2 deg at 100 Hz, 181.8 at 1 kHz, 188.8 at"
+		(at 203.2 184.78 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "46cddd6a-23b0-54fb-825c-13fe53d76b3e")
+	)
+	(text "* 5 kHz, 211.7 at 20 kHz. Predicted 181.7 / 188.4 / 210.6 by hand from"
+		(at 203.2 189.23 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "5242eb15-a771-5518-8070-ac679ffe5675")
+	)
+	(text "* the transfer functions above, so the algebra and the solver agree to"
+		(at 203.2 193.68 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "aa722e27-1da0-5444-8112-ecc4fdb3ef9a")
+	)
+	(text "* about a degree and the stage is a clean flip only below ~2 kHz."
+		(at 203.2 198.12 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "199a4a46-952c-545a-b46c-2944993c9414")
+	)
+	(text "* RED: exactly 180.000 at every frequency. That is an ideal inverter,"
+		(at 203.2 202.56 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "52e64786-cde6-5268-94c8-a65e0f2daab2")
+	)
+	(text "* not this circuit, and it means the reactive parts are not in play."
+		(at 203.2 207.01 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "2ab8ea20-7503-5f63-9b85-16678acabdd5")
+	)
+	(text "*.ac dec 50 10 1meg"
+		(at 203.2 211.46 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "38410e1b-1ca7-541e-831b-c5d3a6517ec5")
+	)
+	(text ""
+		(at 203.2 215.9 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "0ce13e3e-242d-5ece-b96e-fc4605c9fb0a")
+	)
+	(text "* --- 3. THE CORNER: does 34 kHz survive contact with the circuit? ---"
+		(at 203.2 220.34 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "b4526cca-70b6-5f9a-8a0e-7b79e073799a")
+	)
+	(text "* R05 x C03 = 33.9 kHz, quoted in design.py and never checked"
+		(at 203.2 224.79 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "6c533000-4ac1-5abb-a881-c4cc5fb118fc")
+	)
+	(text "* against the built network."
+		(at 203.2 229.24 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "30b38415-8484-5f05-af84-fe25fb26c689")
+	)
+	(text "* MEASURED at 33.9 kHz: arco -92.7 deg, which is the -90 of a matched"
+		(at 203.2 233.68 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "13e9427c-df47-559c-b530-e71da96d42ec")
+	)
+	(text "* two-pole; pizz 133.9 deg, which is the 180-45 of one pole. The"
+		(at 203.2 238.12 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "722f7c8c-c65f-57f0-b1b7-c351d27459ff")
+	)
+	(text "* arithmetic holds AND the two states differ in order, not just sign."
+		(at 203.2 242.57 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "90c22d12-360b-5b57-88bc-491ddae5ed09")
+	)
+	(text "*"
+		(at 203.2 247.02 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "c19a9797-60c0-5e76-9170-c899ce125571")
+	)
+	(text "* Above ~200 kHz the stage stops attenuating and turns back up,"
+		(at 203.2 251.46 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "48a744af-7666-5fc2-a653-aedc7fe70134")
+	)
+	(text "* reaching +4.5 dB at 1 MHz. That is the amplifier, not the network:"
+		(at 203.2 255.91 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "793573a2-9ccf-5864-a50f-2b956e5a255f")
+	)
+	(text "* swapping U102 for an ideal VCVS gives a clean -40 dB/decade all the"
+		(at 203.2 260.35 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "3c7ade34-60af-5a77-895b-c07fea163b0b")
+	)
+	(text "* way (-19.8, -38.9, -58.8 dB at 100k, 300k, 1M). An op-amp cannot"
+		(at 203.2 264.8 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "818e2d8d-2673-5fc1-8bc3-dee7d8fbb2b1")
+	)
+	(text "* attenuate past its own open-loop gain, and C02 is a passive path"
+		(at 203.2 269.24 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "71d37dfe-1e1b-5d06-9a2f-4d8964dc97b1")
+	)
+	(text "* from APN to APOUT that does not need it. Two decades above audio."
+		(at 203.2 273.69 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "1b854ec3-fbf5-5fc2-94c3-850b55a47123")
+	)
+	(text "* RED: a single-pole rolloff in BOTH states. Open should be two-pole"
+		(at 203.2 278.13 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "45c60904-5049-5908-977c-a752de10cc96")
+	)
+	(text "* -- one from R05/C03 and one from R06/C02 -- and a single pole there"
+		(at 203.2 282.58 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "4ec8341e-c47d-56c4-9346-fa7586dfa384")
+	)
+	(text "* means one of the two capacitors is doing nothing."
+		(at 203.2 287.02 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "c53ba545-ec8e-543e-9d55-11bb5d0b9eff")
+	)
+	(text "*.ac dec 100 1k 1meg"
+		(at 203.2 291.47 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "9bc2c465-b38e-5ada-8148-345b0e92c2b1")
+	)
+	(text ""
+		(at 203.2 295.91 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "7fedc00d-f9b6-538f-95a0-be1247c3ac56")
+	)
+	(text "* --- 4. R_on: does the switch perturb the closed state? -------------"
+		(at 203.2 300.36 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "99795abf-514c-58ba-85eb-b8839ece0331")
+	)
+	(text "* Edit R802's ron (the leading term in its expression) and repeat."
+		(at 203.2 304.8 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "0931c0db-c355-5d22-b4be-401415845336")
+	)
+	(text "* MEASURED level jump against arco at 1 kHz:"
+		(at 203.2 309.25 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "1f6ae7f0-4911-5c55-8f79-b8ef3af6502b")
+	)
+	(text "*    0 ohm  +0.009 dB      300 ohm  -0.102 dB"
+		(at 203.2 313.69 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "8a46d4ed-0d79-572e-ae0f-85e1d9780677")
+	)
+	(text "*  100 ohm  -0.028 dB     1000 ohm  -0.360 dB"
+		(at 203.2 318.13 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "c58f682b-b675-5f8c-a0d2-ab82fa99ca73")
+	)
+	(text "*                         3000 ohm  -1.101 dB"
+		(at 203.2 322.58 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "c02443c8-4410-5fa7-9c06-e935239c6806")
+	)
+	(text "* Hand prediction was -0.037 / -0.111 / -0.370 relative to the ideal"
+		(at 203.2 327.02 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "7aed66dc-c0a8-58e8-87fe-acd2e047d51e")
+	)
+	(text "* switch; measured -0.037 / -0.111 / -0.369. R_on divides against"
+		(at 203.2 331.47 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "580e0e25-d49d-5ab5-a4b6-f463b92c572e")
+	)
+	(text "* R05's 47k and leaks the switched node's ground reference into the"
+		(at 203.2 335.92 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "31ff99b5-df18-5e5e-b785-69eb05acb5ac")
+	)
+	(text "* sum, so it moves the closed state only."
+		(at 203.2 340.36 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "74fb8cef-8667-57f7-a799-016dddc60171")
+	)
+	(text "* DESIGN.md says 'well under a tenth of a decibel'. True to ~300 ohms."
+		(at 203.2 344.81 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "cd59a28b-44b1-584f-933f-0b2a309c43cc")
+	)
+	(text "* RED: no effect, or an effect that does not scale with ron. An ideal"
+		(at 203.2 349.25 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "5d777f2b-4987-51c0-a6ce-90936701532a")
+	)
+	(text "* short returns that for free, for any circuit at all."
+		(at 203.2 353.7 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "55e88bf4-51bf-5703-97d5-3ab6bcc19c56")
+	)
+	(text "*.ac dec 20 20 20k"
+		(at 203.2 358.14 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "54bc7af9-1703-51e2-8a8a-f40892e61b98")
+	)
+	(text ""
+		(at 203.2 362.59 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "e89daa66-cf86-5865-96a9-f74f875003a8")
+	)
+	(text "* --- 5. LOW FREQUENCY: the result, not the setup --------------------"
+		(at 203.2 367.03 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "bf5bfd84-6261-55d5-bdd4-a687ad730f8f")
+	)
+	(text "* Drive the elements in antiphase, which is vertical string motion:"
+		(at 203.2 371.48 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "fbee1c03-ef78-5e86-b9ca-fc725f85961c")
+	)
+	(text "* set V801 to ac=-1 and leave V802 at ac=1. Then arco should null and"
+		(at 203.2 375.92 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "71664ed7-121c-5b67-8c9d-ab817ea078f1")
+	)
+	(text "* pizz should sum. Plot vdb(OUT) in each state; the gap is the null."
+		(at 203.2 380.37 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "187f02bd-3864-50d2-b5d0-445e9f5e5c05")
+	)
+	(text "*"
+		(at 203.2 384.81 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "42784f85-0824-506e-8cc6-905fd2115172")
+	)
+	(text "* The white element sees its own 1700 pF into R02's 3M3, a"
+		(at 203.2 389.25 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "44620b3e-0f11-50a9-9e8e-b54ec4b7e25e")
+	)
+	(text "* 28.4 Hz high-pass. The red element sees no bias resistor at"
+		(at 203.2 393.7 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "921141d0-601a-53bd-a23e-fc57001bacb2")
+	)
+	(text "* all. That corner is on ONE path, so the two arrive at OUT with a"
+		(at 203.2 398.14 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "818de225-5665-5d0c-a053-88899887b3f2")
+	)
+	(text "* frequency-dependent phase error and the arco null fills in."
+		(at 203.2 402.59 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "b0037ed1-287f-5a3b-944d-323d83d53224")
+	)
+	(text "*"
+		(at 393.7 180.34 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "0906b220-1767-5660-b00d-db1b3c23cab2")
+	)
+	(text "* MEASURED arco rejection: 1.9 dB at 10 Hz, 9.9 at 40, 15.2 at 73"
+		(at 393.7 184.78 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "7569eae7-d045-5948-b7cf-43422d73a273")
+	)
+	(text "* (D2, the bottom string), 21.4 at 150, 28.9 at 300, 38.7 at 500,"
+		(at 393.7 189.23 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "4ed3d45b-051e-59ef-89af-d8fe592f94da")
+	)
+	(text "* 35.0 at 1k, 25.2 at 2k, 16.4 at 5k. A peak, not a plateau: the"
+		(at 393.7 193.68 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "6ccf1cbe-e110-5966-94e7-ea3d249f92f7")
+	)
+	(text "* 28 Hz corner eats the bottom and analysis 1's C02 eats the top."
+		(at 393.7 198.12 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "6423a23d-d321-57fc-93d8-861ad10c2836")
+	)
+	(text "*"
+		(at 393.7 202.56 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "d5f6c33f-eadf-56f0-9e32-ceafddcc5333")
+	)
+	(text "* And the finding that was not predicted. C01's 100 pF divides against"
+		(at 393.7 207.01 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "460a93f1-8c82-5e34-a5ca-94a829df3000")
+	)
+	(text "* the element's 1700 pF and costs the white path 0.53 dB before the"
+		(at 393.7 211.46 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "2ecf87e7-d3ed-5db3-8e08-5ec48bb289b4")
+	)
+	(text "* buffer, so the two paths balance when C04 = element + C01 = 1800 pF,"
+		(at 393.7 215.9 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "009d131c-c1c2-52c4-8ce1-3bcf3a64893e")
+	)
+	(text "* not when C04 = element. Measured null depth at 500 Hz: 29.5 dB with"
+		(at 393.7 220.34 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "302dc33d-c218-55ce-a2c6-eca92c5153e6")
+	)
+	(text "* C104 at 1n7, 31.1 at 1n72 (RMC's 220p||1n5), 39.0 at 1n8 as built,"
+		(at 393.7 224.79 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "c071fb74-4267-5068-b935-98ca8de5d5b8")
+	)
+	(text "* 31.6 at 1n9. Deleting C101 moves the optimum from 1n82 to 1n72 --"
+		(at 393.7 229.24 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "966f42bc-a889-5a83-a2b7-a3d7c34329cf")
+	)
+	(text "* a shift of exactly C01. The built value is right for a reason"
+		(at 393.7 233.68 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "f86cc991-85f9-5558-a044-e24e5686dcbb")
+	)
+	(text "* nobody wrote down, and C01 is now part of the balance."
+		(at 393.7 238.12 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "2f437a92-afea-5c2c-b7aa-d4fd82f8f7a9")
+	)
+	(text "*"
+		(at 393.7 242.57 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "81116fc1-9ace-5823-823a-5c5ba0e7c6d9")
+	)
+	(text "* R801 is an ASSUMPTION (1M, see source.py). Measured pizz"
+		(at 393.7 247.02 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "f3fb6eff-2472-5224-bc7a-4bab66ca70a5")
+	)
+	(text "* response at 73 Hz relative to 1 kHz: -1.89 dB at 1M, -0.50 at 4M7,"
+		(at 393.7 251.46 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "ad9a2cfc-0e39-594c-8875-06c7ec10496f")
+	)
+	(text "* -0.44 at 10M. It is common to both paths, so it moves the bass"
+		(at 393.7 255.91 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "b326f570-52bc-5b8d-b5b2-cd523edad0b8")
+	)
+	(text "* without moving the null. This is the open question for RMC."
+		(at 393.7 260.35 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "d5021d7c-306b-5efe-a742-c02996ab371f")
+	)
+	(text "*"
+		(at 393.7 264.8 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "cb07b8cb-5931-5344-b04d-ea496cdcf543")
+	)
+	(text "* RED: a FLAT rejection curve. Replacing the element capacitances with"
+		(at 393.7 269.24 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "a95dc938-e6f2-5203-b981-19693c0ae7c8")
+	)
+	(text "* shorts was run as a control and returns 0.00 dB rejection at every"
+		(at 393.7 273.69 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "01b4604a-69ed-55c0-b03b-2c080db5c480")
+	)
+	(text "* frequency -- the red element's ideal source simply pins OUT and the"
+		(at 393.7 278.13 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "7336a7bf-72e7-57e0-83b6-e01c38b3cf40")
+	)
+	(text "* white path becomes invisible, so pizz and arco read identical. A"
+		(at 393.7 282.58 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "a1101f3c-0724-542e-a81a-4c72302e2e2f")
+	)
+	(text "* clean, plausible, uninformative number for a circuit that need not"
+		(at 393.7 287.02 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "8c9296c0-be1a-5df5-8641-b94189adcacb")
+	)
+	(text "* work at all. Exactly the failure docs/simulating.md records."
+		(at 393.7 291.47 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "bd60890f-755e-5ef7-a7a4-3b1d597cf5ab")
+	)
+	(text "*.ac dec 50 1 1k"
+		(at 393.7 295.91 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "3e05298a-ee48-51d4-a7ad-ecd19fa5b01d")
+	)
+	(text ""
+		(at 393.7 300.36 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "dd6e2e6c-6c13-5a86-9c67-e10a78840334")
+	)
+	(text "* --- 6. THE FLIP: is it click-free? ---------------------------------"
+		(at 393.7 304.8 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "8a1b558c-c89d-5a6f-a28d-792c5a21c05c")
+	)
+	(text "* V803 steps arco -> pizz at 10 ms. Set V801 and V802 to f=200 and"
+		(at 393.7 309.25 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "c33bcb37-730f-5592-a817-4a525ff82a2c")
+	)
+	(text "* watch V(OUT) through the transition."
+		(at 393.7 313.69 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "fe9e61c4-6461-54d9-8eaf-15c5637ef5d3")
+	)
+	(text "* R701 x C701 = 10 ms, but that is the control's own slew, not"
+		(at 393.7 318.13 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "be447031-c9aa-59e9-9d16-d4b591dac5d2")
+	)
+	(text "* the audible transition: the cell only changes while the control is"
+		(at 393.7 322.58 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "724577d2-e996-5b5e-bd9f-0ef47e70e649")
+	)
+	(text "* crossing its threshold."
+		(at 393.7 327.02 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "977e649a-5ea0-576f-aa93-96d32e93e16d")
+	)
+	(text "* MEASURED: envelope 10% of the way 1.48 ms after the step, 90% at"
+		(at 393.7 331.47 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "3327d193-a076-5a26-a720-b43d0dc77bdb")
+	)
+	(text "* 3.44 ms. Largest step between adjacent 2 us samples 3.97 mV, against"
+		(at 393.7 335.92 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "c8d1c1b5-2064-56f6-932f-16c14a006737")
+	)
+	(text "* 2.35 mV for a clean 200 Hz sine of the settled amplitude over the"
+		(at 393.7 340.36 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "363109d6-7b22-543a-ae39-586ebbabea0e")
+	)
+	(text "* same interval -- so nothing in the transition moves faster than"
+		(at 393.7 344.81 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "285b4750-77cf-503b-bfa9-8df0ffd952ad")
+	)
+	(text "* about twice what the audio itself does. No edge, no spike."
+		(at 393.7 349.25 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "bb4ae8a9-e1dd-511f-abb6-7e249b46fe97")
+	)
+	(text "* RED: a step or a spike at OUT, which would mean DC somewhere in the"
+		(at 393.7 353.7 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "d7af8618-de93-5c81-b46c-a9a3c29393e3")
+	)
+	(text "* switched leg. DESIGN.md says there is none."
+		(at 393.7 358.14 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "0726fd04-8626-530e-89f2-d0e5d5094a54")
+	)
+	(text "*.tran 20u 40m"
+		(at 393.7 362.59 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "b19be6fc-3839-5e79-b5a1-786a3148db09")
+	)
+	(symbol
+		(lib_id "Simulation_SPICE:VSIN")
+		(at 30.48 71.12 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "e65c2257-c110-5a91-9e55-82e47c8da33c")
+		(property "Reference" "V801"
+			(at 30.48 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "PZT2 white"
+			(at 30.48 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 30.48 71.12 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 30.48 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" "V"
+			(at 30.48 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Type" "SIN"
+			(at 30.48 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Params" "dc=0 ampl=1 f=1k ac=1"
+			(at 30.48 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "1819f423-c21f-5e04-8ea7-15ef9496dd87")
+		)
+		(pin "2"
+			(uuid "a2b4ff15-4ae8-5b30-a4cf-017ca4e7d8dc")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "V801")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Simulation_SPICE:0")
+		(at 30.48 81.28 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "32ab0df7-00af-5810-9e21-4e8a105f1e7c")
+		(property "Reference" "#PWR001"
+			(at 30.48 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Value" "0"
+			(at 30.48 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 30.48 81.28 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 30.48 81.28 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "6967943f-3036-529b-a9b8-a9c7e8300682")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "#PWR001")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 45.72 66.04 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "07d7ec2e-5271-5193-b108-913a8d6d1e60")
+		(property "Reference" "C801"
+			(at 45.72 59.69 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1.7n"
+			(at 45.72 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 45.72 66.04 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 45.72 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" "C"
+			(at 45.72 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Params" "c=1.7e-09"
+			(at 45.72 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "1db33ec2-990f-528e-ad7d-fefc56ca98e7")
+		)
+		(pin "2"
+			(uuid "18b71f5d-a825-56c9-aae5-5085b9638bb5")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "C801")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 83.82 74.93 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "d95e5bf0-9b51-5d9c-bf0c-0841936e7cad")
+		(property "Reference" "R102"
+			(at 83.82 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "3M3"
+			(at 83.82 81.28 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 83.82 74.93 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 83.82 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" "R"
+			(at 83.82 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Params" "r=3.3e+06"
+			(at 83.82 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "0ce2b49b-88ac-516d-9eee-6ef620a04076")
+		)
+		(pin "2"
+			(uuid "ae4e9c9a-34c1-555b-a3d6-2c7027b77075")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "R102")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Simulation_SPICE:0")
+		(at 83.82 83.82 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "7486c46c-0778-5097-9685-bc855ebc871d")
+		(property "Reference" "#PWR002"
+			(at 83.82 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Value" "0"
+			(at 83.82 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 83.82 83.82 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 83.82 83.82 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "6f0c0343-fc49-5b31-b5ef-2d22a0bb3822")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "#PWR002")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 92.71 66.04 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "727691b0-feb7-55ad-bf7d-04f8910d4447")
+		(property "Reference" "R101"
+			(at 92.71 59.69 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1k"
+			(at 92.71 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 92.71 66.04 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 92.71 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" "R"
+			(at 92.71 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Params" "r=1000"
+			(at 92.71 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "e28fbee1-cb21-58f8-bfdd-0900e76e7b6c")
+		)
+		(pin "2"
+			(uuid "37ab6476-6c56-5da4-ba9d-efc0ea70515a")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "R101")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 104.14 74.93 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "06eba802-4d4c-5ced-a8ce-796db360658d")
+		(property "Reference" "C101"
+			(at 104.14 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100p"
+			(at 104.14 81.28 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 104.14 74.93 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 104.14 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" "C"
+			(at 104.14 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Params" "c=1e-10"
+			(at 104.14 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "75944584-73a1-5ecf-99c0-7a839278f895")
+		)
+		(pin "2"
+			(uuid "bc86fa4d-eb14-5789-adde-daf3374d37c1")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "C101")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Simulation_SPICE:0")
+		(at 104.14 83.82 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "bba9be4a-d00e-577f-b54a-7c8d9b0eadc2")
+		(property "Reference" "#PWR003"
+			(at 104.14 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Value" "0"
+			(at 104.14 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 104.14 83.82 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 104.14 83.82 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "f18d0200-fc48-51de-a1c9-fd288d7aa79e")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "#PWR003")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "rmc:OPA4191_SIM")
+		(at 119.38 68.58 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "1099ab89-c211-558a-aab5-b5c0085f6066")
+		(property "Reference" "U101"
+			(at 119.38 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "OPA4191"
+			(at 119.38 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 119.38 68.58 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 119.38 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" "SUBCKT"
+			(at 119.38 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Name" "OPAx191"
+			(at 119.38 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Library" "OPAx191.LIB"
+			(at 119.38 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Pins" "1=IN+ 3=IN- 5=VCC 2=VEE 4=OUT"
+			(at 119.38 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "0394ff29-1b0c-5785-8eaa-b288e526a875")
+		)
+		(pin "2"
+			(uuid "e48f5edc-777a-5a01-b906-4c7cb1360adb")
+		)
+		(pin "3"
+			(uuid "ae560c42-1b48-5c6e-9da9-fe4316316560")
+		)
+		(pin "4"
+			(uuid "02884dd4-09e7-5704-820b-7120dafa5b29")
+		)
+		(pin "5"
+			(uuid "5a8cd769-7932-54af-b2a3-22d8fe45d1af")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "U101")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 142.24 66.04 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "9fb15461-e840-56ec-960c-1600ed8e4150")
+		(property "Reference" "R104"
+			(at 142.24 59.69 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "47k 1%"
+			(at 142.24 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 142.24 66.04 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 142.24 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" "R"
+			(at 142.24 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Params" "r=47000"
+			(at 142.24 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "abefd10c-7130-5395-9da7-1cce87c7bf70")
+		)
+		(pin "2"
+			(uuid "24bc029c-591a-5066-864b-85d32e76f33d")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "R104")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 142.24 86.36 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "06aa60e6-6a0b-5220-a18a-7d45f9cc0785")
+		(property "Reference" "R105"
+			(at 142.24 80.01 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "47k 1%"
+			(at 142.24 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 142.24 86.36 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 142.24 86.36 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" "R"
+			(at 142.24 86.36 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Params" "r=47000"
+			(at 142.24 86.36 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "44d424bb-c517-522e-abb7-89a526f51867")
+		)
+		(pin "2"
+			(uuid "a9ce276b-1d66-5bb8-8e93-0e40fffe276f")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "R105")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "rmc:OPA4191_SIM")
+		(at 180.34 76.2 0)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "85f9afe6-88c3-5028-9b01-a2bf3c25b12e")
+		(property "Reference" "U102"
+			(at 180.34 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "OPA4191"
+			(at 180.34 82.55 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 180.34 76.2 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 180.34 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" "SUBCKT"
+			(at 180.34 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Name" "OPAx191"
+			(at 180.34 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Library" "OPAx191.LIB"
+			(at 180.34 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Pins" "1=IN+ 3=IN- 5=VCC 2=VEE 4=OUT"
+			(at 180.34 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "ccd68688-6c29-56a5-af8f-7bea05fa8fab")
+		)
+		(pin "2"
+			(uuid "96ae3ba4-61ec-5a4b-9134-4a13994ba291")
+		)
+		(pin "3"
+			(uuid "e7c2595e-ca04-5721-a429-957bc66f8114")
+		)
+		(pin "4"
+			(uuid "2f9c8396-56fa-52d2-9145-b70120522cf0")
+		)
+		(pin "5"
+			(uuid "4f0b3a12-48b2-5084-a9c0-749af4688efe")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "U102")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 165.1 95.25 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "abe8bc99-8021-582c-b4d9-e8ff3a3065b2")
+		(property "Reference" "C103"
+			(at 165.1 88.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100p"
+			(at 165.1 101.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 165.1 95.25 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 165.1 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" "C"
+			(at 165.1 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Params" "c=1e-10"
+			(at 165.1 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "5ebbbc5e-59bd-50de-85eb-5193715f915d")
+		)
+		(pin "2"
+			(uuid "78c94a64-c7e0-5df1-b3dd-5309c112d43b")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "C103")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Simulation_SPICE:0")
+		(at 165.1 104.14 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "96d40eda-602d-5d0b-9cfd-8fcf2effc20e")
+		(property "Reference" "#PWR004"
+			(at 165.1 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Value" "0"
+			(at 165.1 110.49 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 165.1 104.14 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 165.1 104.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "2149e94e-07ac-54f0-af28-af08f06ceb33")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "#PWR004")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 168.91 55.88 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "c25dd98d-1f99-5aba-819e-5bd29aaed0c6")
+		(property "Reference" "R106"
+			(at 168.91 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "47k 1%"
+			(at 168.91 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 168.91 55.88 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 168.91 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" "R"
+			(at 168.91 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Params" "r=47000"
+			(at 168.91 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "5405fde2-b1a6-561b-93da-40ead6dade88")
+		)
+		(pin "2"
+			(uuid "ea09fe37-33b5-56b2-896d-b4fdbed19e6a")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "R106")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 168.91 60.96 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "bdaa0495-760d-5849-8e50-19c2b4ae07a0")
+		(property "Reference" "C102"
+			(at 168.91 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100p"
+			(at 168.91 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 168.91 60.96 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 168.91 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" "C"
+			(at 168.91 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Params" "c=1e-10"
+			(at 168.91 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "4938e024-a9e1-5e7d-a192-e2966464824a")
+		)
+		(pin "2"
+			(uuid "1bc98ba1-0d03-5719-bfe4-fdb047933701")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "C102")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 152.4 107.95 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "1bf032fc-eca1-5768-aee3-7b62613d91a2")
+		(property "Reference" "R802"
+			(at 152.4 101.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "CD4066B cell"
+			(at 152.4 114.3 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 152.4 107.95 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 152.4 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" "R"
+			(at 152.4 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Params" "r=\"R='100+1e+08/(1+exp(V(SW_CTL)/0.15))'\""
+			(at 152.4 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "bbc46194-19d4-5928-9434-348173d797ad")
+		)
+		(pin "2"
+			(uuid "7e8049f7-0523-56b9-a778-9de389955b66")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "R802")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Simulation_SPICE:0")
+		(at 152.4 116.84 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "0cb3e721-a16d-59d1-8706-1ae615ebebe1")
+		(property "Reference" "#PWR005"
+			(at 152.4 110.49 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Value" "0"
+			(at 152.4 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 152.4 116.84 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 152.4 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "a3a54387-a765-54e7-b950-ad87eb20cd3e")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "#PWR005")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Simulation_SPICE:VSIN")
+		(at 30.48 43.18 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "b2de0a6a-306f-5569-8fd1-3e7db0ddd271")
+		(property "Reference" "V802"
+			(at 30.48 36.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "PZT1 red"
+			(at 30.48 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 30.48 43.18 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 30.48 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" "V"
+			(at 30.48 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Type" "SIN"
+			(at 30.48 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Params" "dc=0 ampl=1 f=1k ac=1"
+			(at 30.48 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "fb753cb3-c328-5fb3-96e6-494a0e71cdb4")
+		)
+		(pin "2"
+			(uuid "d3921f83-bbba-5d4d-9d7d-c1eb63a5d699")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "V802")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Simulation_SPICE:0")
+		(at 30.48 53.34 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "9288dbfe-725d-505c-b184-2d4d7658cbbd")
+		(property "Reference" "#PWR006"
+			(at 30.48 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Value" "0"
+			(at 30.48 59.69 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 30.48 53.34 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 30.48 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "435f7792-0b7c-5d06-bde8-d21e76323809")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "#PWR006")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 45.72 38.1 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "8be5de8d-869c-5045-93c9-27c22f369fe5")
+		(property "Reference" "C802"
+			(at 45.72 31.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1.7n"
+			(at 45.72 44.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 45.72 38.1 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 45.72 38.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" "C"
+			(at 45.72 38.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Params" "c=1.7e-09"
+			(at 45.72 38.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "681ee7be-2a29-522b-898e-1c03c0fed16a")
+		)
+		(pin "2"
+			(uuid "0c504d40-34f6-57d1-9259-e034377896e7")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "C802")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 208.28 55.88 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "3143e12f-39e1-5f65-8b96-405f0077bdfd")
+		(property "Reference" "C104"
+			(at 208.28 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1n8 C0G"
+			(at 208.28 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 208.28 55.88 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 208.28 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" "C"
+			(at 208.28 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Params" "c=1.8e-09"
+			(at 208.28 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "d2b3e0e4-2db8-588a-86fd-0de2163b348e")
+		)
+		(pin "2"
+			(uuid "54926322-6ca5-5da3-8b2a-66091f5a7cb3")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "C104")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 233.68 46.99 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "943aed08-14ad-52ed-b89f-c31bebc7ed18")
+		(property "Reference" "R801"
+			(at 233.68 40.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1000k"
+			(at 233.68 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 233.68 46.99 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 233.68 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" "R"
+			(at 233.68 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Params" "r=1e+06"
+			(at 233.68 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "8679c81d-8729-54a1-8cfd-2bf31117a15e")
+		)
+		(pin "2"
+			(uuid "0575664a-5d8e-5b1e-84a2-3297fb28c85f")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "R801")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Simulation_SPICE:0")
+		(at 233.68 55.88 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "84f527dc-2884-5822-8903-716b61b61224")
+		(property "Reference" "#PWR007"
+			(at 233.68 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Value" "0"
+			(at 233.68 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 233.68 55.88 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 233.68 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "250056ac-e2f0-51bb-9c50-f7059a19e3cf")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "#PWR007")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 246.38 46.99 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "10ef973b-fcea-5ce9-baf9-b01f528085a3")
+		(property "Reference" "C803"
+			(at 246.38 40.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "20p"
+			(at 246.38 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 246.38 46.99 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 246.38 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" "C"
+			(at 246.38 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Params" "c=2e-11"
+			(at 246.38 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "03082904-15aa-51b2-a9b6-e5f636dcd917")
+		)
+		(pin "2"
+			(uuid "a079a26e-b7f1-5136-ab50-2be617e36e42")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "C803")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Simulation_SPICE:0")
+		(at 246.38 55.88 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "71ac3255-8803-570b-b8ca-3240c143dc1c")
+		(property "Reference" "#PWR008"
+			(at 246.38 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Value" "0"
+			(at 246.38 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 246.38 55.88 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 246.38 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "7afe37a5-88ba-5b5c-a683-d9fb2c28324e")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "#PWR008")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 87.63 139.7 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5cfc8932-a384-544c-a540-353a657ffc22")
+		(property "Reference" "R702"
+			(at 87.63 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "20k"
+			(at 87.63 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 87.63 139.7 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 87.63 139.7 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" "R"
+			(at 87.63 139.7 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Params" "r=20000"
+			(at 87.63 139.7 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "5519c434-4baa-511c-a452-80d909484d44")
+		)
+		(pin "2"
+			(uuid "b238c75e-6426-5c53-adb0-f6689b6db40a")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "R702")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 104.14 139.7 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "3eb0a8da-db19-5b13-aa9b-b5b9ba1f4bd2")
+		(property "Reference" "R803"
+			(at 104.14 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "J8 PIZZ/ARCO"
+			(at 104.14 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 104.14 139.7 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 104.14 139.7 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" "R"
+			(at 104.14 139.7 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Params" "r=\"R='1+1e+08/(1+exp(V(TOGGLE)/0.15))'\""
+			(at 104.14 139.7 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "678d87a1-6868-57ac-aa14-c06630f9b89b")
+		)
+		(pin "2"
+			(uuid "63ff6211-4afa-5b53-aabe-ebe190813f84")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "R803")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 121.92 148.59 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5509df03-25fb-54a9-96f5-5e05e97e124f")
+		(property "Reference" "R701"
+			(at 121.92 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1M"
+			(at 121.92 154.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 121.92 148.59 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 121.92 148.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" "R"
+			(at 121.92 148.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Params" "r=1e+06"
+			(at 121.92 148.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "cc68ef6e-c1d9-5568-9075-10cc3706d469")
+		)
+		(pin "2"
+			(uuid "2c8052fc-655d-5282-baf7-7f2b75f4b6a6")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "R701")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 134.62 148.59 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "13693ab0-f5c2-50a4-b6ff-3bcf8c6f15f9")
+		(property "Reference" "C701"
+			(at 134.62 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10n"
+			(at 134.62 154.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 134.62 148.59 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 134.62 148.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" "C"
+			(at 134.62 148.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Params" "c=1e-08"
+			(at 134.62 148.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "b02df8dc-9db4-56a0-bf4e-b39e4c49dbc9")
+		)
+		(pin "2"
+			(uuid "14cb6767-f7c7-5a7d-803a-77123f383875")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "C701")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Simulation_SPICE:0")
+		(at 134.62 157.48 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "0a523996-894b-50bf-9cab-fb0a37f86c68")
+		(property "Reference" "#PWR009"
+			(at 134.62 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Value" "0"
+			(at 134.62 163.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 134.62 157.48 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 134.62 157.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "771565d4-d255-59fc-b201-531a2b358c85")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "#PWR009")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Simulation_SPICE:VPULSE")
+		(at 104.14 157.48 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "30375525-684d-5bef-9415-fae358214742")
+		(property "Reference" "V803"
+			(at 104.14 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "pizz/arco"
+			(at 104.14 163.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 104.14 157.48 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 104.14 157.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" "V"
+			(at 104.14 157.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Type" "PULSE"
+			(at 104.14 157.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Params" "y1=-1 y2=1 td=10m tr=1u tf=1u tw=40m per=100m"
+			(at 104.14 157.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "bb7a78c2-9d08-5037-a86f-d9a62f4ef9f1")
+		)
+		(pin "2"
+			(uuid "df050dd0-e23e-5a0f-b1d6-82c89e74c53c")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "V803")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Simulation_SPICE:0")
+		(at 104.14 167.64 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "2d4f069f-727e-5e1f-98d1-44380169516c")
+		(property "Reference" "#PWR010"
+			(at 104.14 161.29 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Value" "0"
+			(at 104.14 173.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 104.14 167.64 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 104.14 167.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "dd3b1e46-9b04-5612-9d1f-d22b47e0ec80")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "#PWR010")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Simulation_SPICE:VDC")
+		(at 279.4 127 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "38ef04ee-bb7a-5316-9267-ffe513d66672")
+		(property "Reference" "VR1"
+			(at 279.4 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "+4.50V"
+			(at 279.4 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 279.4 127 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 279.4 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" "V"
+			(at 279.4 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Type" "DC"
+			(at 279.4 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Params" "dc=4.5"
+			(at 279.4 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "245ff239-f895-57cf-86dc-0b0834628072")
+		)
+		(pin "2"
+			(uuid "5e8e1689-0ed2-55ae-95b7-c2912f232041")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "VR1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Simulation_SPICE:0")
+		(at 279.4 137.16 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "497a77cc-2b82-5f8a-9549-aa3b75eb698e")
+		(property "Reference" "#PWR011"
+			(at 279.4 130.81 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Value" "0"
+			(at 279.4 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 279.4 137.16 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 279.4 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "00b4cc95-0d90-5dac-87a6-29acd28d3c7f")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "#PWR011")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Simulation_SPICE:VDC")
+		(at 304.8 127 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "323ac364-988a-5fcd-9278-e4f0394bbc09")
+		(property "Reference" "VR2"
+			(at 304.8 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "-4.50V"
+			(at 304.8 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 304.8 127 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 304.8 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" "V"
+			(at 304.8 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Type" "DC"
+			(at 304.8 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Params" "dc=-4.5"
+			(at 304.8 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "ab9280d6-c0f7-5fdc-8e88-516cb3f3a592")
+		)
+		(pin "2"
+			(uuid "7459d3b2-8af9-5480-bdc2-c5ccc29027c2")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "VR2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Simulation_SPICE:0")
+		(at 304.8 137.16 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "32b00262-12e7-5a54-a390-255d388bb3c9")
+		(property "Reference" "#PWR012"
+			(at 304.8 130.81 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Value" "0"
+			(at 304.8 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 304.8 137.16 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 304.8 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "402fbb4a-1fab-5740-a3f8-04e1b75efd6d")
+		)
+		(instances
+			(project "rmc-pizz-arco-sim"
+				(path "/a17298ed-6459-5d1e-941d-e887f5fd59ed"
+					(reference "#PWR012")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)

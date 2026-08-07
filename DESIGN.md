@@ -95,6 +95,13 @@ two messages. One question of ours is still
 unanswered after three rounds, and it is the one that destroys the board — see
 [Open with RMC](#open-with-rmc).
 
+**The circuit has now been simulated as well as asserted**, and no board change
+comes out of it: three of the four claims about the switching stage hold, the
+fourth holds over most of the band, and the one component value that looked
+approximate turns out to be nearly exact. It did add a question for RMC and two
+constraints that were not previously written down. See
+[Simulating it](#simulating-it).
+
 ---
 
 ## The circuit
@@ -117,9 +124,9 @@ possible trace at least .010" wide."* Their own pinout makes that a 1.27 mm stub
 between adjacent pins — see [The feedback that became a
 wire](#the-feedback-that-became-a-wire).
 
-**The summing capacitor matches the element, deliberately.** RMC give the
+**The summing capacitor is matched to the element, deliberately.** RMC give the
 element's own capacitance as **1700 pF**, and the red element works into C04
-directly, so equal capacitance means equal weighting at the summing node:
+directly, so the two elements meet at the summing node weighted by capacitance:
 
 ```
 OUT = (V_red · C_red + V_white · C04) / (C_red + C04 + C_stray)
@@ -127,7 +134,15 @@ OUT = (V_red · C_red + V_white · C04) / (C_red + C04 + C_stray)
 
 That is why the six must match *each other*: it is string balance, not
 tolerance fussiness. Against R02's 3M3, 1700 pF puts the input corner at
-**28 Hz**, well below the bottom string of a gamba (D2, 73 Hz).
+**28 Hz**, below the bottom string of a gamba (D2, 73 Hz) but not far below it;
+see [Simulating it](#simulating-it), which is where that stops being a
+comfortable margin.
+
+> **Equal weighting is not equal capacitance**, and the difference is C01. Its
+> 100 pF divides against the element's 1700 pF and costs the white path 0.53 dB
+> before the buffer, so the balance condition is **C04 = C_element + C01 =
+> 1800 pF** — the value actually fitted. Measured, not derived: see
+> [What the simulation found](#what-the-simulation-found), finding 5.
 
 **The all-pass is a polarity flip, not a phase shift.** Its RC corner is
 1/(2π·47k·100p) ≈ **34 kHz**, well above the audio band, so in band the stage is
@@ -137,8 +152,15 @@ anti-phase, and that is the pizz/arco character change. The all-pass form rather
 than a plain switched inverter is what keeps gain magnitude and source loading
 identical in both positions, so flipping the switch produces no level jump.
 
+> **True to about 3 kHz, and not at the top of the band.** C02 sits across R06,
+> so the feedback impedance is not a resistor and the stage is not strictly an
+> all-pass: simulated, the two states are within 0.03 dB and 2° of each other
+> below 3 kHz and **1.5 dB and 32° apart at 20 kHz**. See
+> [What the simulation found](#what-the-simulation-found), findings 1 and 2.
+
 The 100 pF capacitors are doing HF stability and RF rejection duty only. RMC:
-*"the 100pF capacitors have no audible effect."*
+*"the 100pF capacitors have no audible effect."* True of level — C01 costs half
+a decibel — but **not of balance**, which is the note above.
 
 **Nothing in RMC's circuit needed changing.** It is on the board part for part.
 
@@ -519,7 +541,12 @@ Ours rather than RMC's, each stated so that disagreeing with one is cheap:
 - **A single 1n8 rather than 220 p ‖ 1.5 n.** The pair was approximating
   1700 pF; one capacitor does it with one part and no interleaving problem.
   Specified ±2% where RMC accepted ±5%, because ±5% permits a 10% spread between
-  two channels.
+  two channels. **It turned out to be right for a better reason than this one**:
+  the balance condition is C_element + C01 = 1800 pF, so the single 1n8 is
+  nearly exact and the pair it replaced was ~8 dB worse. See
+  [What the simulation found](#what-the-simulation-found), finding 5. The
+  simplification was made for convenience and happened to be correct, which is
+  worth saying plainly rather than claiming as foresight.
 - **Ten bypass capacitors, not four and not eighteen.** See
   [Bypassing](#bypassing).
 - **No reverse-protection diode**, traded against 0.6 dB of headroom the design
@@ -790,6 +817,25 @@ charging can always be done unplugged. It affects their enclosure, not this
 board, and they may already isolate the charging circuit. Also unanswered, but
 not blocking.
 
+**3. The Poly-Drive II's input impedance.** New, and it comes out of
+[Simulating it](#simulating-it). This board deliberately puts no load on `OUT`
+— the output is meant to look like a piezo and the PD2 supplies the load — and
+nobody has ever said what that load is. It turns out to set the bass response
+almost by itself, because it works against the element's 1700 pF and `C04`'s
+1.8 nF together:
+
+| PD2 input impedance | corner at `OUT` | level at D2, 73 Hz |
+| --- | --- | --- |
+| 1 MΩ | 45 Hz | **−1.9 dB** |
+| 4.7 MΩ | 9.6 Hz | −0.5 dB |
+| 10 MΩ | 4.5 Hz | −0.4 dB |
+
+At 1 MΩ the bottom string is already down nearly 2 dB and the corner sits above
+it. That is a bigger number than the 28 Hz corner `R02` was credited with, and
+it is not ours to fix: it is one figure from RMC. Not blocking — it changes
+nothing on the board either way — but it decides whether the instrument's bass
+is flat.
+
 ### Offered and awaiting a view
 
 - **The 4-layer stackup.** RMC asked *"I'm not sure why you want 4 layers in this
@@ -798,63 +844,234 @@ not blocking.
   layers. See [Four layers, and why](#four-layers-and-why).
 - **A 100 nF in parallel with each 4.7 µF**, if they want the HF end extended.
   See [Bypassing](#bypassing).
+- **`C01`'s 100 pF is part of the summing balance**, which neither of us
+  noticed. It divides against the element's own 1700 pF and attenuates the white
+  path by 0.53 dB, so the two elements balance when `C04` = element + `C01` =
+  **1800 pF**, not when `C04` = element. The single 1n8 is therefore the right
+  value and RMC's own 220 p ∥ 1.5 n would have been ~8 dB worse. See
+  [What the simulation found](#what-the-simulation-found). Worth their view
+  because it means `C01` can no longer be changed freely.
 
 ---
 
-## Simulating it — not yet done
+## Simulating it
 
-The infrastructure is here (`kisim.py`, [`docs/simulating.md`](docs/simulating.md),
-both carried over from `summing-mixer` where they were worked out). No
-simulation schematic has been written for this board. What follows is what would
-be worth checking, so that work starts from a question rather than a blank sheet.
+```bash
+./build.sh                     # writes rmc-pizz-arco/rmc-pizz-arco-sim.kicad_sch
+```
 
-**This board's central claim is falsifiable, which is what makes it worth
-simulating.** From `design.py`:
+Open that sheet in KiCad and use **Inspect → Simulator**. There is nothing to
+install: KiCad ships ngspice. One file is needed and is deliberately not in this
+repository — TI's OPAx191 macromodel, from <https://www.ti.com/lit/zip/SBOMA30>,
+because their licence grants use but not redistribution.
+[`gen_sim.py`](gen_sim.py) says where to put it and generates the sheet whether
+or not it is there.
+
+The sheet is generated from the same `design.py` as the fabrication one, so it
+cannot drift from the circuit, and it carries the analyses as commented SPICE
+directives with the results beside them. It draws **one channel**: the six are
+electrically independent, sharing only the rails and one DC control line, so
+five more copies would add nothing that could come out differently.
+
+### What was being tested
+
+`design.py`'s docstring makes four claims about the second stage:
 
 > The second stage is a first-order all-pass whose RC corner sits at 34 kHz,
 > well above the audio band, so in-band it is a polarity flip [...] The all-pass
 > form keeps gain magnitude and source loading identical either way, so flipping
 > it produces no level jump.
 
-That is four assertions, each testable:
+Three of the four hold. The fourth does not, and the reason it does not is
+visible in RMC's own drawing.
 
-| Analysis | Tests |
+### What the simulation found
+
+**1. The second stage is not an all-pass.** `C02`'s 100 pF sits in parallel with
+`R06`'s 47 k, so the feedback impedance is not a resistor — and a first-order
+all-pass needs it to be one. With `R04 = R05 = R06` and `C02 = C03`, τ = 4.7 µs:
+
+| | transfer function | 1 kHz | 5 kHz | 20 kHz |
+| --- | --- | --- | --- | --- |
+| switch open (arco) | `1/(1+sτ)²` | −0.02 dB | −0.21 dB | −2.78 dB |
+| switch closed (pizz) | `−1/(1+sτ)` | −0.04 dB | −0.13 dB | −1.32 dB |
+| **level jump** | | −0.028 dB | +0.078 dB | **+1.464 dB** |
+| **phase separation** | (180° claimed) | 181.8° | 188.8° | **211.7°** |
+
+So *"no level jump"* is true where it matters and false at the top of the band.
+Below about 3 kHz the two states are within 0.03 dB and 2° of a perfect flip;
+by 20 kHz they are 1.5 dB and 32° apart. The two error terms pull opposite ways
+— `R`<sub>on</sub> holds the closed state down, `C02` pulls the open state down
+faster — and they cancel at 3 kHz, which is why the jump changes sign.
+
+Whether 1.5 dB at 20 kHz matters is RMC's call, not ours. A gamba's fundamentals
+stop around 1 kHz; what lives at 20 kHz is bow noise and the top of the
+brightness. It is recorded because it was asserted not to exist.
+
+**2. The 34 kHz corner is real, and the two states differ in order.** At
+33.9 kHz the open state measures −92.7° — the −90° of two matched poles — and
+the closed state 133.9°, the 180° − 45° of one. `R05 × C03 = 33.9 kHz` survives
+contact with the circuit. This is the same finding as 1 from the other side: it
+is not that the corner moved, it is that only one state has two poles.
+
+**3. R<sub>on</sub> costs less than a tenth of a decibel, up to about 300 Ω.**
+
+| R<sub>on</sub> | 0 Ω | 100 Ω | 300 Ω | 1 kΩ | 3 kΩ |
+| --- | --- | --- | --- | --- | --- |
+| level jump at 1 kHz | +0.009 dB | −0.028 dB | −0.102 dB | −0.360 dB | −1.101 dB |
+
+R<sub>on</sub> divides against `R05`'s 47 k and leaks the switched node's ground
+reference back into the sum, so it moves the closed state only. Hand arithmetic
+said −0.037 / −0.111 / −0.370 dB relative to an ideal switch; the solver said
+−0.037 / −0.111 / −0.369. **The claim in [What was added](#what-was-added)
+holds** at the ~100 Ω these rails give, with about a decade of margin before it
+stops holding.
+
+**4. The bass is where the surprises are.** Driving the two elements in
+antiphase — vertical string motion, the case arco is supposed to reject —
+gives this:
+
+| | 10 Hz | 40 Hz | **73 Hz** | 150 Hz | 300 Hz | 500 Hz | 1 kHz | 2 kHz | 5 kHz |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| arco rejection | 1.9 dB | 9.9 | **15.2** | 21.4 | 28.9 | 38.7 | 35.0 | 25.2 | 16.4 |
+
+A peak, not a plateau, and **the bottom string sits on the wrong side of it.**
+At D2 the vertical component that arco exists to cancel is only 15 dB down,
+against nearly 39 dB at 500 Hz. Two different mechanisms eat the two ends:
+
+- **Below ~300 Hz it is the 28 Hz corner, and it is structural.** The white
+  element works into `R02`'s 3M3 and the red element has no bias resistor at
+  all, so the high-pass is on one path only. The two arrive at the summing node
+  with a frequency-dependent phase error, and the null fills in. No component
+  value fixes this — it was checked against `C04` at 1n7, 1n72, 1n8 and 1n9 and
+  the 73 Hz figure moves by 0.35 dB across the lot. Giving the red element its
+  own 3M3 would, and that is a board change nobody has asked for.
+- **Above ~1 kHz it is `C02`**, which is finding 1 arriving at the output.
+
+**5. `C01` is part of the summing balance, and that is why 1n8 is right.** This
+one was not predicted and it reverses an argument this document was about to
+make.
+
+`C01`'s 100 pF divides against the element's own 1700 pF and costs the white
+path **0.53 dB** before it even reaches the buffer. So the two elements balance
+at the summing node when
+
+```
+C04 = C_element + C01 = 1700 pF + 100 pF = 1800 pF
+```
+
+not when `C04` equals the element. Measured null depth at 500 Hz:
+
+| `C04` | 1n7 (element exactly) | 1n72 (RMC's 220 p ∥ 1.5 n) | **1n8 (built)** | 1n9 |
+| --- | --- | --- | --- | --- |
+| arco rejection | 29.5 dB | 31.1 dB | **39.0 dB** | 31.6 dB |
+
+Deleting `C01` from the model moves the optimum from 1n82 to 1n72 — a shift of
+exactly `C01` — which is the check that the explanation is the right one rather
+than a coincidence in the neighbourhood.
+
+Two things follow. **The single 1n8 was the right choice**, better than the pair
+it replaced by about 8 dB, and [A single 1n8 rather than 220 p ∥ 1.5
+n](#decisions-and-their-reasons) is more right than its own reasoning knew.
+And **`C01` can no longer be changed freely**: it is described in [The
+circuit](#the-circuit) as doing "HF stability and RF rejection duty only", and
+RMC's *"the 100pF capacitors have no audible effect"* is true of level and not
+of balance. Raising `C01` without raising `C04` to match trades arco depth for
+RF rejection. This is the same mechanism as RMC's own headroom mitigation — a
+capacitor across `R02` attenuating the white path, with `C04` increased to
+restore the balance — applied to a capacitor that is already fitted.
+
+**6. The flip is click-free.** Stepping the toggle with a 200 Hz signal running:
+the envelope is 10% of the way across 1.48 ms after the step and 90% at 3.44 ms,
+and the largest movement between adjacent 2 µs samples is 3.97 mV against
+2.35 mV for a clean 200 Hz sine of the settled amplitude over the same interval.
+Nothing in the transition moves faster than about twice what the audio does. No
+edge, no spike. Note that the audible transition is ~2 ms, not the 10 ms of
+`R701 × C701` — the cell only changes while the control is crossing its
+threshold, and the RC is what makes that crossing slow.
+
+### What a failure would have looked like
+
+Every one of the above is a number, and a number is not evidence unless it could
+have been a different number. What red looks like, analysis by analysis:
+
+| | a wrong answer would have read as |
 | --- | --- |
-| AC magnitude, switch open vs closed | *"no level jump"* — the two traces should overlay to a fraction of a decibel |
-| AC phase, both states | *"a polarity flip"* — 180° apart in band, and how far it has drifted from 180° by 20 kHz |
-| Phase through the corner | the stated 34 kHz. R05 47 kΩ × C03 100 pF = 33.9 kHz, so this checks the arithmetic against the circuit |
-| CD4066 on-resistance in the switched leg | whether R<sub>on</sub> perturbs either. Against 47 kΩ it should be well under a tenth of a decibel — worth confirming rather than assuming, since R<sub>on</sub> rises sharply at ±4.5 V |
+| 1, 2 | a perfect overlay and exactly 180.000° at every frequency — a true all-pass, i.e. `C02` not actually across `R06` on the sheet |
+| 3 | a single-pole rolloff in *both* states, meaning one of the two capacitors is doing nothing |
+| 4 (R<sub>on</sub>) | no effect, or an effect that does not scale with the swept value |
+| 5 (bass) | **a flat rejection curve** |
+| 6 | a step or a spike at `OUT`, which would mean DC in the switched leg |
 
-### Model the piezo properly — it matters more here
+The last one in that list is the one with history, and it was run as a control
+rather than argued about. Replacing the element capacitances with shorts —
+which is what modelling a piezo as a plain voltage source amounts to — returns
+**0.00 dB of rejection at every frequency**: the red element's ideal source
+simply pins `OUT`, the white path becomes invisible, and pizz and arco read
+identical. Clean, plausible, and completely uninformative. That is the
+`summing-mixer` failure `docs/simulating.md` records, reproduced on purpose so
+the shape of it is on file for this board too.
 
-A PZT element is a **capacitive source**, roughly 1700 pF (the figure `C04`'s
-comment is matched to). With `R02`'s 3M3 bias resistor that is a high-pass at
+**Two of these tests could not fail on the first attempt, and both were caught
+by having predicted the answer first.**
 
-```
-1 / (2π × 3.3 MΩ × 1700 pF) = 28 Hz
-```
+- `Simulation_SPICE:SWITCH` is the obvious part for the CD4066 cell and it is
+  wrong: ngspice's `SW` device always contributes `roff` in AC analysis whatever
+  its control is doing, while its DC operating point is correct. Both switch
+  states returned identical results to four decimal places at every frequency —
+  which reads as a triumphant confirmation of *"no level jump"* and is the
+  answer a circuit with no switch in it would have given. The cell is now a
+  behavioural resistance controlled by `SW_CTL`. Recorded in
+  [`docs/simulating.md`](docs/simulating.md) as the fourth way a simulation
+  lies.
+- The predicted arco rejection was ~31 dB midband and the measurement came back
+  at 39 dB. Chasing the 8 dB is what found `C01` in finding 5. A prediction that
+  is wrong in an interesting direction is worth more than one that is right.
 
-**which is inside the audio band.** On `summing-mixer` the equivalent source
-interaction sat at 3 Hz and getting it wrong only weakened a measurement. Here
-it moves a corner that matters musically — a 28 Hz corner is close enough to the
-bottom of a bass viol's range to affect what the instrument sounds like, and
-it is set by two components whose values are already fixed.
+### What the models are, and what they are not
 
-So the source model is not a detail to add later. Model it as a voltage source
-in series with ~1700 pF, and treat the resulting low-frequency response as a
-result in its own right.
+- **OPA4191** — TI's `OPAx191` macromodel, from
+  <https://www.ti.com/lit/zip/SBOMA30>. A *single* amplifier, so the sheet draws
+  two single op-amps where the board has one quad serving four. Fetched, never
+  committed; `.gitignore` keeps it out.
+- **CD4066B** — **TI publish no SPICE model for it.** Not on the product page,
+  not under tools and software, not anywhere; what circulates is community
+  rebuilds from CD4007 gates. So the cell is modelled here, and the honest
+  substitute for the R<sub>on</sub>-versus-supply curve a vendor model would
+  have carried is the sweep in finding 3. What that model does *not* do:
+  R<sub>on</sub> does not vary with signal level, so it cannot show the
+  distortion a real cell's would; and its off state is a resistor rather than a
+  reverse-biased junction, so it is cleaner than the part's.
+- **The piezo** — no vendor model exists, and this is the part that mattered
+  most. A voltage source in series with 1700 pF, RMC's own figure, in
+  [`source.py`](source.py) rather than as a literal.
+- **The Poly-Drive II's input** — 1 MΩ, and it is an **assumption**, flagged as
+  one in `source.py` and raised with RMC in [Open with RMC](#open-with-rmc). It
+  is common to both element paths, so it moves the bass response without moving
+  the null: findings 4 and 5 do not depend on it, and the absolute low-frequency
+  response does.
 
-### Parts needing models
+One observation that is not a finding about this board. Above about 200 kHz the
+second stage stops attenuating and turns back up, reaching +4.5 dB at 1 MHz.
+That is the amplifier, not the network: swapping `U102` for an ideal controlled
+source gives a clean −40 dB/decade all the way down (−19.8, −38.9, −58.8 dB at
+100 kHz, 300 kHz and 1 MHz). An op-amp cannot attenuate past its own open-loop
+gain, and `C02` is a passive path from the inverting node to the output that
+does not need the amplifier at all. Two decades above anything audible, and
+recorded only because "it rolls off above 34 kHz" is the kind of story that
+would get it wrong.
 
-- **OPA4191** — TI publish one. Note it will be a *single* amplifier, and the
-  symbol here is a quad; see `docs/simulating.md` for the borrow-and-rename
-  pattern
-- **CD4066B** — TI publish one. The switch is the interesting part of this
-  board, so a model that carries R<sub>on</sub> against supply voltage is worth
-  having
-- **The piezo** — no vendor model exists; build it as above
+### What was not simulated, and why
 
----
+- **Headroom and clipping.** Settled with RMC on judgement plus a datasheet
+  paragraph — see [Headroom](#headroom) — and the falsification criterion there
+  is an audible artefact on a real instrument, which no solver reaches. The
+  large-signal convergence options are on the sheet for whoever wants to try.
+- **Noise.** Nothing here has gain and the source is a 1700 pF element into
+  3M3; the arithmetic is not in doubt and simulation would only restate it.
+- **The other five channels.** They share the rails and one DC control line and
+  nothing else. There is no summing node between them, which is exactly what
+  made the equivalent test worth running on `summing-mixer` and pointless here.
 
 ## Building and verifying
 
@@ -909,9 +1126,11 @@ some later step learns to clobber it too.
 
 **Three checks the build cannot make:**
 
-1. **Open the project in KiCad once** and confirm no symbol shows a broken
-   library link. Nothing else catches this: the schematic embeds its own copy of
-   every symbol, so ERC and `verify.py` pass regardless.
+1. **Open both sheets in KiCad once** and confirm no symbol shows a broken
+   library link. Nothing else catches this: a schematic embeds its own copy of
+   every symbol, so ERC and `verify.py` pass regardless. `gen_project.py` writes
+   the library table and the project library from both sheets' symbol
+   registries, which is what makes the answer *no* rather than a habit.
 2. **Re-audit AGND by hand** against the table under [Grounding](#grounding).
 3. **Confirm `design.NO_CONNECT` is still empty.**
 

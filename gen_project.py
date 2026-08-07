@@ -12,12 +12,25 @@ import json
 import pathlib
 
 import design as circuit
+import gen_sim
 import rules
 import symlib
 from kisch import Schematic, _uuid
 from sexp import Sym, dumps
 
 PROJECT = circuit.PROJECT
+
+# Every symbol either sheet in this project places. The simulation sheet uses
+# stock libraries the board has no need of (Simulation_SPICE's sources and its
+# node-0 ground) and borrows a single-amplifier body the board does not carry,
+# and both have to reach the library table and the project library or the sheet
+# opens with broken links.
+#
+# Nothing in the build catches that: kisch embeds its own copy of every symbol
+# in lib_symbols, so ERC passes, verify.py passes, and the fault appears only
+# when a human opens the project -- which is why it is DESIGN.md's first
+# "check the build cannot make". The sibling project has exactly this omission.
+SYMBOLS = {**circuit.LIBS, **gen_sim.SIM_LIBS}
 
 # 4-layer, 1 oz outer / 0.5 oz inner, comfortably inside every low-cost fab's
 # capability (JLCPCB and PCBWay both accept 0.127mm; this leaves a wide
@@ -128,7 +141,7 @@ def project_file(path, root_uuid):
 
 def library_tables(directory):
     """Point at KiCad's stock libraries plus the project's own."""
-    used_symbol_libs = sorted({nick for nick, _, _, _ in circuit.LIBS.values()
+    used_symbol_libs = sorted({nick for nick, _, _, _ in SYMBOLS.values()
                                if nick != "rmc"})
     rows = [f'  (lib (name "{nick}")(type "KiCad")(uri '
             f'"${{KICAD10_SYMBOL_DIR}}/{nick}.kicad_sym")(options "")(descr ""))'
@@ -151,18 +164,22 @@ def library_tables(directory):
 def symbol_library(path):
     """The project library: every part borrowed under the `rmc` nickname.
 
-    Driven off circuit.LIBS, the same way library_tables() is, so adding a
-    borrowed part to LIBS is sufficient and the two cannot drift. This used to
-    hard-code its single symbol, and nothing in the build would have caught
+    Driven off SYMBOLS, the same way library_tables() is, so adding a borrowed
+    part to either registry is sufficient and the two cannot drift. This used
+    to hard-code its single symbol, and nothing in the build would have caught
     the omission: the schematic embeds its own copy of every symbol in
     lib_symbols, so ERC and verify.py both pass and the fault only appears as
     a broken library link when a human opens the project in KiCad.
+
+    Two symbols now: OPA4191 on the fabrication sheet, borrowed from OPA4197xD,
+    and OPA4191_SIM on the simulation sheet, borrowed from LM321 because TI's
+    macromodel is a single amplifier.
     """
     library = [Sym("kicad_symbol_lib"),
                [Sym("version"), 20251024],
                [Sym("generator"), "violet-bridge"],
                [Sym("generator_version"), "10.0"]]
-    for lib_id, (nick, libname, symname, rename) in sorted(circuit.LIBS.items()):
+    for lib_id, (nick, libname, symname, rename) in sorted(SYMBOLS.items()):
         if nick != "rmc":
             continue
         symbol = symlib.flatten(libname, symname, rename=rename)

@@ -41,6 +41,11 @@ mkdir -p build fab
 echo "== schematic and project =="
 "$PY" gen_sch.py
 "$PY" gen_project.py
+# The simulation sheet, generated from the same design.py so it cannot drift
+# from the circuit. Generation only -- simulation itself is interactive, run
+# from KiCad, and is not a gate on the build. It is an additional output and
+# does not touch the fabrication schematic.
+"$PY" gen_sim.py
 
 echo "== board =="
 "$KICAD_PY" gen_pcb.py 2>&1 | grep -v "assert" || true
